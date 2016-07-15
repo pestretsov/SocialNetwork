@@ -4,15 +4,16 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.*;
+import java.util.Arrays;
 import java.util.Properties;
-import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * Created by artemypestretsov on 7/13/16.
@@ -45,8 +46,12 @@ public class SimpleConnectionPool implements ConnectionPool {
         String user = properties.getProperty("user", "");
         String password = properties.getProperty("password", "");
 
-        if (!properties.contains("driver") || !properties.contains("url")) {
-            throw new IllegalArgumentException("Cannot find driver or url property");
+        if (!properties.containsKey("driver")) {
+            throw new IllegalArgumentException("Cannot find driver");
+        }
+
+        if (!properties.containsKey("url")) {
+            throw new IllegalArgumentException("Cannot find url");
         }
 
         String driver = properties.getProperty("driver");
@@ -69,8 +74,8 @@ public class SimpleConnectionPool implements ConnectionPool {
     }
 
     private SimpleConnectionPool(int poolSize, Supplier<Connection> connectionSupplier) {
-        freeConnections = new ArrayBlockingQueue<Connection>(poolSize);
-        reservedConnections = new ArrayBlockingQueue<Connection>(poolSize);
+        freeConnections = new ArrayBlockingQueue<>(poolSize);
+        reservedConnections = new ArrayBlockingQueue<>(poolSize);
 
         for (int i = 0; i < poolSize; i++) {
             freeConnections.add(connectionSupplier.get());
@@ -110,13 +115,45 @@ public class SimpleConnectionPool implements ConnectionPool {
         }
 
         try {
-            final Connection connection = freeConnections.take();
+            Connection connection = wrap(freeConnections.take());
             reservedConnections.add(connection);
             return connection;
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public void executeScript(String prepareFilePath) {
+        executeScript(Paths.get(prepareFilePath));
+    }
+
+    private void executeScript(Path path) {
+        try (Connection connection = getConnection();
+             Statement statement = connection.createStatement()) {
+            String[] sqls = getStatementsFromFile(path);
+
+            for (String sql : sqls) {
+                statement.addBatch(sql);
+            }
+
+            statement.executeBatch();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error executing script", e);
+        }
+    }
+
+    private String[] getStatementsFromFile(Path filePath) {
+        try {
+            return Files.lines(filePath)
+                    .filter(s -> !s.isEmpty())
+                    .collect(Collectors.joining())
+                    .split(";");
+        } catch (IOException e) {
+            throw new RuntimeException("Parsing SQL script file error", e);
+        }
+    }
+
 
     @Override
     public void close() throws Exception {

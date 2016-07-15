@@ -18,7 +18,7 @@ public class H2PostDAO implements PostDAO {
     }
 
     @Override
-    public List<Post> getPostsByFromId(int fromId) {
+    public List<Post> getAllPostsByFromId(int fromId) {
         return null;
     }
 
@@ -41,4 +41,5 @@ public class H2PostDAO implements PostDAO {
     public boolean deleteById(int id) {
         return false;
     }
+
 }

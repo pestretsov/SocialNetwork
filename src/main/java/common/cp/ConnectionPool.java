@@ -7,4 +7,5 @@ import java.sql.Connection;
  */
 public interface ConnectionPool extends AutoCloseable {
     Connection getConnection();
+    void executeScript(String file);
 }
