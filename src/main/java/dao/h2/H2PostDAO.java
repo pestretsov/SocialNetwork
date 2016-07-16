@@ -41,7 +41,7 @@ public class H2PostDAO implements PostDAO {
     }
 
     @Override
-    public List<Post> getAllPostsByFromId(int fromId) {
+    public List<Post> getAllByFromId(int fromId) {
         List<Post> allPosts = new ArrayList<>();
 
         String sql = "SELECT id, from_id, post_type, text, publish_time FROM Post WHERE from_id=?";
@@ -89,11 +89,10 @@ public class H2PostDAO implements PostDAO {
              PreparedStatement statement = connection.prepareStatement(sql)) {
             setPostWithoutId(statement, post);
             statement.setInt(5, post.getId());
+            return statement.executeUpdate() != 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-        return false;
     }
 
     @Override

@@ -8,5 +8,5 @@ import java.util.Optional;
  * Created by artemypestretsov on 7/13/16.
  */
 public interface PostDAO extends DAO<Post> {
-    List<Post> getAllPostsByFromId(int fromId);
+    List<Post> getAllByFromId(int fromId);
 }
