@@ -25,9 +25,9 @@ public class SimpleConnectionPool implements ConnectionPool {
     private volatile boolean isClosing = false;
 
     public static ConnectionPool create(String propertiesFile) {
-        try {
-            return create(new FileInputStream(propertiesFile));
-        } catch (FileNotFoundException e) {
+        try (InputStream inputStream = new FileInputStream(propertiesFile)) {
+            return create(inputStream);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

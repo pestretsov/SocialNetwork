@@ -9,7 +9,6 @@ import java.time.Instant;
  */
 
 @Data
-@AllArgsConstructor
 public class Post {
     private int id;
     private int fromId;
