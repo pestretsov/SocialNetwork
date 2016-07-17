@@ -12,6 +12,11 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
+
     compile "org.projectlombok:lombok:1.16.8"
+
+    // Validation
+    compile 'javax.validation:validation-api:+'
+
     compile group: 'com.h2database', name: 'h2', version: '1.4.192'
 }

@@ -14,7 +14,7 @@ DROP TABLE IF EXISTS Post;
 CREATE TABLE Post (
   id           INT PRIMARY KEY AUTO_INCREMENT,
   from_id      INT NOT NULL REFERENCES User(id),
-  post_type    INT NOT NULL DEFAULT 0, // 0 - public; 1 - private
+  post_type    INT DEFAULT 0, // 0 - public; 1 - private
   text         TEXT,
   publish_time TIMESTAMP NOT NULL
 );

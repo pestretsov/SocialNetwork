@@ -1,7 +1,9 @@
 package model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+
+import javax.validation.constraints.NotNull;
+import java.sql.Clob;
 import java.time.Instant;
 
 /**
@@ -10,9 +12,15 @@ import java.time.Instant;
 
 @Data
 public class Post {
-    private int id;
-    private int fromId;
-    private int postType;
-    private String text;
-    private Instant publishTime;
+    private int id; // id INT PRIMARY KEY AUTO_INCREMENT
+
+    @NotNull
+    private int fromId; // from_id INT NOT NULL REFERENCES User(id)
+
+    private int postType; // post_type INT DEFAULT 0 (0 - public; 1 - private)
+
+    private String text; // text TEXT
+
+    @NotNull
+    private Instant publishTime; // publish_time TIMESTAMP NOT NULL
 }
