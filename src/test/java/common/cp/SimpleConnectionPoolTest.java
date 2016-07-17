@@ -37,7 +37,6 @@ public class SimpleConnectionPoolTest {
 
         while (resultSet.next()) {
             String name = resultSet.getString("username");
-            System.out.println(name);
             count++;
         }
 

@@ -23,10 +23,12 @@ public class H2UserDAO implements UserDAO {
         User user = new User();
         user.setId(resultSet.getInt("id"));
         user.setUsername(resultSet.getString("username"));
+        user.setPassword(resultSet.getString("password"));
         user.setFirstName(resultSet.getString("first_name"));
         user.setLastName(resultSet.getString("last_name"));
         user.setSex(resultSet.getInt("sex"));
         user.setBirthDate(resultSet.getDate("birth_date").toLocalDate());
+        user.setBio(resultSet.getString("bio"));
         return user;
     }
 
@@ -78,7 +80,8 @@ public class H2UserDAO implements UserDAO {
 
     @Override
     public int create(User user) {
-        String sql = "INSERT INTO User (username, password, first_name, last_name, sex, birth_date, bio) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO User (username, password, first_name, last_name, sex, birth_date, bio) " +
+                "VALUES (?,?,?,?,?,?,?)";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -98,8 +101,7 @@ public class H2UserDAO implements UserDAO {
 
     @Override
     public boolean update(User user) {
-        String sql = "UPDATE User SET username=?, password=?, first_name=?, last_name=?, sex=?, birth_date=?," +
-                "bio=? WHERE id=?";
+        String sql = "UPDATE User SET username=?, password=?, first_name=?, last_name=?, sex=?, birth_date=?, bio=? WHERE id=?";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
