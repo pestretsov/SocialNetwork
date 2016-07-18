@@ -5,18 +5,24 @@ apply plugin: 'java'
 apply plugin: 'war'
 
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
 
-    compile "org.projectlombok:lombok:1.16.8"
+    // core
+    compile 'ch.qos.logback:logback-classic:+'
+    compile 'com.h2database:h2:+'
+    providedCompile 'org.projectlombok:lombok:+'
+    testCompile 'junit:junit:+'
+
+    // Tomcat internal libraries
+    providedCompile 'org.apache.tomcat:tomcat-api:+'
+    providedCompile 'org.apache.tomcat:tomcat-jsp-api:+'
 
     // Validation
     compile 'javax.validation:validation-api:+'
-
-    compile group: 'com.h2database', name: 'h2', version: '1.4.192'
 }
