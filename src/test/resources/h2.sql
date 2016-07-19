@@ -20,7 +20,7 @@ CREATE TABLE Post (
 );
 
 INSERT INTO USER (USERNAME, PASSWORD, FIRST_NAME, LAST_NAME, SEX, BIRTH_DATE, BIO)
-VALUES ('ambush', '***', 'Artemy', 'Pestretsov', '1', '1995-11-02', 'nothing do here');
+VALUES ('ambush', '123', 'Artemy', 'Pestretsov', '1', '1995-11-02', 'nothing do here');
 
 INSERT INTO USER (USERNAME, PASSWORD, FIRST_NAME, LAST_NAME, SEX, BIRTH_DATE, BIO)
 VALUES ('ambush1', '***', 'Artemy', 'Pestretsov', '1', '1995-11-02', 'nothing do here');

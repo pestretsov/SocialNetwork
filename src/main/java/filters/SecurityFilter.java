@@ -34,9 +34,19 @@ public class SecurityFilter implements Filter {
         HttpSession session = request.getSession(true);
         String fromUri = request.getRequestURI();
 
-        if (fromUri.equals("/signup.jsp") || fromUri.equals("/login.jsp")) {
+        Optional<User> oo = userDAO.getByUsername("ambush");
+        if (oo.isPresent()) {
+            System.out.println(oo.get().getPassword());
+        } else {
+            System.out.println("WTF");
+        }
+
+        System.out.println(fromUri);
+        if (fromUri.equals("/signup") || fromUri.equals("/login")) {
+            System.out.println("HERE1");
             chain.doFilter(request, response);
         } else {
+            System.out.println("HERE2");
             Optional<User> userOpt =
                     Optional.ofNullable((User)session.getAttribute("user"))
                             .map(user -> user.getId())
@@ -44,9 +54,11 @@ public class SecurityFilter implements Filter {
 
             if (userOpt.isPresent()) {
                 session.setAttribute("user", userOpt.get());
+                System.out.println("HERE3");
                 chain.doFilter(request, response);
             } else {
                 session.removeAttribute("user");
+                System.out.println("HERE4");
                 request.getRequestDispatcher("/login.jsp").forward(request, response);
             }
         }

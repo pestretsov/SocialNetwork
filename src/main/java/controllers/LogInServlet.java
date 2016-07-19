@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Optional;
 
 /**
@@ -41,8 +42,19 @@ public class LogInServlet extends HttpServlet {
 
         Optional<User> user = userDAO.getByUsername(username);
 
-//        if (user.isPresent()) {
-//
-//        }
+        if (!user.isPresent()) {
+            resp.sendError(406, "This username is not found");
+            System.out.println("WRONG USERNAME");
+            return;
+        }
+
+        if (user.get().getPassword().equals(password)) {
+            session.setAttribute("user", user.get());
+            System.out.println("PASSWORD");
+            resp.sendRedirect("/");
+        } else {
+            System.out.println("WRONG PASSWORD");
+            resp.sendError(406, "Wrong password");
+        }
     }
 }

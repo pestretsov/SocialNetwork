@@ -19,3 +19,5 @@ CREATE TABLE Post (
   publish_time TIMESTAMP NOT NULL
 );
 
+INSERT INTO USER (USERNAME, PASSWORD, FIRST_NAME, LAST_NAME, SEX, BIRTH_DATE, BIO)
+VALUES ('ambush', '123', 'Artemy', 'Pestretsov', '1', '1995-11-02', 'nothing do here');
