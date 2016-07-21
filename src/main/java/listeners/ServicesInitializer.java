@@ -6,6 +6,7 @@ import dao.h2.H2PostDAO;
 import dao.h2.H2UserDAO;
 import dao.interfaces.PostDAO;
 import dao.interfaces.UserDAO;
+import utils.SecurityUtils;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -33,8 +34,11 @@ public class ServicesInitializer implements ServletContextListener {
 
         UserDAO userDAO = new H2UserDAO(connectionPool);
         PostDAO postDAO = new H2PostDAO(connectionPool);
+        SecurityUtils securityUtils = new SecurityUtils();
+
         sce.getServletContext().setAttribute("userDAO", userDAO);
         sce.getServletContext().setAttribute("postDAO", postDAO);
+        sce.getServletContext().setAttribute("securityUtils", securityUtils);
 
         String scriptFilePath = servletContext.getRealPath(RESOURCES_FILE_PATH + DB_INIT_SCRIPT_FILE_NAME);
         connectionPool.executeScript(scriptFilePath);

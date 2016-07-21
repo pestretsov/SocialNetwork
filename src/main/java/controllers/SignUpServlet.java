@@ -2,6 +2,7 @@ package controllers;
 
 import dao.interfaces.UserDAO;
 import model.User;
+import utils.SecurityUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -21,11 +22,13 @@ import java.util.Optional;
 @WebServlet(urlPatterns = "/signup")
 public class SignUpServlet extends HttpServlet {
     private UserDAO userDAO;
+    private SecurityUtils securityUtils;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         userDAO = (UserDAO) getServletContext().getAttribute("userDAO");
+        securityUtils = (SecurityUtils) getServletContext().getAttribute("securityUtils");
     }
 
     @Override
@@ -51,8 +54,10 @@ public class SignUpServlet extends HttpServlet {
         String bio = Optional.ofNullable(req.getParameter("bio")).orElse("");
         String birthDate = Optional.ofNullable(req.getParameter("birth_date")).orElse("");
 
+        String passwordHash = securityUtils.encrypt(password);
+
         user.setUsername(username);
-        user.setPassword(password);
+        user.setPassword(passwordHash);
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setBirthDate(LocalDate.parse(birthDate));

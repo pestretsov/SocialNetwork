@@ -2,6 +2,7 @@ package controllers;
 
 import dao.interfaces.UserDAO;
 import model.User;
+import utils.SecurityUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -21,11 +22,13 @@ import java.util.Optional;
 @WebServlet(urlPatterns = "/login")
 public class LogInServlet extends HttpServlet {
     private UserDAO userDAO;
+    private SecurityUtils securityUtils;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         userDAO = (UserDAO) getServletContext().getAttribute("userDAO");
+        securityUtils = (SecurityUtils) getServletContext().getAttribute("securityUtils");
     }
 
     @Override
@@ -40,20 +43,19 @@ public class LogInServlet extends HttpServlet {
         String username = req.getParameter("j_username");
         String password = req.getParameter("j_password");
 
-        Optional<User> user = userDAO.getByUsername(username);
+        Optional<User> userOpt = userDAO.getByUsername(username);
 
-        if (!user.isPresent()) {
+        if (!userOpt.isPresent()) {
             resp.sendError(406, "This username is not found");
-            System.out.println("WRONG USERNAME");
             return;
         }
 
-        if (user.get().getPassword().equals(password)) {
-            session.setAttribute("user", user.get());
-            System.out.println("PASSWORD");
+        User user = userOpt.get();
+
+        if (securityUtils.validatePassword(password, user.getPassword())) {
+            session.setAttribute("user", user);
             resp.sendRedirect("/");
         } else {
-            System.out.println("WRONG PASSWORD");
             resp.sendError(406, "Wrong password");
         }
     }
