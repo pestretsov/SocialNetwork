@@ -17,8 +17,8 @@ public class SecurityUtils {
     public String encrypt(String input) {
         try {
             String salt = generateSalt();
-            System.out.println(salt);
             String saltedInputHash = hash(salt+input);
+
             return salt+saltedInputHash;
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
@@ -29,8 +29,7 @@ public class SecurityUtils {
         try {
             String salt = fullHash.substring(0, SALT_LENGTH);
             String saltedPasswordHash = fullHash.substring(SALT_LENGTH);
-            System.out.println(salt);
-            System.out.println(salt + hash(salt + password));
+
             return saltedPasswordHash.equals(hash(salt + password));
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
@@ -41,6 +40,7 @@ public class SecurityUtils {
         SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
         byte[] saltBytes = new byte[SALT_LENGTH/2];
         sr.nextBytes(saltBytes);
+
         return GeneralUtils.bytesToHexString(saltBytes);
     }
 
