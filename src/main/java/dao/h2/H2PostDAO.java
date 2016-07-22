@@ -62,6 +62,15 @@ public class H2PostDAO implements PostDAO {
     }
 
     @Override
+    public List<Post> getSublistByFromId(int fromId, int offset, int limit) {
+        List<Post> posts = getAllByFromId(fromId);
+        if (limit > posts.size()) {
+            limit = posts.size();
+        }
+        return getAllByFromId(fromId).subList(offset, limit);
+    }
+
+    @Override
     public int create(Post post) {
         String sql = "INSERT INTO Post (from_id, post_type, text, publish_time) VALUES (?,?,?,?)";
 

@@ -126,6 +126,55 @@ public class H2PostDAOTest {
         assertEquals(postDAO.getById(1).get().getFromId(), post1.getFromId());
     }
 
+    @Test
+    public void getSublistTest() throws Exception {
+        Post post1 = new Post();
+        post1.setPostType(0);
+        post1.setPublishTime(Instant.now());
+        post1.setText("test test test text 111");
+        post1.setFromId(1);
+
+        Post post2 = new Post();
+        post2.setPostType(0);
+        post2.setPublishTime(Instant.now());
+        post2.setText("test test test text 222");
+        post2.setFromId(1);
+
+        Post post3 = new Post();
+        post3.setPostType(0);
+        post3.setPublishTime(Instant.now());
+        post3.setText("test test test text 333");
+        post3.setFromId(1);
+
+        Post post4 = new Post();
+        post4.setPostType(0);
+        post4.setPublishTime(Instant.now());
+        post4.setText("test test test text 444");
+        post4.setFromId(1);
+
+        Post post5 = new Post();
+        post5.setPostType(0);
+        post5.setPublishTime(Instant.now());
+        post5.setText("test test test text 555");
+        post5.setFromId(1);
+
+        postDAO.create(post1);
+        postDAO.create(post2);
+        postDAO.create(post3);
+        postDAO.create(post4);
+        postDAO.create(post5);
+
+        List<Post> postList = postDAO.getSublistByFromId(1, 0, 100);
+
+        assertTrue(postList.size() == 5);
+
+        postList = postDAO.getSublistByFromId(1, 2, 5);
+        assertTrue(postList.size() == 3);
+
+        postList = postDAO.getSublistByFromId(1, 2, 2);
+        assertTrue(postList.size() == 0);
+    }
+
     @AfterClass
     public static void closeAll() throws Exception {
         connectionPool.close();
