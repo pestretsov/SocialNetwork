@@ -18,3 +18,10 @@ CREATE TABLE Post (
   text         TEXT,
   publish_time TIMESTAMP NOT NULL
 );
+
+DROP TABLE IF EXISTS Follower;
+CREATE TABLE Follower (
+  user_id INT NOT NULL REFERENCES User(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  follower_id INT NOT NULL REFERENCES User(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  PRIMARY KEY (user_id, follower_id)
+);
