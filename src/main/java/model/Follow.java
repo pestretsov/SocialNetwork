@@ -10,5 +10,5 @@ import lombok.Data;
 public class Follow {
     // follower is following followingId;
     private int followerId;
-    private int followingId;
+    private int userId;
 }
