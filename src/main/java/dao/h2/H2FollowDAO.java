@@ -2,12 +2,14 @@ package dao.h2;
 
 import common.cp.ConnectionPool;
 import dao.interfaces.FollowDAO;
+import dao.interfaces.UserDAO;
 import model.Follow;
 import model.User;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by artemypestretsov on 7/23/16.
@@ -31,7 +33,7 @@ public class H2FollowDAO implements FollowDAO {
             statement.setInt(1, follow.getFollowerId());
             statement.setInt(2, follow.getUserId());
 
-            statement.execute(sql);
+            statement.executeUpdate();
 
             return 0;
         } catch (SQLException e) {
@@ -60,41 +62,51 @@ public class H2FollowDAO implements FollowDAO {
 
     @Override
     public List<User> getAllFollowersByUserId(int user_id) {
-        List<User> followers = new ArrayList<>();
-        String sql = "SELECT follower_id, user_id FROM Follow WHERE user_id=?";
+        String sql = "SELECT follower_id FROM Follow WHERE user_id=?";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, user_id);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
 
-//                    followers.add()
-                }
-            }
-
+            return getAllWithStatement(statement);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-        return followers;
     }
 
     @Override
     public List<User> getAllFollowingByUserId(int user_id) {
-        String sql = "SELECT follower_id, user_id FROM Follow WHERE follower_id=?";
+        String sql = "SELECT user_id FROM Follow WHERE follower_id=?";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, user_id);
-            statement.executeQuery();
 
+            return getAllWithStatement(statement);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
 
-        return null;
+    private List<User> getAllWithStatement(PreparedStatement statement) throws SQLException {
+        UserDAO userDAO = new H2UserDAO(connectionPool);
+
+        List<User> users = new ArrayList<>();
+        try (ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+
+                // TODO: needs real implementation
+                int userId = resultSet.getInt(1);
+                Optional<User> user = userDAO.getById(userId);
+
+                if (user.isPresent()) {
+                    users.add(user.get());
+                }
+            }
+        }
+
+        return users;
     }
 }

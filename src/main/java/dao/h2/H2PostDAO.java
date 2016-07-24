@@ -76,9 +76,9 @@ public class H2PostDAO implements PostDAO {
         String sql = "INSERT INTO Post (from_id, post_type, text, publish_time) VALUES (?,?,?,?)";
 
         try (Connection connection = connectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             setPostWithoutId(statement, post);
-            statement.execute();
+            statement.executeUpdate();
             try (ResultSet keys = statement.getGeneratedKeys()) {
                 if (keys.next()) {
                     return keys.getInt(1);

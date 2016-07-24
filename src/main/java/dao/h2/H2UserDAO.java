@@ -36,6 +36,7 @@ public class H2UserDAO implements UserDAO {
         return resultSet.next() ? Optional.of(parseUser(resultSet)) : Optional.empty();
     }
 
+    // TODO: Optionals
     private void setUserWithoutId(PreparedStatement statement, User user) throws SQLException {
         statement.setString(1, user.getUsername());
         statement.setString(2, user.getPassword());
@@ -84,9 +85,9 @@ public class H2UserDAO implements UserDAO {
                 "VALUES (?,?,?,?,?,?,?)";
 
         try (Connection connection = connectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             setUserWithoutId(statement, user);
-            statement.execute();
+            statement.executeUpdate();
             try (ResultSet keys = statement.getGeneratedKeys()) {
                 if (keys.next()) {
                     return keys.getInt(1);

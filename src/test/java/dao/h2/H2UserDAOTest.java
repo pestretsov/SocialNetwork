@@ -67,6 +67,8 @@ public class H2UserDAOTest {
         Optional<User> user1 = userDAO.getByUsername("insane-nna");
         assertTrue(user1.isPresent());
         assertEquals(user1.get().getId(), 5);
+
+        userDAO.deleteById(user1.get().getId());
     }
 
     @Test

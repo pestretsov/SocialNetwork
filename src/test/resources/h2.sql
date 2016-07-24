@@ -19,6 +19,13 @@ CREATE TABLE Post (
   publish_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+DROP TABLE IF EXISTS Follow;
+CREATE TABLE Follow (
+  follower_id INT NOT NULL REFERENCES User(id),
+  user_id INT NOT NULL REFERENCES User(id),
+  PRIMARY KEY (follower_id, user_id)
+);
+
 INSERT INTO USER (USERNAME, PASSWORD, FIRST_NAME, LAST_NAME, SEX, BIRTH_DATE, BIO)
 VALUES ('ambush', '123', 'Artemy', 'Pestretsov', '1', '1995-11-02', 'nothing do here');
 

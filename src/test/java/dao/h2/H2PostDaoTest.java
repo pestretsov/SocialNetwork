@@ -48,6 +48,8 @@ public class H2PostDAOTest {
         Post post1 = postDAO.getById(1).get();
         assertEquals(post1.getText(), post.getText());
         assertEquals(postDAO.getById(1).get().getText(), "test test test text");
+
+        postDAO.deleteById(post.getId());
     }
 
     @Test
@@ -79,6 +81,10 @@ public class H2PostDAOTest {
         for (Post post: posts) {
             assertEquals(post.getFromId(), 1);
         }
+
+        postDAO.deleteById(post1.getId());
+        postDAO.deleteById(post2.getId());
+        postDAO.deleteById(post3.getId());
     }
 
     @Test
@@ -107,6 +113,10 @@ public class H2PostDAOTest {
 
         assertTrue(postDAO.deleteById(1));
         assertFalse(postDAO.getById(1).isPresent());
+
+        postDAO.deleteById(post1.getId());
+        postDAO.deleteById(post2.getId());
+        postDAO.deleteById(post3.getId());
     }
 
     @Test
@@ -124,6 +134,8 @@ public class H2PostDAOTest {
         postDAO.update(post2);
         assertEquals(postDAO.getById(1).get().getText(), "updated text");
         assertEquals(postDAO.getById(1).get().getFromId(), post1.getFromId());
+
+        postDAO.deleteById(post2.getId());
     }
 
     @Test
@@ -173,6 +185,12 @@ public class H2PostDAOTest {
 
         postList = postDAO.getSublistByFromId(1, 2, 2);
         assertTrue(postList.size() == 0);
+
+        postDAO.deleteById(post1.getId());
+        postDAO.deleteById(post2.getId());
+        postDAO.deleteById(post3.getId());
+        postDAO.deleteById(post4.getId());
+        postDAO.deleteById(post5.getId());
     }
 
     @AfterClass

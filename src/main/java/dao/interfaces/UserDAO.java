@@ -8,5 +8,4 @@ import java.util.Optional;
  */
 public interface UserDAO extends DAO<User> {
     Optional<User> getByUsername(String username);
-    // TODO: getAllFriends()
 }
