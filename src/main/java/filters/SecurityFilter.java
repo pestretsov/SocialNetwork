@@ -29,11 +29,13 @@ public class SecurityFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         String uri = ((HttpServletRequest)request).getRequestURI();
-        if (uri.contains("/css")) {
+        if (uri.startsWith("/css")) {
             chain.doFilter(request, response);
-        } else if (uri.contains("/images")) {
+        } else if (uri.startsWith("/images")) {
             chain.doFilter(request, response);
-        } else if(uri.contains("/js")) {
+        } else if (uri.startsWith("/js")) {
+            chain.doFilter(request, response);
+        } else if (uri.startsWith("/fonts")) {
             chain.doFilter(request, response);
         } else {
             doFilter((HttpServletRequest) request, (HttpServletResponse) response, chain);
