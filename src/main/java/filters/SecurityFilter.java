@@ -25,9 +25,19 @@ public class SecurityFilter implements Filter {
         userDAO = (UserDAO) filterConfig.getServletContext().getAttribute("userDAO");
     }
 
+    // TODO: узнать у Романа, как этого избежать
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        doFilter((HttpServletRequest) request, (HttpServletResponse) response, chain);
+        String uri = ((HttpServletRequest)request).getRequestURI();
+        if (uri.contains("/css")) {
+            chain.doFilter(request, response);
+        } else if (uri.contains("/images")) {
+            chain.doFilter(request, response);
+        } else if(uri.contains("/js")) {
+            chain.doFilter(request, response);
+        } else {
+            doFilter((HttpServletRequest) request, (HttpServletResponse) response, chain);
+        }
     }
 
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -49,7 +59,7 @@ public class SecurityFilter implements Filter {
                 chain.doFilter(request, response);
             } else {
                 session.removeAttribute("user");
-                request.getRequestDispatcher("/login.jsp").forward(request, response);
+                request.getRequestDispatcher("/login").forward(request, response);
             }
         }
     }

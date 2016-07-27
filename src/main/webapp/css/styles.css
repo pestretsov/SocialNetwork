@@ -1,0 +1,28 @@
+.main {
+    margin-top: 50px;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+.main-center {
+    margin: 0 auto;
+    max-width: 330px;
+    padding: 20px 40px 20px 40px;
+    background-color: #e6e6e6;
+    border-radius: 2px;
+}
+
+.sign-up {
+    margin-top: 20px;
+}
+.sign-up a:hover {
+    text-decoration: none;
+}
+
+#welcome-to-socnet {
+    font-size: 26px;
+    text-align: center;
+    margin-bottom: 20px;
+}
