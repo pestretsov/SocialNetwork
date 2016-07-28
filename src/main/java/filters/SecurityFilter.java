@@ -63,6 +63,7 @@ public class SecurityFilter implements Filter {
                 chain.doFilter(request, response);
             } else {
                 session.removeAttribute("user");
+                session.setAttribute("next", fromUri);
                 request.getRequestDispatcher("/login").forward(request, response);
             }
         }

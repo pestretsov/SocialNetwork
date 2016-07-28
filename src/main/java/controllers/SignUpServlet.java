@@ -3,6 +3,7 @@ package controllers;
 import dao.interfaces.UserDAO;
 import model.User;
 import utils.SecurityUtils;
+import utils.Validator;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -47,8 +48,14 @@ public class SignUpServlet extends HttpServlet {
         String firstName = req.getParameter("first_name");
         String lastName = req.getParameter("last_name");
 
+        if (!Validator.validateUsername(username)) {
+            resp.sendError(406, "Invalid character in username");
+            return;
+        }
+
         if (userDAO.getByUsername(username).isPresent()) {
             resp.sendError(406, "This username is already in use");
+            return;
         }
 
         String bio = Optional.ofNullable(req.getParameter("bio")).orElse("");
