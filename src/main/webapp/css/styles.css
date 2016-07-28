@@ -7,6 +7,7 @@
 }
 
 .main-center {
+    margin-top: 30px;
     margin: 0 auto;
     max-width: 330px;
     padding: 20px 40px 20px 40px;
@@ -25,4 +26,97 @@
     font-size: 26px;
     text-align: center;
     margin-bottom: 20px;
+}
+
+body {
+    font-size: 16px;
+    background-color: #F5F8FA;
+    color: #657786;
+    padding: 70px;
+}
+
+#header-nav {
+    background-color: white;
+    border-radius: 0;
+}
+
+#logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+a#logo:hover {
+    color: #45668e;
+}
+
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+    color: #45668e;
+}
+
+#user-info {
+    padding: 10px;
+}
+
+#user-info > h3 {
+    color: #14171A;
+    margin: 0;
+}
+
+#user-info > h4 {
+    color: #AAB8C2;
+    font-size: 14px;
+}
+
+#user-info > p {
+    font-size: 12px;
+    margin: 0;
+}
+
+#user-info .user-avatar {
+    width: 70px;
+    height: 70px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border-radius: 5%;
+}
+
+.post .user-avatar {
+    width: 50px;
+    height: 50px;
+    margin: 0;
+    padding: 0;
+    border-radius: 10%;
+}
+
+div.col-md-1 {
+    padding: 0;
+}
+
+.post {
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 10px;
+}
+
+.post h3 {
+    font-size: 14px;
+    color: #14171A;
+    margin: 0;
+}
+
+.post h4 {
+    color: #AAB8C2;
+    font-size: 14px;
+}
+
+.post p {
+    font-size: 12px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.post span {
+    font-size: 12px;
+    color: #AAB8C2;
 }
