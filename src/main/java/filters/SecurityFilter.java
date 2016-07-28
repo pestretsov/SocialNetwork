@@ -37,6 +37,8 @@ public class SecurityFilter implements Filter {
             chain.doFilter(request, response);
         } else if (uri.startsWith("/fonts")) {
             chain.doFilter(request, response);
+        } else if (uri.startsWith("/favicon")) {
+            chain.doFilter(request, response);
         } else {
             doFilter((HttpServletRequest) request, (HttpServletResponse) response, chain);
         }
