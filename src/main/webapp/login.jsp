@@ -15,9 +15,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="<c:url value="/css/bootstrap.min.css"/>">
+    <link rel="stylesheet" href="<c:url value='/css/bootstrap.min.css'/>">
     <!-- My styles -->
-    <link rel="stylesheet" href="<c:url value="/css/styles.css"/>">
+    <link rel="stylesheet" href="<c:url value='/css/styles.css'/>">
 
     <title>Log in SocNet</title>
 </head>
@@ -25,7 +25,7 @@
     <div class="container">
         <div class="main-center panel col-md-4 col-md-offset-4">
             <h1 id="welcome-to-socnet">Welcome to SocNet</h1>
-            <form action="login" method="post">
+            <form action="<c:url value='/login'/>" method="post">
                 <!-- <div class="input-group"> -->
                     <!-- <span id="username_addon" class="input-group-addon"><i class="glyphicon glyphicon-user" aria-hidden="true"></i></span> -->
                 <div class="form-group">

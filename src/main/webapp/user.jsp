@@ -36,7 +36,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#" ><span class="glyphicon glyphicon-user"></span> ${sessionUser.firstName}</a></li>
-                    <li><a href="#" ><span class="glyphicon glyphicon-pencil"></span></a></li>
+                    <li><a href="<c:url value='/createpost'/>" ><span class="glyphicon glyphicon-pencil"></span></a></li>
                 </ul>
             </div>
         </div>
