@@ -17,8 +17,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css"/>
+    <link rel="stylesheet" href="<c:url value='/css/bootstrap.min.css'/>"/>
+    <link rel="stylesheet" href="<c:url value='/css/styles.css'/>"/>
 
     <title>${requestUser.firstName} ${requestUser.lastName}</title>
 </head>
@@ -77,9 +77,8 @@
     </div>
 </div>
 
-<script src="${pageContext.request.contextPath}/js/jquery-3.1.0.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-<!-- <script src="js/script.js"></script> -->
+<script src="<c:url value='/js/jquery-3.1.0.min.js'/>"></script>
+<script src="<c:url value='/js/bootstrap.min.js'/>"></script>
 
 </body>
 </html>
