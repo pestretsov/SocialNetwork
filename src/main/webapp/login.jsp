@@ -16,14 +16,14 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <!-- Bootstrap -->
     <link rel="stylesheet" href="<c:url value="/css/bootstrap.min.css"/>">
-
+    <!-- My styles -->
     <link rel="stylesheet" href="<c:url value="/css/styles.css"/>">
 
     <title>Log in SocNet</title>
 </head>
 <body>
     <div class="container">
-        <div class="main-center">
+        <div class="main-center panel col-md-4 col-md-offset-4">
             <h1 id="welcome-to-socnet">Welcome to SocNet</h1>
             <form action="login" method="post">
                 <!-- <div class="input-group"> -->

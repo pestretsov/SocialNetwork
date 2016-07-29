@@ -7,12 +7,8 @@
 }
 
 .main-center {
-    margin-top: 30px;
-    margin: 0 auto;
-    max-width: 330px;
     padding: 20px 40px 20px 40px;
-    background-color: #e6e6e6;
-    border-radius: 2px;
+    background-color: #E1E8ED;
 }
 
 .sign-up {
@@ -22,7 +18,7 @@
     text-decoration: none;
 }
 
-#welcome-to-socnet {
+#welcome-to-socnet, #compose-your-post {
     font-size: 26px;
     text-align: center;
     margin-bottom: 20px;
@@ -78,6 +74,12 @@ a#logo:hover {
     margin-right: 10px;
     margin-bottom: 10px;
     border-radius: 5%;
+}
+
+#post-text {
+    border: 0;
+    padding: 10px;
+    resize: none;
 }
 
 .post .user-avatar {
