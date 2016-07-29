@@ -54,7 +54,7 @@ public class LogInServlet extends HttpServlet {
         User user = userOpt.get();
 
         if (securityUtils.validatePassword(password, user.getPassword())) {
-            session.setAttribute("user", user);
+            session.setAttribute("sessionUser", user);
             resp.sendRedirect(nextURL);
         } else {
             resp.sendError(406, "Wrong password");

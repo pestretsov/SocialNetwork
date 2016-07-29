@@ -29,15 +29,15 @@ public class SecurityFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         String uri = ((HttpServletRequest)request).getRequestURI();
-        if (uri.startsWith("/css")) {
+        if (uri.contains("/css")) {
             chain.doFilter(request, response);
-        } else if (uri.startsWith("/images")) {
+        } else if (uri.contains("/images")) {
             chain.doFilter(request, response);
-        } else if (uri.startsWith("/js")) {
+        } else if (uri.contains("/js")) {
             chain.doFilter(request, response);
-        } else if (uri.startsWith("/fonts")) {
+        } else if (uri.contains("/fonts")) {
             chain.doFilter(request, response);
-        } else if (uri.startsWith("/favicon")) {
+        } else if (uri.contains("/favicon")) {
             chain.doFilter(request, response);
         } else {
             doFilter((HttpServletRequest) request, (HttpServletResponse) response, chain);
@@ -54,15 +54,15 @@ public class SecurityFilter implements Filter {
             chain.doFilter(request, response);
         } else {
             Optional<User> userOpt =
-                    Optional.ofNullable((User)session.getAttribute("user"))
+                    Optional.ofNullable((User)session.getAttribute("sessionUser"))
                             .map(user -> user.getId())
                             .flatMap(userId -> userDAO.getById(userId));
 
             if (userOpt.isPresent()) {
-                session.setAttribute("user", userOpt.get());
+                session.setAttribute("sessionUser", userOpt.get());
                 chain.doFilter(request, response);
             } else {
-                session.removeAttribute("user");
+                session.removeAttribute("sessionUser");
                 session.setAttribute("next", fromUri);
                 request.getRequestDispatcher("/login").forward(request, response);
             }

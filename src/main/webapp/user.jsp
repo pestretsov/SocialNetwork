@@ -10,15 +10,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:useBean id="sessionUser" scope="session" type="model.User"/>
 <jsp:useBean id="requestUser" scope="request" type="model.User"/>
-<jsp:useBean id="userPosts" scope="request" type=""/>
+<jsp:useBean id="userPosts" scope="request" type="java.util.List<model.Post>"/>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="<c:url value='css/bootstrap.min.css'/>"/>
-    <link rel="stylesheet" href="<c:url value='css/styles.css'/>"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css"/>
 
     <title>${requestUser.firstName} ${requestUser.lastName}</title>
 </head>
@@ -56,16 +56,18 @@
             </div>
         </div>
         <div class="col-md-6">
-            <div class="row post panel">
-                <div class="col-md-1">
-                    <img class="user-avatar" src="images/artemy.jpg">
+            <c:forEach items="${userPosts}" var="post">
+                <div class="row post panel">
+                    <div class="col-md-1">
+                        <img class="user-avatar" src="images/artemy.jpg">
+                    </div>
+                    <div class="col-md-11">
+                        <h3>${requestUser.firstName} ${requestUser.lastName}<span> @${requestUser.username}</span><span>;</span><span> ${post.publishTime}</span> </h3>
+                        <p>${post.text}</p>
+                        <span class="glyphicon glyphicon-star-empty"></span>
+                    </div>
                 </div>
-                <div class="col-md-11">
-                    <h3>${requestUser.firstName} ${requestUser.lastName}<span> @${requestUser.username}</span><span>;</span><span> 1h ago</span> </h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                    <span class="glyphicon glyphicon-star-empty"></span>
-                </div>
-            </div>
+            </c:forEach>
         </div>
         <div class="col-md-2">
             <div class="panel">
@@ -75,8 +77,8 @@
     </div>
 </div>
 
-<script src="<c:url value='js/jquery-3.1.0.min.js'/>"></script>
-<script src="<c:url value='js/bootstrap.min.js'/>"></script>
+<script src="${pageContext.request.contextPath}/js/jquery-3.1.0.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 <!-- <script src="js/script.js"></script> -->
 
 </body>
