@@ -23,23 +23,23 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
  */
 
 @Path("/post")
-@Produces(APPLICATION_JSON)
 public class PostResource {
     private static PostDAO postDAO;
 
     @Context
     public void init(ServletContext servletContext) {
-        System.out.println("here init");
+//        System.out.println("here init");
         if (postDAO == null)
             postDAO = (PostDAO) servletContext.getAttribute("postDAO");
     }
 
     @GET
     @Path("{id}")
+    @Produces(APPLICATION_JSON)
     public Response getPostById(@PathParam("id") int id) {
         ObjectMapper mapper = new ObjectMapper();
 
-        System.out.println("here get");
+//        System.out.println("here get");
 
         Optional<Post> postOpt = postDAO.getById(id);
 

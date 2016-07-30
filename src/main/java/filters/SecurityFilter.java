@@ -28,7 +28,7 @@ public class SecurityFilter implements Filter {
     // TODO: узнать у Романа, как этого избежать
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String uri = ((HttpServletRequest)request).getRequestURI();
+        String uri = ((HttpServletRequest) request).getRequestURI();
         if (uri.contains("/css")) {
             chain.doFilter(request, response);
         } else if (uri.contains("/images")) {
@@ -38,6 +38,8 @@ public class SecurityFilter implements Filter {
         } else if (uri.contains("/fonts")) {
             chain.doFilter(request, response);
         } else if (uri.contains("/favicon")) {
+            chain.doFilter(request, response);
+        } else if (uri.contains("/restapi")) {
             chain.doFilter(request, response);
         } else {
             doFilter((HttpServletRequest) request, (HttpServletResponse) response, chain);
