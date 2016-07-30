@@ -29,6 +29,10 @@ public class SecurityFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         String uri = ((HttpServletRequest) request).getRequestURI();
+
+        // to ensure, that no crazy things are displayed in browser
+        request.setCharacterEncoding("UTF-8");
+
         if (uri.contains("/css")) {
             chain.doFilter(request, response);
         } else if (uri.contains("/images")) {
