@@ -8,37 +8,49 @@ $(function () {
 
     var postsContainer = $("#posts");
 
-    $.ajax({
-        url: "/restapi/posts",
-        data: {
-            fromId: requestUser.id,
-            offset: 0,
-            limit: 10
-        },
-        type: "GET",
-        dataType: "json"
-    }).done(function (posts) {
-        posts.forEach(function (post) {
-            var prepareHtml = '<div class="row post panel" data-post-id="'+ post.id +'">';
+    var offsetPostId = 0;
 
-            prepareHtml += '<div class="col-md-1">';
-            prepareHtml += '<img class="user-avatar" src="images/artemy.jpg">';
-            prepareHtml += '</div>';
+    var loadPosts = function (user, offsetId) {
+        $.ajax({
+            url: "/restapi/posts",
+            data: {
+                fromId: user.id,
+                offset: offsetId, // --> offsetId = inf ; ... ; in java tackle this case
+                limit: 10
+            },
+            type: "GET",
+            dataType: "json"
+        }).done(function (posts) {
+            posts.forEach(function (post) {
+                var prepareHtml = '<div class="row post panel" data-post-id="'+ post.id +'">';
 
-            prepareHtml += '<div class="col-md-11">';
-            prepareHtml += '<h3>'+requestUser.fullName +' <span>' + requestUser.username + '</span>'+
-                                    '<span>;</span><span>' + "12312312" + '</span> </h3>';
-            prepareHtml += '<p>' + post.text + '</p>';
-            prepareHtml += '<span class="remove glyphicon glyphicon-remove-sign"></span>';
-            prepareHtml += '</div>';
+                prepareHtml += '<div class="col-md-1">';
+                prepareHtml += '<img class="user-avatar" src="images/artemy.jpg">';
+                prepareHtml += '</div>';
 
-            prepareHtml += '</div>';
+                prepareHtml += '<div class="col-md-11">';
+                prepareHtml += '<h3>'+user.fullName +' <span>' + user.username + '</span>'+
+                                        '<span>;</span><span>' + "12312312" + '</span> </h3>';
+                prepareHtml += '<p>' + post.text + '</p>';
+                prepareHtml += '<span class="post-remove glyphicon glyphicon-remove-sign"></span>';
+                prepareHtml += '</div>';
 
-            postsContainer.append(prepareHtml);
+                prepareHtml += '</div>';
+
+                postsContainer.append(prepareHtml);
+                offsetPostId = post.id;
+            });
         });
+    };
+
+    loadPosts(requestUser, offsetPostId);
+    $(window).scroll(function () {
+        if($(window).scrollTop() == $(document).height() - $(window).height()) {
+            loadPosts(requestUser, offsetPostId);
+        }
     });
 
-    postsContainer.on('click', '.remove', function () {
+    postsContainer.on('click', '.post-remove', function () {
         var postId = $(this).closest('.post').data("post-id");
 
         $.ajax({

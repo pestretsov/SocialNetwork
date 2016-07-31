@@ -132,4 +132,10 @@ public class H2PostDAO implements PostDAO {
             throw new RuntimeException(e);
         }
     }
+
+    // TODO: NEEDS REAL IMPLEMENTATION
+    public Optional<Post> getLatestPostByFromId(int fromId) {
+//        String sql = "SELECT TOP 1 id FROM Post WHERE from_id=? ORDER BY id DESC";
+        return Optional.ofNullable(getAllByFromId(fromId).get(0));
+    }
 }

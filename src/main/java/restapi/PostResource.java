@@ -61,6 +61,10 @@ public class PostResource {
             @QueryParam("offset") int offset,
             @QueryParam("limit") int limit) {
 
+        if (offset == 100_000_000) {
+            Optional<Post> latestPost = postDAO.getLatestPostByFromId(fromId);
+        }
+
         List<Post> posts = postDAO.getSublistByFromId(fromId, offset, limit);
 
         try {

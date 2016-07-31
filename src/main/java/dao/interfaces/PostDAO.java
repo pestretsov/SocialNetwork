@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface PostDAO extends DAO<Post> {
     List<Post> getAllByFromId(int fromId);
     List<Post> getSublistByFromId(int fromId, int offset, int limit);
+    Optional<Post> getLatestPostByFromId(int fromId);
 }
