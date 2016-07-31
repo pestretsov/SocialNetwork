@@ -70,4 +70,14 @@ public class PostResource {
             throw new RuntimeException(e);
         }
     }
+
+    @DELETE
+    @Path("{id}")
+    public void deletePostById(@PathParam("id") int id) {
+        if (postDAO.getById(id).isPresent()) {
+            postDAO.deleteById(id);
+        } else {
+            throw new RuntimeException("Resource with such path is unavailable");
+        }
+    }
 }

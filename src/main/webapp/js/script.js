@@ -1,7 +1,7 @@
 $(function () {
 
     var requestUser = {
-        id:       $("#requestUserId").text(),
+        id:       $("#requestUserUsername").data("user-id"),
         username: $("#requestUserUsername").text(),
         fullName: $("#requestUserFullName").text()
     };
@@ -39,7 +39,13 @@ $(function () {
     });
 
     postsContainer.on('click', '.remove', function () {
-        console.log($(this).closest('.post').data("post-id"));
-        $(this).closest('.post').remove();
+        var postId = $(this).closest('.post').data("post-id");
+
+        $.ajax({
+            url: "/restapi/posts/" + postId,
+            type: "DELETE",
+            dataType: "json",
+            success: $(this).closest('.post').remove()
+        });
     });
 });
