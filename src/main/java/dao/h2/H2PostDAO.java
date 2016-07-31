@@ -64,11 +64,32 @@ public class H2PostDAO implements PostDAO {
     // TODO: needs real implementation
     @Override
     public List<Post> getSublistByFromId(int fromId, int offset, int limit) {
-        List<Post> posts = getAllByFromId(fromId);
-        if (limit > posts.size()) {
-            limit = posts.size();
+//        List<Post> posts = getAllByFromId(fromId);
+//        if (limit > posts.size()) {
+//            limit = posts.size();
+//        }
+//        return getAllByFromId(fromId).subList(offset, limit);
+
+        List<Post> allPosts = new ArrayList<>();
+
+        String sql = "SELECT id, from_id, post_type, text, publish_time FROM Post WHERE from_id=? AND id<? ORDER BY id DESC";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, fromId);
+            statement.setInt(2, offset);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    allPosts.add(parsePost(resultSet));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return getAllByFromId(fromId).subList(offset, limit);
+        if (limit > allPosts.size()) {
+            limit = allPosts.size();
+        }
+        return allPosts.subList(0, limit);
     }
 
     @Override

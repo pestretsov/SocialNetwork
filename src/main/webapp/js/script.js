@@ -8,7 +8,7 @@ $(function () {
 
     var postsContainer = $("#posts");
 
-    var offsetPostId = 0;
+    var offsetPostId = 100000000;
 
     var loadPosts = function (user, offsetId) {
         $.ajax({
@@ -16,7 +16,7 @@ $(function () {
             data: {
                 fromId: user.id,
                 offset: offsetId, // --> offsetId = inf ; ... ; in java tackle this case
-                limit: 10
+                limit: 3
             },
             type: "GET",
             dataType: "json"
