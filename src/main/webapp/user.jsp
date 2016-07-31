@@ -49,25 +49,27 @@
                 <div class="pull-left">
                     <img class="user-avatar" src="images/artemy.jpg">
                 </div>
-                <h3>${requestUser.firstName} ${requestUser.lastName}</h3>
-                <h4>@${requestUser.username}</h4>
+                <h3 id="requestUserFullName">${requestUser.firstName} ${requestUser.lastName}</h3>
+                <h4 id="requestUserUsername">@${requestUser.username}</h4>
+                <span hidden id="requestUserId">${requestUser.id}</span>
                 <div class="clearfix"></div>
                 <p>${requestUser.bio}</p>
             </div>
         </div>
         <div class="col-md-6">
-            <c:forEach items="${userPosts}" var="post">
-                <div class="row post panel">
-                    <div class="col-md-1">
-                        <img class="user-avatar" src="images/artemy.jpg">
-                    </div>
-                    <div class="col-md-11">
-                        <h3>${requestUser.firstName} ${requestUser.lastName}<span> @${requestUser.username}</span><span>;</span><span> ${post.publishTime}</span> </h3>
-                        <p>${post.text}</p>
-                        <span class="glyphicon glyphicon-star-empty"></span>
-                    </div>
-                </div>
-            </c:forEach>
+            <div id="posts"></div>
+            <%--<c:forEach items="${userPosts}" var="post">--%>
+                <%--<div class="row post panel">--%>
+                    <%--<div class="col-md-1">--%>
+                        <%--<img class="user-avatar" src="images/artemy.jpg">--%>
+                    <%--</div>--%>
+                    <%--<div class="col-md-11">--%>
+                        <%--<h3>${requestUser.firstName} ${requestUser.lastName}<span> @${requestUser.username}</span><span>;</span><span> ${post.publishTime}</span> </h3>--%>
+                        <%--<p>${post.text}</p>--%>
+                        <%--<span class="glyphicon glyphicon-star-empty"></span>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+            <%--</c:forEach>--%>
         </div>
         <div class="col-md-2">
             <div class="panel">
@@ -79,6 +81,7 @@
 
 <script src="<c:url value='/js/jquery-3.1.0.min.js'/>"></script>
 <script src="<c:url value='/js/bootstrap.min.js'/>"></script>
+<script src="<c:url value="/js/script.js"/>"></script>
 
 </body>
 </html>

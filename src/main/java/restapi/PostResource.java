@@ -7,13 +7,11 @@ import javafx.geometry.Pos;
 import model.Post;
 
 import javax.servlet.ServletContext;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
+import java.util.List;
 import java.util.Optional;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -22,7 +20,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
  * Created by artemypestretsov on 7/29/16.
  */
 
-@Path("/post")
+@Path("/posts")
 public class PostResource {
     private static PostDAO postDAO;
 
@@ -33,23 +31,41 @@ public class PostResource {
             postDAO = (PostDAO) servletContext.getAttribute("postDAO");
     }
 
+    public String toJson(Object object) throws JsonProcessingException {
+        return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(object);
+    }
+
     @GET
     @Path("{id}")
     @Produces(APPLICATION_JSON)
     public Response getPostById(@PathParam("id") int id) {
-        ObjectMapper mapper = new ObjectMapper();
-
-//        System.out.println("here get");
 
         Optional<Post> postOpt = postDAO.getById(id);
 
         try {
             if (postOpt.isPresent()) {
-                String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(postOpt.get());
+                String json = toJson(postOpt.get());
                 return Response.ok(json).build();
             } else {
                 return Response.noContent().build();
             }
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GET
+    @Produces(APPLICATION_JSON)
+    public Response getPostsWithOffsetAndLimit(
+            @QueryParam("fromId") int fromId,
+            @QueryParam("offset") int offset,
+            @QueryParam("limit") int limit) {
+
+        List<Post> posts = postDAO.getSublistByFromId(fromId, offset, limit);
+
+        try {
+            String json = toJson(posts);
+            return Response.ok(json).build();
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

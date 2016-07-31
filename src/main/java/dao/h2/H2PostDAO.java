@@ -44,7 +44,7 @@ public class H2PostDAO implements PostDAO {
     public List<Post> getAllByFromId(int fromId) {
         List<Post> allPosts = new ArrayList<>();
 
-        String sql = "SELECT id, from_id, post_type, text, publish_time FROM Post WHERE from_id=?";
+        String sql = "SELECT id, from_id, post_type, text, publish_time FROM Post WHERE from_id=? ORDER BY id DESC";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {

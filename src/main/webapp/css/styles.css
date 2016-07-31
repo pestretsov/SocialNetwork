@@ -99,6 +99,8 @@ div.col-md-1 {
     padding-left: 15px;
     padding-right: 15px;
     padding-bottom: 10px;
+    width: inherit;
+    word-wrap: break-word;
 }
 
 .post h3 {
