@@ -84,7 +84,7 @@ public class PostResource {
     @PUT
     @Consumes(APPLICATION_JSON)
     public void updatePostById(Post post) {
-        System.out.println("got it");
+        // TODO: needs fix -- probably new parser
         post.setPublishTime(Instant.now());
         postDAO.update(post);
     }

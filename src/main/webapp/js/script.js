@@ -87,11 +87,11 @@ $(function () {
         edit.addClass("hidden");
         save.removeClass("hidden");
 
-        save.click(function () {
-            console.log("click");
+        save.off('click').click(function () {
             var postId = $(this).closest('.post').data("post-id");
             var textArea = $(this).parent('div').siblings('div').children("textarea");
             var updatedText = textArea.val();
+            var currentTime = new Date().toISOString();
 
             $.ajax({
                 url: "/restapi/posts",
@@ -103,8 +103,8 @@ $(function () {
                     id: postId,
                     fromId: requestUser.id,
                     postType: 0,
-                    publishTime: Date.now(),
-                    text: updatedText
+                    text: updatedText,
+                    publishTime: currentTime
                 }),
                 success: function() {
                     textArea.replaceWith('<p>' + updatedText + '</p>');
