@@ -58,14 +58,10 @@ public class PostResource {
     @Produces(APPLICATION_JSON)
     public Response getPostsWithOffsetAndLimit(
             @QueryParam("fromId") int fromId,
-            @QueryParam("offset") int offset,
+            @QueryParam("offsetId") int offsetId,
             @QueryParam("limit") int limit) {
 
-        if (offset == 100_000_000) {
-            Optional<Post> latestPost = postDAO.getLatestPostByFromId(fromId);
-        }
-
-        List<Post> posts = postDAO.getSublistByFromId(fromId, offset, limit);
+        List<Post> posts = postDAO.getSublistWithOffsetId(fromId, offsetId, limit);
 
         try {
             String json = toJson(posts);

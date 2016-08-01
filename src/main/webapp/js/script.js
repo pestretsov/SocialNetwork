@@ -15,7 +15,7 @@ $(function () {
             url: "/restapi/posts",
             data: {
                 fromId: user.id,
-                offset: offsetId, // --> offsetId = inf ; ... ; in java tackle this case
+                offsetId: offsetId, // --> offsetId = inf ; ... ; in java tackle this case
                 limit: 3
             },
             type: "GET",
@@ -42,7 +42,7 @@ $(function () {
                 });
             }
         });
-    };
+    }
 
     $.when(loadPosts(requestUser, offsetPostId)).then(function(){
         console.log("here one");

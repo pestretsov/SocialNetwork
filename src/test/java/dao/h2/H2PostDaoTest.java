@@ -183,8 +183,8 @@ public class H2PostDAOTest {
         postList = postDAO.getSublistByFromId(1, 2, 5);
         assertTrue(postList.size() == 3);
 
-        postList = postDAO.getSublistByFromId(1, 2, 2);
-        assertTrue(postList.size() == 0);
+        postList = postDAO.getSublistByFromId(1, 2, 4);
+        assertTrue(postList.size() == 3);
 
         postDAO.deleteById(post1.getId());
         postDAO.deleteById(post2.getId());

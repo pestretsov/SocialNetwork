@@ -47,7 +47,7 @@
         <div class="col-md-4">
             <div id="user-info" class="panel">
                 <div class="pull-left">
-                    <img class="user-avatar" src="images/artemy.jpg">
+                    <img class="user-avatar" src="<c:url value='/images/artemy.jpg'/>">
                 </div>
                 <h3 id="requestUserFullName">${requestUser.firstName} ${requestUser.lastName}</h3>
                 <h4 id="requestUserUsername" data-user-id="${requestUser.id}">@${requestUser.username}</h4>

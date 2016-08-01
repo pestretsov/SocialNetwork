@@ -61,23 +61,17 @@ public class H2PostDAO implements PostDAO {
         return allPosts;
     }
 
-    // TODO: needs real implementation
     @Override
-    public List<Post> getSublistByFromId(int fromId, int offset, int limit) {
-//        List<Post> posts = getAllByFromId(fromId);
-//        if (limit > posts.size()) {
-//            limit = posts.size();
-//        }
-//        return getAllByFromId(fromId).subList(offset, limit);
-
+    public List<Post> getSublistWithOffsetId(int fromId, int offsetId, int limit) {
         List<Post> allPosts = new ArrayList<>();
 
-        String sql = "SELECT id, from_id, post_type, text, publish_time FROM Post WHERE from_id=? AND id<? ORDER BY id DESC";
+        String sql = "SELECT id, from_id, post_type, text, publish_time FROM Post WHERE from_id=? AND id<? ORDER BY id DESC LIMIT ?";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, fromId);
-            statement.setInt(2, offset);
+            statement.setInt(2, offsetId);
+            statement.setInt(3, limit);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     allPosts.add(parsePost(resultSet));
@@ -86,10 +80,31 @@ public class H2PostDAO implements PostDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        if (limit > allPosts.size()) {
-            limit = allPosts.size();
+
+        return allPosts;
+    }
+
+    @Override
+    public List<Post> getSublistByFromId(int fromId, int offset, int limit) {
+        List<Post> allPosts = new ArrayList<>();
+
+        String sql = "SELECT id, from_id, post_type, text, publish_time FROM Post WHERE from_id=? ORDER BY id DESC LIMIT ? OFFSET ?";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, fromId);
+            statement.setInt(2, limit);
+            statement.setInt(3, offset);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    allPosts.add(parsePost(resultSet));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return allPosts.subList(0, limit);
+
+        return allPosts;
     }
 
     @Override
