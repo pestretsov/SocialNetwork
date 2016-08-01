@@ -125,12 +125,23 @@ div.col-md-1 {
     color: #AAB8C2;
 }
 
-.post-remove, .post-edit {
+.post-remove, .post-edit, .post-edit-ok{
     font-size: 14px;
     color: #AAB8C2;
     margin-right: 15px;
 }
 
-.post-remove:hover, .post-edit:hover {
+.post-remove:hover, .post-edit:hover, .post-edit-ok:hover {
     color: #14171A;
+}
+
+.post-edit-text {
+    font-size: 12px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    display: block;
+    resize: none;
+    border: dashed 1px;
+    border-radius: 2px;
 }
