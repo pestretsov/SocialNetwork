@@ -3,7 +3,6 @@ package restapi;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.interfaces.PostDAO;
-import javafx.geometry.Pos;
 import model.Post;
 
 import javax.servlet.ServletContext;
@@ -11,6 +10,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,5 +79,13 @@ public class PostResource {
         } else {
             throw new RuntimeException("Resource with such path is unavailable");
         }
+    }
+
+    @PUT
+    @Consumes(APPLICATION_JSON)
+    public void updatePostById(Post post) {
+        System.out.println("got it");
+        post.setPublishTime(Instant.now());
+        postDAO.update(post);
     }
 }
