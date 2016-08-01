@@ -10,7 +10,7 @@ $(function () {
 
     var offsetPostId = 100000000;
 
-    var loadPosts = function (user, offsetId) {
+    function loadPosts(user, offsetId) {
         $.ajax({
             url: "/restapi/posts",
             data: {
@@ -19,35 +19,38 @@ $(function () {
                 limit: 3
             },
             type: "GET",
-            dataType: "json"
-        }).done(function (posts) {
-            posts.forEach(function (post) {
-                var prepareHtml = '<div class="row post panel" data-post-id="'+ post.id +'">';
+            dataType: "json",
+            success: function (posts) {
+                posts.forEach(function (post) {
+                    var prepareHtml = '<div class="row post panel" data-post-id="'+ post.id +'">';
 
-                prepareHtml += '<div class="col-md-1">';
-                prepareHtml += '<img class="user-avatar" src="images/artemy.jpg">';
-                prepareHtml += '</div>';
+                    prepareHtml += '<div class="col-md-1">';
+                    prepareHtml += '<img class="user-avatar" src="images/artemy.jpg">';
+                    prepareHtml += '</div>';
 
-                prepareHtml += '<div class="col-md-11">';
-                prepareHtml += '<h3>'+user.fullName +' <span>' + user.username + '</span>'+
-                                        '<span>;</span><span>' + "12312312" + '</span> </h3>';
-                prepareHtml += '<p>' + post.text + '</p>';
-                prepareHtml += '<span class="post-remove glyphicon glyphicon-remove-sign"></span>';
-                prepareHtml += '</div>';
+                    prepareHtml += '<div class="col-md-11">';
+                    prepareHtml += '<h3>'+user.fullName +' <span>' + user.username + '</span>'+
+                                            '<span>;</span><span>' + "12312312" + '</span> </h3>';
+                    prepareHtml += '<p>' + post.text + '</p>';
+                    prepareHtml += '<span class="post-remove glyphicon glyphicon-remove-sign"></span>';
+                    prepareHtml += '</div>';
 
-                prepareHtml += '</div>';
+                    prepareHtml += '</div>';
 
-                postsContainer.append(prepareHtml);
-                offsetPostId = post.id;
-            });
+                    postsContainer.append(prepareHtml);
+                    offsetPostId = post.id;
+                });
+            }
         });
     };
 
-    loadPosts(requestUser, offsetPostId);
-    $(window).scroll(function () {
-        if($(window).scrollTop() == $(document).height() - $(window).height()) {
-            loadPosts(requestUser, offsetPostId);
-        }
+    $.when(loadPosts(requestUser, offsetPostId)).then(function(){
+        console.log("here one");
+        $(window).scroll(function () {
+            if($(window).scrollTop() == $(document).height() - $(window).height()) {
+                loadPosts(requestUser, offsetPostId);
+            }
+        });
     });
 
     postsContainer.on('click', '.post-remove', function () {
