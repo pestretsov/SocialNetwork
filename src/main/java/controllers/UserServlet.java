@@ -24,8 +24,7 @@ public class UserServlet extends HttpServlet {
     private PostDAO postDAO;
 
     @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
+    public void init() throws ServletException {
         userDAO = (UserDAO) getServletContext().getAttribute("userDAO");
         postDAO = (PostDAO) getServletContext().getAttribute("postDAO");
     }

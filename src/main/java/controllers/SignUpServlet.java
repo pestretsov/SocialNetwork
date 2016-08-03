@@ -26,8 +26,7 @@ public class SignUpServlet extends HttpServlet {
     private SecurityUtils securityUtils;
 
     @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
+    public void init() throws ServletException {
         userDAO = (UserDAO) getServletContext().getAttribute("userDAO");
         securityUtils = (SecurityUtils) getServletContext().getAttribute("securityUtils");
     }
