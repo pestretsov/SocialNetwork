@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 public class Follow {
-    // follower is following followingId;
+    // followerId is following userId;
     private int followerId;
     private int userId;
 }

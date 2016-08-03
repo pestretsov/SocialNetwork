@@ -6,7 +6,9 @@ import model.Post;
 import model.User;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -122,6 +124,52 @@ public class H2UserDAO implements UserDAO {
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
             return statement.executeUpdate() != 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<User> getUsersFollowingUser(int userId) {
+        String sql = "SELECT id, username, password, first_name, last_name, sex, birth_date, bio" +
+                " FROM User WHERE id IN (SELECT follower_id FROM Follow WHERE user_id=?)";
+
+        List<User> followers = new ArrayList<>();
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    followers.add(parseUser(resultSet));
+                }
+            }
+
+            return followers;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<User> getUsersFollowedByUser(int userId) {
+        String sql = "SELECT id, username, password, first_name, last_name, sex, birth_date, bio" +
+                " FROM User WHERE id IN (SELECT user_id FROM Follow WHERE follower_id=?)";
+
+        List<User> followings = new ArrayList<>();
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    followings.add(parseUser(resultSet));
+                }
+            }
+
+            return followings;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

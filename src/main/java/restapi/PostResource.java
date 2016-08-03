@@ -26,9 +26,9 @@ public class PostResource {
 
     @Context
     public void init(ServletContext servletContext) {
-//        System.out.println("here init");
-        if (postDAO == null)
+        if (postDAO == null) {
             postDAO = (PostDAO) servletContext.getAttribute("postDAO");
+        }
     }
 
     public String toJson(Object object) throws JsonProcessingException {

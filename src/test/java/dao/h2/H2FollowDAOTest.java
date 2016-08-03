@@ -45,13 +45,13 @@ public class H2FollowDAOTest {
 
         followDAO.create(follow);
 
-        assertEquals(followDAO.getAllFollowingByUserId(1).size(), 1);
+        assertEquals(userDAO.getUsersFollowedByUser(1).size(), 1);
 
         followDAO.delete(follow);
     }
 
     @Test
-    public void getAllFollowingByUserIdTest() throws Exception {
+    public void followRelationTest() throws Exception {
         Follow follow1 = new Follow();
         follow1.setFollowerId(1);
         follow1.setUserId(2);
@@ -68,16 +68,16 @@ public class H2FollowDAOTest {
         followDAO.create(follow2);
         followDAO.create(follow3);
 
-        assertEquals(followDAO.getAllFollowersByUserId(2).size(), 1);
-        assertEquals(followDAO.getAllFollowersByUserId(3).size(), 1);
-        assertEquals(followDAO.getAllFollowersByUserId(4).size(), 1);
-        assertEquals(followDAO.getAllFollowingByUserId(1).size(), 3);
+        assertEquals(userDAO.getUsersFollowingUser(2).size(), 1);
+        assertEquals(userDAO.getUsersFollowingUser(3).size(), 1);
+        assertEquals(userDAO.getUsersFollowingUser(4).size(), 1);
+        assertEquals(userDAO.getUsersFollowedByUser(1).size(), 3);
 
-        for (User user: followDAO.getAllFollowersByUserId(2)) {
+        for (User user: userDAO.getUsersFollowingUser(2)) {
             assertEquals(user.getUsername(), "ambush");
         }
 
-        for (User user: followDAO.getAllFollowersByUserId(3)) {
+        for (User user: userDAO.getUsersFollowingUser(3)) {
             assertEquals(user.getUsername(), "ambush");
         }
 

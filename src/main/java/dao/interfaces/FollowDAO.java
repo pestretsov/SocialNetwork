@@ -9,6 +9,4 @@ import java.util.List;
  * Created by artemypestretsov on 7/23/16.
  */
 public interface FollowDAO extends DAO<Follow> {
-    List<User> getAllFollowersByUserId(int id);
-    List<User> getAllFollowingByUserId(int id);
 }

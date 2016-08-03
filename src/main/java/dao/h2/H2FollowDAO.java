@@ -54,59 +54,10 @@ public class H2FollowDAO implements FollowDAO {
         }
     }
 
-    // the follow status is never updated
+    // the only follow update is delete
     @Override
-    public boolean update(Follow model) {
-        return false;
+    public boolean update(Follow follow) {
+        return delete(follow);
     }
 
-    @Override
-    public List<User> getAllFollowersByUserId(int user_id) {
-        String sql = "SELECT follower_id FROM Follow WHERE user_id=?";
-
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setInt(1, user_id);
-
-            return getAllWithStatement(statement);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public List<User> getAllFollowingByUserId(int user_id) {
-        String sql = "SELECT user_id FROM Follow WHERE follower_id=?";
-
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setInt(1, user_id);
-
-            return getAllWithStatement(statement);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private List<User> getAllWithStatement(PreparedStatement statement) throws SQLException {
-        UserDAO userDAO = new H2UserDAO(connectionPool);
-
-        List<User> users = new ArrayList<>();
-        try (ResultSet resultSet = statement.executeQuery()) {
-            while (resultSet.next()) {
-
-                // TODO: needs real implementation
-                int userId = resultSet.getInt(1);
-                Optional<User> user = userDAO.getById(userId);
-
-                if (user.isPresent()) {
-                    users.add(user.get());
-                }
-            }
-        }
-
-        return users;
-    }
 }
