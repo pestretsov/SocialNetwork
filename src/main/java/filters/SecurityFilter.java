@@ -50,7 +50,7 @@ public class SecurityFilter implements Filter {
         }
     }
 
-    public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+    private void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpSession session = request.getSession(true);
         String fromUri = request.getRequestURI();
 

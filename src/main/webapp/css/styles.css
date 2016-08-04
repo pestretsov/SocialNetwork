@@ -100,6 +100,7 @@ div.col-md-1 {
     padding-right: 15px;
     padding-bottom: 10px;
     width: inherit;
+    min-height: 100px;
     word-wrap: break-word;
 }
 
@@ -142,6 +143,7 @@ div.col-md-1 {
     margin-right: 10px;
     display: block;
     resize: none;
-    border: dashed 1px;
+    width: 100%;
+    border: solid 1px;
     border-radius: 2px;
 }

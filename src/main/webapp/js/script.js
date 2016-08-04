@@ -56,7 +56,9 @@ $(function () {
     $.when(loadPosts(requestUser, offsetPostId)).then(function(){
         console.log("here one");
         $(window).scroll(function () {
+            console.log("lol1");
             if($(window).scrollTop() == $(document).height() - $(window).height()) {
+                console.log("lol2");
                 loadPosts(requestUser, offsetPostId);
             }
         });
@@ -74,15 +76,12 @@ $(function () {
     });
 
     postsContainer.on('click', '.post-edit', function () {
-        var width = $("p").css('width');
         var p = $(this).parent('div').siblings('div').children('p');
         var save = $(this).siblings('.post-edit-ok');
         var edit = $(this);
         var text = p.text().replace("\n", "").trim();
 
         p.replaceWith("<textarea class='post-edit-text'>" + text + "</textarea>");
-
-        $(".post-edit-text").css("width", width);
 
         edit.addClass("hidden");
         save.removeClass("hidden");
