@@ -10,6 +10,12 @@ $(function () {
 
     var offsetPostId = 100000000;
 
+    function epochToDate(utcSeconds) {
+        var d = new Date(0); // The 0 there is the key, which sets the date to the epoch
+        d.setUTCSeconds(utcSeconds);
+        return d;
+    }
+
     function loadPosts(user, offsetId) {
         $.ajax({
             url: "/restapi/posts",
@@ -32,7 +38,7 @@ $(function () {
 
                     prepareHtml += '<div class="row">';
                     prepareHtml += '<h3>'+user.fullName +' <span>' + user.username + '</span>'+
-                                            '<span>;</span><span>' + "12312312" + '</span> </h3>';
+                                            '<span>;</span><span>' + epochToDate(post.publishTime.epochSecond) + '</span> </h3>';
                     prepareHtml += '<p>' + post.text + '</p>';
                     prepareHtml += '</div>';
 
@@ -47,22 +53,24 @@ $(function () {
                     prepareHtml += '</div>';
 
                     postsContainer.append(prepareHtml);
-                    offsetPostId = post.id;
+                    offsetId = post.id;
                 });
+
+                // no more posts
+                if (posts.length == 0) {
+                    $(window).off('scroll');
+                } else {
+                    $(window).off('scroll').scroll(function () {
+                        if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+                            loadPosts(user, offsetId);
+                        }
+                    });
+                }
             }
         });
     }
 
-    $.when(loadPosts(requestUser, offsetPostId)).then(function(){
-        console.log("here one");
-        $(window).scroll(function () {
-            console.log("lol1");
-            if($(window).scrollTop() == $(document).height() - $(window).height()) {
-                console.log("lol2");
-                loadPosts(requestUser, offsetPostId);
-            }
-        });
-    });
+    loadPosts(requestUser, offsetPostId);
 
     postsContainer.on('click', '.post-remove', function () {
         var postId = $(this).closest('.post').data("post-id");
