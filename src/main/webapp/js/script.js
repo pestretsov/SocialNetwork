@@ -37,6 +37,13 @@ $(function () {
             success: function (posts) {
                 posts.forEach(function (post) {
 
+                    var now = new Date();
+                    var nowWrapper = moment(now);
+                    console.log(post.publishTime.epochSecond);
+                    console.log(now);
+                    var pastDateWrapper = moment.unix(post.publishTime.epochSecond);
+                    var displayDate = pastDateWrapper.from(nowWrapper);
+
                     var prepareHtml = '<div class="row">';
                     prepareHtml += '<div class="panel post" data-post-id="'+ post.id +'">';
 
@@ -49,7 +56,7 @@ $(function () {
                         prepareHtml += '<div class="row">';
                             prepareHtml += '<div class="col-md-12">';
                             prepareHtml += '<h3>'+user.fullName +' <span>' + user.username + '</span>'+
-                                                    '<span>;</span><span>' + epochToDate(post.publishTime.epochSecond) + '</span> </h3>';
+                                                    '<span> &bull; </span><span>' + displayDate + '</span> </h3>';
                             prepareHtml += '<p>' + post.text + '</p>';
                             prepareHtml += '</div>';
                         prepareHtml += '</div>';

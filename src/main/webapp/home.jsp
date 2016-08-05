@@ -42,7 +42,7 @@
                         </ul>
                     </li>
 
-                    <li><a href="<c:url value='/createpost'/>" ><span class="glyphicon glyphicon-pencil"></span></a></li>
+                    <li><a href="<c:url value='/secure/createpost'/>" ><span class="glyphicon glyphicon-pencil"></span></a></li>
                 </ul>
             </div>
         </div>
@@ -75,6 +75,7 @@
 
 <script src="<c:url value='/js/jquery-3.1.0.min.js'/>"></script>
 <script src="<c:url value='/js/bootstrap.min.js'/>"></script>
+<script src="<c:url value='/js/moment.js'/>"></script>
 <script src="<c:url value="/js/script.js"/>"></script>
 
 </body>

@@ -21,7 +21,7 @@ import java.time.LocalDate;
  */
 
 @Slf4j
-@WebServlet(urlPatterns = "/createpost")
+@WebServlet(urlPatterns = "/secure/createpost")
 public class CreatePostServlet extends HttpServlet {
     private PostDAO postDAO;
 
@@ -32,7 +32,7 @@ public class CreatePostServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/create_post.jsp").forward(req, resp);
+        req.getRequestDispatcher("/createpost.jsp").forward(req, resp);
     }
 
     @Override
