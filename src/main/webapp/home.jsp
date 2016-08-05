@@ -29,7 +29,7 @@
             </div>
             <div id="navbar-collapse" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#" ><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                    <li class="active"><a href="<c:url value='/'/>"><span class="glyphicon glyphicon-home"></span> Home</a></li>
                     <li><a href="#" ><span class="glyphicon glyphicon-envelope"></span> Messages</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">

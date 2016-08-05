@@ -29,25 +29,40 @@
                 <a id="logo" class="navbar-brand" href="#">SocNet</a>
             </div>
             <div id="navbar-collapse" class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="#" ><span class="glyphicon glyphicon-home"></span> Home</a></li>
-                    <li><a href="#" ><span class="glyphicon glyphicon-envelope"></span> Messages</a></li>
-                </ul>
                 <%--@elvariable id="sessionUser" type="model.User"--%>
-                <c:if test="${not (empty sessionUser)}">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span><span id="sessionUserFirstName" data-user-id="${sessionUser.id}"> ${sessionUser.firstName} </span><span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Settings</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="<c:url value='/logout'/>">Logout</a></li>
-                            </ul>
-                        </li>
-
-                        <li><a href="<c:url value='/createpost'/>" ><span class="glyphicon glyphicon-pencil"></span></a></li>
-                    </ul>
-                </c:if>
+                <c:choose>
+                    <c:when test="${not (empty sessionUser)}">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="<c:url value='/'/>"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                            <li><a href="#" ><span class="glyphicon glyphicon-envelope"></span> Messages</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span><span id="sessionUserFirstName" data-user-id="${sessionUser.id}"> ${sessionUser.firstName} </span><span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Settings</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="<c:url value='/logout'/>">Logout</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="<c:url value='/createpost'/>" ><span class="glyphicon glyphicon-pencil"></span></a></li>
+                        </ul>
+                    </c:when>
+                    <c:otherwise>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>
+                                <form class="navbar-form navbar-right" action="<c:url value="/login"/>" method="post">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" name="j_username"  placeholder="username">
+                                        <input type="password" class="form-control" name="j_password" placeholder="password">
+                                        <button type="submit" class="btn btn-primary">Sign in</button>
+                                    </div>
+                                </form>
+                            </li>
+                            <li><a href="<c:url value="/signup"/>"> Sign Up</a> </li>
+                        </ul>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </nav>
