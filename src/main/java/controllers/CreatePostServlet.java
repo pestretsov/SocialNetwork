@@ -4,6 +4,7 @@ import dao.interfaces.PostDAO;
 import dao.interfaces.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.Post;
+import model.PostType;
 import model.User;
 
 import javax.servlet.ServletException;
@@ -43,10 +44,17 @@ public class CreatePostServlet extends HttpServlet {
 
         String text = req.getParameter("postText");
 
+        PostType postType = PostType.DEFAULT;
+        String postTypeString = req.getParameter("postType");
+
+        if (postTypeString != null) {
+            postType = PostType.PRIVATE;
+        }
+
         Post post = new Post();
 
         post.setText(text);
-        post.setPostType(0);
+        post.setPostType(postType.getId());
         post.setFromId(user.getId());
         post.setPublishTime(Instant.now());
 

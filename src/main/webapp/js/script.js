@@ -51,11 +51,11 @@ $(function () {
                     var prepareHtml = '<div class="row">';
                     prepareHtml += '<div class="panel post" data-post-id="'+ post.id +'">';
 
-                    prepareHtml += '<div class="col-md-2">';
+                    prepareHtml += '<div class="col-md-1">';
                         prepareHtml += '<img class="user-avatar" src="images/artemy.jpg">';
                     prepareHtml += '</div>';
 
-                    prepareHtml += '<div class="col-md-10">';
+                    prepareHtml += '<div class="col-md-11">';
 
                         prepareHtml += '<div class="row">';
                             prepareHtml += '<div class="col-md-12">';

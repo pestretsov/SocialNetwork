@@ -4,6 +4,7 @@ import common.cp.ConnectionPool;
 import common.cp.ConnectionWrapper;
 import dao.interfaces.PostDAO;
 import model.Post;
+import model.PostType;
 
 import java.sql.*;
 import java.util.*;
