@@ -1,6 +1,7 @@
 package controllers;
 
 import dao.interfaces.UserDAO;
+import lombok.extern.slf4j.Slf4j;
 import model.User;
 import utils.SecurityUtils;
 

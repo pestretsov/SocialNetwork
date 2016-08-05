@@ -1,6 +1,7 @@
 package controllers;
 
 import dao.interfaces.UserDAO;
+import lombok.extern.slf4j.Slf4j;
 import model.User;
 
 import javax.servlet.ServletException;
@@ -15,6 +16,8 @@ import java.util.Optional;
 /**
  * Created by artemypestretsov on 8/5/16.
  */
+
+@Slf4j
 @WebServlet(urlPatterns = "")
 public class IndexServlet extends HttpServlet {
 
@@ -35,8 +38,10 @@ public class IndexServlet extends HttpServlet {
                         .flatMap(userId -> userDAO.getById(userId));
 
         if (userOpt.isPresent()) {
+            log.info("userId={} is present. Redirecting to {}", userOpt.get().getId(), "/home.jsp");
             getServletContext().getRequestDispatcher("/home.jsp").forward(req, resp);
         } else {
+            log.info("no session. Redirecting to {}", "/login.jsp");
             getServletContext().getRequestDispatcher("/login.jsp").forward(req, resp);
         }
     }

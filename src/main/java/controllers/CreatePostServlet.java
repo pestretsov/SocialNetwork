@@ -2,6 +2,7 @@ package controllers;
 
 import dao.interfaces.PostDAO;
 import dao.interfaces.UserDAO;
+import lombok.extern.slf4j.Slf4j;
 import model.Post;
 import model.User;
 
@@ -18,6 +19,8 @@ import java.time.LocalDate;
 /**
  * Created by artemypestretsov on 7/29/16.
  */
+
+@Slf4j
 @WebServlet(urlPatterns = "/createpost")
 public class CreatePostServlet extends HttpServlet {
     private PostDAO postDAO;
@@ -48,6 +51,8 @@ public class CreatePostServlet extends HttpServlet {
         post.setPublishTime(Instant.now());
 
         postDAO.create(post);
+
+        log.info("postId={}, fromId={}", post.getId(), post.getFromId());
 
         resp.sendRedirect("/");
     }

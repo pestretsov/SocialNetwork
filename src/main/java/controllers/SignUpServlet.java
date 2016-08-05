@@ -1,6 +1,7 @@
 package controllers;
 
 import dao.interfaces.UserDAO;
+import lombok.extern.slf4j.Slf4j;
 import model.User;
 import utils.SecurityUtils;
 import utils.Validator;
@@ -20,6 +21,7 @@ import java.util.Optional;
  * Created by artemypestretsov on 7/18/16.
  */
 
+@Slf4j
 @WebServlet(urlPatterns = "/signup")
 public class SignUpServlet extends HttpServlet {
     private UserDAO userDAO;
@@ -40,6 +42,8 @@ public class SignUpServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(true);
 
+        log.info("attempt to sign up");
+
         User user = new User();
 
         String username = req.getParameter("j_username");
@@ -48,11 +52,13 @@ public class SignUpServlet extends HttpServlet {
         String lastName = req.getParameter("last_name");
 
         if (!Validator.validateUsername(username)) {
+            log.warn("illegal username={}", username);
             resp.sendError(406, "Invalid character in username");
             return;
         }
 
         if (userDAO.getByUsername(username).isPresent()) {
+            log.warn("username={} is already in use", username);
             resp.sendError(406, "This username is already in use");
             return;
         }
@@ -78,7 +84,10 @@ public class SignUpServlet extends HttpServlet {
             session.setAttribute("sessionUser", user);
             resp.sendRedirect(nextURL);
         } catch (RuntimeException e) {
+            log.warn("error creating user");
             resp.sendError(500, "Error creating user");
         }
+
+        log.info("user with userId={} was successfully signed up", user.getId());
     }
 }

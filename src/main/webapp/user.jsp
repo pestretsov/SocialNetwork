@@ -53,8 +53,8 @@
                             <li>
                                 <form class="navbar-form navbar-right" action="<c:url value="/login"/>" method="post">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" name="j_username"  placeholder="username">
-                                        <input type="password" class="form-control" name="j_password" placeholder="password">
+                                        <input type="text" class="form-control" name="j_username"  placeholder="username" required>
+                                        <input type="password" class="form-control" name="j_password" placeholder="password" required>
                                         <button type="submit" class="btn btn-primary">Sign in</button>
                                     </div>
                                 </form>

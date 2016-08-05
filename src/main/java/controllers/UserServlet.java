@@ -3,6 +3,7 @@ package controllers;
 import dao.interfaces.PostDAO;
 import dao.interfaces.UserDAO;
 import javafx.geometry.Pos;
+import lombok.extern.slf4j.Slf4j;
 import model.User;
 import utils.Validator;
 
@@ -18,6 +19,8 @@ import java.util.Optional;
 /**
  * Created by artemypestretsov on 7/29/16.
  */
+
+@Slf4j
 @WebServlet(urlPatterns = {"/user/*"})
 public class UserServlet extends HttpServlet {
     private UserDAO userDAO;
@@ -34,11 +37,16 @@ public class UserServlet extends HttpServlet {
         String path = req.getPathInfo().substring(1);
         Optional<User> userOpt = Optional.ofNullable(path).flatMap(username -> userDAO.getByUsername(username));
 
+
+        log.info("trying to get user with username={}", path);
+
         if (userOpt.isPresent()) {
+            log.info("got user with username={}", path);
             req.setAttribute("requestUser", userOpt.get());
             req.setAttribute("userPosts", postDAO.getAllByFromId(userOpt.get().getId()));
             req.getRequestDispatcher("/user.jsp").forward(req, resp);
         } else {
+            log.warn("no such user with username={}", path);
             resp.sendError(406, "No user with such username found!");
             return;
         }
