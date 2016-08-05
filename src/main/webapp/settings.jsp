@@ -28,15 +28,15 @@
             <form id="settings" action="<c:url value='/secure/usersettings'/>" method="post">
                 <div class="form-group">
                     <label for="user-new-firstname-input">First name</label>
-                    <input id="user-new-firstname-input" class="form-control" type="text" name="first_name" value="${sessionUser.firstName}">
+                    <input id="user-new-firstname-input" class="form-control" type="text" name="first_name" value="${sessionUser.firstName}" required>
                 </div>
                 <div class="form-group">
                     <label for="user-new-lastname-input">Last name</label>
-                    <input id="user-new-lastname-input" class="form-control" type="text" name="last_name" value="${sessionUser.lastName}">
+                    <input id="user-new-lastname-input" class="form-control" type="text" name="last_name" value="${sessionUser.lastName}" required>
                 </div>
                 <div class="form-group">
                     <label for="user-new-dob-input">Birthday</label>
-                    <input id="user-new-dob-input" class="form-control" type="date" name="birth_date" value="${sessionUser.birthDate.toString()}">
+                    <input id="user-new-dob-input" class="form-control" type="date" name="birth_date" value="${sessionUser.birthDate.toString()}" required>
                 </div>
                 <div class="form-group">
                     <label for="user-new-bio-input">Bio</label>
