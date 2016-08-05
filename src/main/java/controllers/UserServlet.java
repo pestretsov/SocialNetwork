@@ -18,7 +18,7 @@ import java.util.Optional;
 /**
  * Created by artemypestretsov on 7/29/16.
  */
-@WebServlet(urlPatterns = "/user/*")
+@WebServlet(urlPatterns = {"/user/*"})
 public class UserServlet extends HttpServlet {
     private UserDAO userDAO;
     private PostDAO postDAO;

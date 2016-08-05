@@ -16,7 +16,7 @@ import java.util.Optional;
  * Created by artemypestretsov on 7/18/16.
  */
 
-@WebFilter(urlPatterns = "/*")
+@WebFilter(urlPatterns = {"/secure", "/createpost"})
 public class SecurityFilter implements Filter {
     private UserDAO userDAO;
 
@@ -31,23 +31,23 @@ public class SecurityFilter implements Filter {
         String uri = ((HttpServletRequest) request).getRequestURI();
 
         // to ensure, that no crazy things are displayed in browser
-        request.setCharacterEncoding("UTF-8");
+//        request.setCharacterEncoding("UTF-8");
 
-        if (uri.contains("/css")) {
-            chain.doFilter(request, response);
-        } else if (uri.contains("/images")) {
-            chain.doFilter(request, response);
-        } else if (uri.contains("/js")) {
-            chain.doFilter(request, response);
-        } else if (uri.contains("/fonts")) {
-            chain.doFilter(request, response);
-        } else if (uri.contains("/favicon")) {
-            chain.doFilter(request, response);
-        } else if (uri.contains("/restapi")) {
-            chain.doFilter(request, response);
-        } else {
+//        if (uri.contains("/css")) {
+//            chain.doFilter(request, response);
+//        } else if (uri.contains("/images")) {
+//            chain.doFilter(request, response);
+//        } else if (uri.contains("/js")) {
+//            chain.doFilter(request, response);
+//        } else if (uri.contains("/fonts")) {
+//            chain.doFilter(request, response);
+//        } else if (uri.contains("/favicon")) {
+//            chain.doFilter(request, response);
+//        } else if (uri.contains("/restapi")) {
+//            chain.doFilter(request, response);
+//        } else {
             doFilter((HttpServletRequest) request, (HttpServletResponse) response, chain);
-        }
+//        }
     }
 
     private void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -56,13 +56,13 @@ public class SecurityFilter implements Filter {
 
         System.out.println("Security filter. FromUri=" + fromUri);
 
-        if (fromUri.equals("/signup") || fromUri.equals("/login")) {
-            chain.doFilter(request, response);
-        } else {
+//        if (fromUri.equals("/signup") || fromUri.equals("/login")) {
+//            chain.doFilter(request, response);
+//        } else {
             Optional<User> userOpt =
                     Optional.ofNullable((User)session.getAttribute("sessionUser"))
-                            .map(user -> user.getId())
-                            .flatMap(userId -> userDAO.getById(userId));
+                            .map(User::getId)
+                            .flatMap(userDAO::getById);
 
             if (userOpt.isPresent()) {
                 session.setAttribute("sessionUser", userOpt.get());
@@ -72,7 +72,7 @@ public class SecurityFilter implements Filter {
                 session.setAttribute("next", fromUri);
                 request.getRequestDispatcher("/login").forward(request, response);
             }
-        }
+//        }
     }
 
     @Override
