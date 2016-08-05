@@ -8,7 +8,6 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--<jsp:useBean id="sessionUser" scope="session" type="model.User"/>--%>
 <jsp:useBean id="requestUser" scope="request" type="model.User"/>
 <jsp:useBean id="userPosts" scope="request" type="java.util.List<model.Post>"/>
 <html>
@@ -38,7 +37,7 @@
                 <c:if test="${not (empty sessionUser)}">
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> ${sessionUser.firstName} <span class="caret"></span></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span><span id="sessionUserFirstName" data-user-id="${sessionUser.id}"> ${sessionUser.firstName} </span><span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="#">Settings</a></li>
                                 <li role="separator" class="divider"></li>

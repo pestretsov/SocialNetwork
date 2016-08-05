@@ -34,7 +34,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> ${sessionUser.firstName} <span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span><span id="sessionUserFirstName" data-user-id="${sessionUser.id}"> ${sessionUser.firstName} </span><span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="#">Settings</a></li>
                             <li role="separator" class="divider"></li>
@@ -55,8 +55,8 @@
                 <div class="pull-left">
                     <img class="user-avatar" src="<c:url value='/images/artemy.jpg'/>">
                 </div>
-                <h3 id="sessionUserFullName">${sessionUser.firstName} ${sessionUser.lastName}</h3>
-                <h4 id="sessionUserUsername" data-user-id="${sessionUser.id}">@${sessionUser.username}</h4>
+                <h3 id="requestUserFullName">${sessionUser.firstName} ${sessionUser.lastName}</h3>
+                <h4 id="requestUserUsername" data-user-id="${sessionUser.id}">@${sessionUser.username}</h4>
                 <div class="clearfix"></div>
                 <p>${sessionUser.bio}</p>
             </div>

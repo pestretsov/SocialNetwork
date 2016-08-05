@@ -35,11 +35,9 @@ public class IndexServlet extends HttpServlet {
                         .flatMap(userId -> userDAO.getById(userId));
 
         if (userOpt.isPresent()) {
-            getServletContext().getRequestDispatcher("/secure").forward(req, resp);
+            getServletContext().getRequestDispatcher("/home.jsp").forward(req, resp);
         } else {
             getServletContext().getRequestDispatcher("/login.jsp").forward(req, resp);
         }
-
     }
-
 }
