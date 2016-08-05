@@ -24,6 +24,10 @@ $(function () {
         return d;
     }
 
+    function toPlainText(string) {
+        return string.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
     function loadPosts(user, offsetId) {
         $.ajax({
             url: "/restapi/posts",
@@ -57,7 +61,7 @@ $(function () {
                             prepareHtml += '<div class="col-md-12">';
                             prepareHtml += '<h3>'+user.fullName +' <span>' + user.username + '</span>'+
                                                     '<span> &bull; </span><span>' + displayDate + '</span> </h3>';
-                            prepareHtml += '<p>' + post.text + '</p>';
+                            prepareHtml += '<p>' + toPlainText(post.text) + '</p>';
                             prepareHtml += '</div>';
                         prepareHtml += '</div>';
 
