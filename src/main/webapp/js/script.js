@@ -36,31 +36,41 @@ $(function () {
             dataType: "json",
             success: function (posts) {
                 posts.forEach(function (post) {
-                    var prepareHtml = '<div class="row post panel" data-post-id="'+ post.id +'">';
+
+                    var prepareHtml = '<div class="row">';
+                    prepareHtml += '<div class="panel post" data-post-id="'+ post.id +'">';
 
                     prepareHtml += '<div class="col-md-2">';
-                    prepareHtml += '<img class="user-avatar" src="images/artemy.jpg">';
+                        prepareHtml += '<img class="user-avatar" src="images/artemy.jpg">';
                     prepareHtml += '</div>';
 
                     prepareHtml += '<div class="col-md-10">';
 
-                    prepareHtml += '<div class="row">';
-                    prepareHtml += '<h3>'+user.fullName +' <span>' + user.username + '</span>'+
-                                            '<span>;</span><span>' + epochToDate(post.publishTime.epochSecond) + '</span> </h3>';
-                    prepareHtml += '<p>' + post.text + '</p>';
-                    prepareHtml += '</div>';
-
-                    if (requestUserIsSessionUser(requestUser, sessionUser)) {
                         prepareHtml += '<div class="row">';
-                        prepareHtml += '<span class="post-remove glyphicon glyphicon-remove-circle"></span>';
-                        prepareHtml += '<span class="post-edit glyphicon glyphicon-edit"></span>';
-                        prepareHtml += '<span class="hidden post-edit-ok glyphicon glyphicon-ok"></span>';
+                            prepareHtml += '<div class="col-md-12">';
+                            prepareHtml += '<h3>'+user.fullName +' <span>' + user.username + '</span>'+
+                                                    '<span>;</span><span>' + epochToDate(post.publishTime.epochSecond) + '</span> </h3>';
+                            prepareHtml += '<p>' + post.text + '</p>';
+                            prepareHtml += '</div>';
                         prepareHtml += '</div>';
-                    }
+
+                        if (requestUserIsSessionUser(requestUser, sessionUser)) {
+                            prepareHtml += '<div class="row">';
+                            prepareHtml += '<div class="col-md-12">';
+
+                            prepareHtml += '<span class="post-remove glyphicon glyphicon-remove-circle"></span>';
+                            prepareHtml += '<span class="post-edit glyphicon glyphicon-edit"></span>';
+                            prepareHtml += '<span class="hidden post-edit-ok glyphicon glyphicon-ok"></span>';
+
+                            prepareHtml += '</div>';
+                            prepareHtml += '</div>';
+                        }
 
                     prepareHtml += '</div>';
 
                     prepareHtml += '</div>';
+                    prepareHtml += '</div>';
+
 
                     postsContainer.append(prepareHtml);
                     offsetId = post.id;
@@ -95,7 +105,7 @@ $(function () {
         });
 
         postsContainer.on('click', '.post-edit', function () {
-            var p = $(this).parent('div').siblings('div').children('p');
+            var p = $(this).parent('div').parent('div').siblings('div').children('div').children('p');
             var save = $(this).siblings('.post-edit-ok');
             var edit = $(this);
             var text = p.text().replace("\n", "").trim();
@@ -107,7 +117,7 @@ $(function () {
 
             save.off('click').click(function () {
                 var postId = $(this).closest('.post').data("post-id");
-                var textArea = $(this).parent('div').siblings('div').children("textarea");
+                var textArea = $(this).parent('div').parent('div').siblings('div').children('div').children("textarea");
                 var updatedText = textArea.val();
                 var currentTime = new Date().toISOString();
 

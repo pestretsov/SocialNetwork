@@ -78,6 +78,7 @@
                 <h4 id="requestUserUsername" data-user-id="${requestUser.id}">@${requestUser.username}</h4>
                 <div class="clearfix"></div>
                 <p>${requestUser.bio}</p>
+                <button type="submit" class="btn btn-primary btn-sm follow-button">Follow ${requestUser.firstName}</button>
             </div>
         </div>
         <div class="col-md-6">

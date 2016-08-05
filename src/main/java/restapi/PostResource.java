@@ -61,6 +61,23 @@ public class PostResource {
         }
     }
 
+//    @GET
+//    @Produces(APPLICATION_JSON)
+//    public Response getPersonalTimelineWithOffsetAndLimit(
+//            @QueryParam("followerId") int followerId,
+//            @QueryParam("offsetId") int offsetId,
+//            @QueryParam("limit") int limit) {
+//
+//        List<Post> posts = postDAO.getPersonalTimelineWithOffsetId(followerId, offsetId, limit);
+//
+//        try {
+//            String json = toJson(posts);
+//            return Response.ok(json).build();
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+
     @GET
     @Produces(APPLICATION_JSON)
     public Response getPostsWithOffsetAndLimit(
@@ -98,5 +115,6 @@ public class PostResource {
         // TODO: needs fix -- probably new parser
         post.setPublishTime(Instant.now());
         postDAO.update(post);
+        log.info("post with postId={} was updated", post.getId());
     }
 }

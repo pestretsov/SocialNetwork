@@ -100,7 +100,7 @@ div.col-md-1 {
     padding-right: 15px;
     padding-bottom: 10px;
     width: inherit;
-    min-height: 100px;
+    overflow: hidden;
     word-wrap: break-word;
 }
 
