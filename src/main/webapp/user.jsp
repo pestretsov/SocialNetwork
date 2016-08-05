@@ -40,7 +40,7 @@
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span><span id="sessionUserFirstName" data-user-id="${sessionUser.id}"> ${sessionUser.firstName} </span><span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Settings</a></li>
+                                    <li><a href="<c:url value="/secure/usersettings"/>">Settings</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="<c:url value='/logout'/>">Logout</a></li>
                                 </ul>
@@ -95,7 +95,7 @@
 
 <script src="<c:url value='/js/jquery-3.1.0.min.js'/>"></script>
 <script src="<c:url value='/js/bootstrap.min.js'/>"></script>
-<script src="<c:url value='/js/moment.js'/>"></script>
+<script src="<c:url value='/js/moment.min.js'/>"></script>
 <script src="<c:url value="/js/script.js"/>"></script>
 
 </body>
