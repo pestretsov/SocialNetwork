@@ -71,11 +71,14 @@ public class SignUpServlet extends HttpServlet {
 
         String passwordHash = securityUtils.encrypt(password);
 
+        int sexOpt = Optional.ofNullable(req.getParameter("sex")).map(Integer::parseInt).orElse(0);
+
         user.setUsername(username);
         user.setPassword(passwordHash);
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setBirthDate(LocalDate.parse(birthDate));
+        user.setSex(sexOpt);
         user.setBio(bio);
 
         String nextURL = Optional.ofNullable((String) session.getAttribute("next")).orElse("/");
