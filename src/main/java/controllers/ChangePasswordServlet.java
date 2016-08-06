@@ -10,8 +10,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * Created by artemypestretsov on 8/6/16.
@@ -30,8 +30,9 @@ public class ChangePasswordServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
 
-        User sessionUser = (User)req.getSession().getAttribute("sessionUser");
+        User sessionUser = (User)session.getAttribute("sessionUser");
         log.info("user with userId={} is trying to change password", sessionUser.getUsername());
 
         String oldPassword = req.getParameter("old_password");

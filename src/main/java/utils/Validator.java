@@ -13,6 +13,6 @@ public class Validator {
     private static final Pattern usernamePattern = Pattern.compile(usernamePatternString);
 
     public static boolean validateUsername(String username) {
-        return usernamePattern.matcher(username).matches();
+        return username != null && usernamePattern.matcher(username).matches();
     }
 }
