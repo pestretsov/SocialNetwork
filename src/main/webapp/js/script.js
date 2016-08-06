@@ -28,36 +28,18 @@ $(function () {
         return string.replace(/</g, "&lt;").replace(/>/g, "&gt;");
     }
 
-    function loadPosts(user, offsetId) {
-        var additionalUrl = "";
-
-        var getData = {
-            fromId: user.id,
-            offsetId: offsetId, // --> offsetId = inf ; ... ; in java tackle this case
-            limit: 3
-        };
-
-
-        if (requestUserIsSessionUser(user, sessionUser)) {
-            additionalUrl = "/secure";
-
-            getData = {
-                followerId: user.id,
-                offsetId: offsetId, // --> offsetId = inf ; ... ; in java tackle this case
-                limit: 3
-            };
-        }
-
+    function loadUserPosts(user, offsetId) {
         $.ajax({
-            url: "/restapi/posts" + additionalUrl,
-            data: getData,
+            url: "/restapi/posts",
+            data: {
+                fromId: user.id,
+                offsetId: offsetId,
+                limit: 3
+            },
             type: "GET",
             dataType: "json",
             success: function (posts) {
                 posts.forEach(function (post) {
-
-                    user = post.from;
-
                     var now = new Date();
                     var nowWrapper = moment(now);
                     console.log(post.publishTime.epochSecond);
@@ -76,7 +58,7 @@ $(function () {
 
                         prepareHtml += '<div class="row">';
                             prepareHtml += '<div class="col-md-12">';
-                            prepareHtml += '<h3>'+user.firstName + " " + user.lastName +' <span>' + user.username + '</span>'+
+                            prepareHtml += '<h3>'+user.fullName +' <span>' + user.username + '</span>'+
                                                     '<span> &bull; </span><span>' + displayDate + '</span> </h3>';
                             prepareHtml += '<p>' + toPlainText(post.text) + '</p>';
                             prepareHtml += '</div>';
@@ -110,7 +92,7 @@ $(function () {
                 } else {
                     $(window).off('scroll').scroll(function () {
                         if ($(window).scrollTop() == $(document).height() - $(window).height()) {
-                            loadPosts(user, offsetId);
+                            loadUserPosts(user, offsetId);
                         }
                     });
                 }
@@ -118,14 +100,14 @@ $(function () {
         });
     }
 
-    loadPosts(requestUser, offsetPostId);
+    loadUserPosts(requestUser, offsetPostId);
 
     if (requestUserIsSessionUser(requestUser, sessionUser)) {
         postsContainer.on('click', '.post-remove', function () {
             var postId = $(this).closest('.post').data("post-id");
 
             $.ajax({
-                url: "/restapi/posts/" + postId,
+                url: "/restapi/posts/secure" + postId,
                 type: "DELETE",
                 dataType: "json",
                 success: $(this).closest('.post').remove()
@@ -150,7 +132,7 @@ $(function () {
                 var currentTime = new Date().toISOString();
 
                 $.ajax({
-                    url: "/restapi/posts",
+                    url: "/restapi/posts/secure",
                     type: "PUT",
                     method: "PUT",
                     headers: {'Content-Type': 'application/json'},

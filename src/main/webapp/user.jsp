@@ -32,35 +32,10 @@
                 <%--@elvariable id="sessionUser" type="model.dbmodel.UserEntity"--%>
                 <c:choose>
                     <c:when test="${not (empty sessionUser)}">
-                        <ul class="nav navbar-nav">
-                            <li class="active"><a href="<c:url value='/'/>"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-                            <li><a href="#" ><span class="glyphicon glyphicon-envelope"></span> Messages</a></li>
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span><span id="sessionUserFirstName" data-user-id="${sessionUser.id}"> ${sessionUser.firstName} </span><span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="<c:url value="/secure/usersettings"/>">Settings</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="<c:url value='/logout'/>">Logout</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="<c:url value='/secure/createpost'/>" ><span class="glyphicon glyphicon-pencil"></span></a></li>
-                        </ul>
+                        <jsp:include page="common/singnedin_navbar.jsp"/>
                     </c:when>
                     <c:otherwise>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li>
-                                <form class="navbar-form navbar-right" action="<c:url value="/login"/>" method="post">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" name="j_username"  placeholder="username" required>
-                                        <input type="password" class="form-control" name="j_password" placeholder="password" required>
-                                        <button type="submit" class="btn btn-primary">Sign in</button>
-                                    </div>
-                                </form>
-                            </li>
-                            <li><a href="<c:url value="/signup"/>"> Sign Up</a> </li>
-                        </ul>
+                        <jsp:include page="common/signedout_navbar.jsp"/>
                     </c:otherwise>
                 </c:choose>
             </div>

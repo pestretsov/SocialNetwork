@@ -1,7 +1,9 @@
 package controllers;
 
+import dao.interfaces.FollowDAO;
 import dao.interfaces.UserDAO;
 import lombok.extern.slf4j.Slf4j;
+import model.dbmodel.FollowEntity;
 import model.dbmodel.UserEntity;
 import utils.SecurityUtils;
 import utils.Validator;
@@ -24,11 +26,13 @@ import java.util.Optional;
 @WebServlet(urlPatterns = "/signup")
 public class SignUpServlet extends HttpServlet {
     private UserDAO userDAO;
+    private FollowDAO followDAO;
     private SecurityUtils securityUtils;
 
     @Override
     public void init() throws ServletException {
         userDAO = (UserDAO) getServletContext().getAttribute("userDAO");
+        followDAO = (FollowDAO) getServletContext().getAttribute("followDAO");
         securityUtils = (SecurityUtils) getServletContext().getAttribute("securityUtils");
     }
 
@@ -80,11 +84,18 @@ public class SignUpServlet extends HttpServlet {
             userDAO.create(user);
             user = userDAO.getByUsername(username).orElseThrow(RuntimeException::new);
 
+            FollowEntity follow = new FollowEntity();
+            follow.setUserId(user.getId());
+            follow.setFollowerId(user.getId());
+
+            followDAO.create(follow);
+
             session.setAttribute("sessionUser", user);
             resp.sendRedirect(nextURL);
         } catch (RuntimeException e) {
             log.warn("error creating user");
             resp.sendError(500, "Error creating user");
+            return;
         }
 
         log.info("user with userId={} was successfully signed up", user.getId());

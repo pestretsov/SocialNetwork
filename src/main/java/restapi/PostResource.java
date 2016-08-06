@@ -113,7 +113,7 @@ public class PostResource {
     }
 
     @DELETE
-    @Path("{id}")
+    @Path("/secure/{id}")
     public void deletePostById(@PathParam("id") int id) {
         log.info("trying to DELETE post with postId={}", id);
         if (postDAO.getById(id).isPresent()) {
@@ -126,6 +126,7 @@ public class PostResource {
     }
 
     @PUT
+    @Path("/secure")
     @Consumes(APPLICATION_JSON)
     public void updatePostById(PostEntity post) {
         log.info("trying to UPDATE post with postId={}", post.getId());

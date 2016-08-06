@@ -26,13 +26,9 @@
         <div class="main-center panel col-md-4 col-md-offset-4">
             <h1 class="card-title">Welcome to SocNet</h1>
             <form action="<c:url value='/login'/>" method="post">
-                <!-- <div class="input-group"> -->
-                    <!-- <span id="username_addon" class="input-group-addon"><i class="glyphicon glyphicon-user" aria-hidden="true"></i></span> -->
                 <div class="form-group">
                     <input class="form-control" type="text" name="j_username" value="" placeholder="username" required>
                 </div>
-                <!-- <div class="input-group"> -->
-                    <!-- <span id="password_addon" class="input-group-addon"><i class="glyphicon glyphicon-lock" aria-hidden="true"></i></span> -->
                 <div class="form-group">
                     <input class="form-control" type="password" name="j_password" value="" placeholder="password" required>
                 </div>
