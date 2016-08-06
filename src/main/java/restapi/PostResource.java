@@ -3,8 +3,11 @@ package restapi;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.interfaces.PostDAO;
+import dao.interfaces.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.dbmodel.PostEntity;
+import model.restmodel.Post;
+import model.restmodel.User;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.*;
@@ -14,6 +17,7 @@ import javax.ws.rs.core.Response;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -25,11 +29,15 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 @Path("/posts")
 public class PostResource {
     private static PostDAO postDAO;
+    private static UserDAO userDAO;
 
     @Context
     public void init(ServletContext servletContext) {
         if (postDAO == null) {
             postDAO = (PostDAO) servletContext.getAttribute("postDAO");
+        }
+        if (userDAO == null) {
+            userDAO = (UserDAO) servletContext.getAttribute("userDAO");
         }
     }
 
@@ -61,22 +69,27 @@ public class PostResource {
         }
     }
 
-//    @GET
-//    @Produces(APPLICATION_JSON)
-//    public Response getPersonalTimelineWithOffsetAndLimit(
-//            @QueryParam("followerId") int followerId,
-//            @QueryParam("offsetId") int offsetId,
-//            @QueryParam("limit") int limit) {
-//
-//        List<PostEntity> posts = postDAO.getPersonalTimelineWithOffsetId(followerId, offsetId, limit);
-//
-//        try {
-//            String json = toJson(posts);
-//            return Response.ok(json).build();
-//        } catch (JsonProcessingException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+    @GET
+    @Path("/secure")
+    @Produces(APPLICATION_JSON)
+    public Response getPersonalTimelineWithOffsetAndLimit(
+            @QueryParam("followerId") int followerId,
+            @QueryParam("offsetId") int offsetId,
+            @QueryParam("limit") int limit) {
+
+        List<PostEntity> posts = postDAO.getPersonalTimelineWithOffsetId(followerId, offsetId, limit);
+
+        List<Post> result = posts.stream()
+                .map(p -> new Post(p, new User(userDAO.getById(p.getFromId()).orElse(null))))
+                .collect(Collectors.toList());
+
+        try {
+            String json = toJson(result);
+            return Response.ok(json).build();
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @GET
     @Produces(APPLICATION_JSON)
@@ -87,8 +100,12 @@ public class PostResource {
 
         List<PostEntity> posts = postDAO.getSublistWithOffsetId(fromId, offsetId, limit);
 
+        List<Post> result = posts.stream()
+                .map(p -> new Post(p, new User(userDAO.getById(p.getFromId()).orElse(null))))
+                .collect(Collectors.toList());
+
         try {
-            String json = toJson(posts);
+            String json = toJson(result);
             return Response.ok(json).build();
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);

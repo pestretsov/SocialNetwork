@@ -29,17 +29,34 @@ $(function () {
     }
 
     function loadPosts(user, offsetId) {
-        $.ajax({
-            url: "/restapi/posts",
-            data: {
-                fromId: user.id,
+        var additionalUrl = "";
+
+        var getData = {
+            fromId: user.id,
+            offsetId: offsetId, // --> offsetId = inf ; ... ; in java tackle this case
+            limit: 3
+        };
+
+
+        if (requestUserIsSessionUser(user, sessionUser)) {
+            additionalUrl = "/secure";
+
+            getData = {
+                followerId: user.id,
                 offsetId: offsetId, // --> offsetId = inf ; ... ; in java tackle this case
                 limit: 3
-            },
+            };
+        }
+
+        $.ajax({
+            url: "/restapi/posts" + additionalUrl,
+            data: getData,
             type: "GET",
             dataType: "json",
             success: function (posts) {
                 posts.forEach(function (post) {
+
+                    user = post.from;
 
                     var now = new Date();
                     var nowWrapper = moment(now);
@@ -59,7 +76,7 @@ $(function () {
 
                         prepareHtml += '<div class="row">';
                             prepareHtml += '<div class="col-md-12">';
-                            prepareHtml += '<h3>'+user.fullName +' <span>' + user.username + '</span>'+
+                            prepareHtml += '<h3>'+user.firstName + " " + user.lastName +' <span>' + user.username + '</span>'+
                                                     '<span> &bull; </span><span>' + displayDate + '</span> </h3>';
                             prepareHtml += '<p>' + toPlainText(post.text) + '</p>';
                             prepareHtml += '</div>';

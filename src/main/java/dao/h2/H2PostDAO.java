@@ -105,28 +105,28 @@ public class H2PostDAO implements PostDAO {
         return allPosts;
     }
 
-//    @Override
-//    public List<PostEntity> getPersonalTimelineWithOffsetId(int followerId, int offsetId, int limit) {
-//        List<PostEntity> allPosts = new ArrayList<>();
-//
-//        String sql = "SELECT id, from_id, post_type, text, publish_time FROM PostEntity WHERE from_id IN (SELECT user_id FROM FollowEntity WHERE follower_id=?) AND id<? ORDER BY id DESC LIMIT ?";
-//
-//        try (Connection connection = connectionPool.getConnection();
-//             PreparedStatement statement = connection.prepareStatement(sql)) {
-//            statement.setInt(1, followerId);
-//            statement.setInt(2, offsetId);
-//            statement.setInt(3, limit);
-//            try (ResultSet resultSet = statement.executeQuery()) {
-//                while (resultSet.next()) {
-//                    allPosts.add(parsePost(resultSet));
-//                }
-//            }
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        return allPosts;
-//    }
+    @Override
+    public List<PostEntity> getPersonalTimelineWithOffsetId(int followerId, int offsetId, int limit) {
+        List<PostEntity> allPosts = new ArrayList<>();
+
+        String sql = "SELECT id, from_id, post_type, text, publish_time FROM Post WHERE from_id IN (SELECT user_id FROM Follow WHERE follower_id=?) AND id<? ORDER BY id DESC LIMIT ?";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, followerId);
+            statement.setInt(2, offsetId);
+            statement.setInt(3, limit);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    allPosts.add(parsePost(resultSet));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return allPosts;
+    }
 
     @Override
     public int create(PostEntity post) {
