@@ -56,6 +56,7 @@ public class ChangePasswordServlet extends HttpServlet {
             sessionUser.setPassword(securityUtils.encrypt(newPassword));
             if (userDAO.update(sessionUser)) {
                 log.info("user with userId={} updated password. Redirecting to {}", sessionUser.getId(),"/");
+                session.setAttribute("sessionUser", sessionUser);
                 resp.sendRedirect("/");
             } else {
                 log.warn("user with userId={} password update failed");

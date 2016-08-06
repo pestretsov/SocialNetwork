@@ -55,6 +55,7 @@ public class ChangeUsernameServlet extends HttpServlet {
 
             if (userDAO.update(sessionUser)) {
                 log.info("user with userId={} changed username from {} to {}", sessionUser.getId(), oldUsername, newUsername);
+                session.setAttribute("sessionUser", sessionUser);
                 resp.sendRedirect("/");
             } else {
                 log.warn("user with userId={} attempt to change username failed", sessionUser.getId());
