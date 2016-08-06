@@ -1,4 +1,4 @@
-package model;
+package model.dbmodel;
 
 import lombok.Data;
 
