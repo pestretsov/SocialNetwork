@@ -60,4 +60,29 @@ public class H2FollowDAO implements FollowDAO {
         return delete(follow);
     }
 
+    @Override
+    public Follow getByUserAndFollowerId(int userId, int followerId) {
+        String sql = "SELECT user_id, follower_id FROM Follow WHERE user_id=? AND follower_id=? ";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, userId);
+            statement.setInt(2, followerId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return parseFollow(resultSet);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Follow parseFollow(ResultSet resultSet) throws SQLException {
+        Follow follow = new Follow();
+        follow.setUserId(resultSet.getInt("user_id"));
+        follow.setFollowerId(resultSet.getInt("follower_id"));
+
+        return follow;
+    }
 }

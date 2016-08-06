@@ -2,8 +2,10 @@ package listeners;
 
 import common.cp.ConnectionPool;
 import common.cp.SimpleConnectionPool;
+import dao.h2.H2FollowDAO;
 import dao.h2.H2PostDAO;
 import dao.h2.H2UserDAO;
+import dao.interfaces.FollowDAO;
 import dao.interfaces.PostDAO;
 import dao.interfaces.UserDAO;
 import utils.SecurityUtils;
@@ -34,10 +36,12 @@ public class ServicesInitializer implements ServletContextListener {
 
         UserDAO userDAO = new H2UserDAO(connectionPool);
         PostDAO postDAO = new H2PostDAO(connectionPool);
+        FollowDAO followDAO = new H2FollowDAO(connectionPool);
         SecurityUtils securityUtils = new SecurityUtils();
 
         sce.getServletContext().setAttribute("userDAO", userDAO);
         sce.getServletContext().setAttribute("postDAO", postDAO);
+        sce.getServletContext().setAttribute("followDAO", followDAO);
         sce.getServletContext().setAttribute("securityUtils", securityUtils);
 
         String scriptFilePath = servletContext.getRealPath(RESOURCES_FILE_PATH + DB_INIT_SCRIPT_FILE_NAME);
