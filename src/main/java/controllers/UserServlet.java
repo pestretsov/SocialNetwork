@@ -2,12 +2,9 @@ package controllers;
 
 import dao.interfaces.PostDAO;
 import dao.interfaces.UserDAO;
-import javafx.geometry.Pos;
 import lombok.extern.slf4j.Slf4j;
-import model.User;
-import utils.Validator;
+import model.dbmodel.UserEntity;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -35,7 +32,7 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getPathInfo().substring(1);
-        Optional<User> userOpt = Optional.ofNullable(path).flatMap(username -> userDAO.getByUsername(username));
+        Optional<UserEntity> userOpt = Optional.ofNullable(path).flatMap(username -> userDAO.getByUsername(username));
 
 
         log.info("trying to get user with username={}", path);

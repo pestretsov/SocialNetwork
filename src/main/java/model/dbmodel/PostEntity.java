@@ -11,11 +11,11 @@ import java.time.Instant;
  */
 
 @Data
-public class Post {
+public class PostEntity {
     private int id; // id INT PRIMARY KEY AUTO_INCREMENT
 
     @NotNull
-    private int fromId; // from_id INT NOT NULL REFERENCES User(id)
+    private int fromId; // from_id INT NOT NULL REFERENCES UserEntity(id)
 
     private int postType; // post_type INT DEFAULT 0 (0 - public; 1 - private)
 

@@ -2,11 +2,10 @@ package controllers;
 
 import dao.interfaces.UserDAO;
 import lombok.extern.slf4j.Slf4j;
-import model.User;
+import model.dbmodel.UserEntity;
 import utils.SecurityUtils;
 import utils.Validator;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -44,7 +43,7 @@ public class SignUpServlet extends HttpServlet {
 
         log.info("attempt to sign up");
 
-        User user = new User();
+        UserEntity user = new UserEntity();
 
         String username = req.getParameter("j_username");
         String password = req.getParameter("j_password");

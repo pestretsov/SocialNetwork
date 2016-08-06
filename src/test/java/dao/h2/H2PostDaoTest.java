@@ -3,7 +3,7 @@ package dao.h2;
 import common.cp.ConnectionPool;
 import common.cp.SimpleConnectionPool;
 import dao.interfaces.PostDAO;
-import model.Post;
+import model.dbmodel.PostEntity;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -38,14 +38,14 @@ public class H2PostDAOTest {
 
     @Test
     public void createAndGetByIdPostTest() throws Exception {
-        Post post = new Post();
+        PostEntity post = new PostEntity();
         post.setPostType(0);
         post.setPublishTime(Instant.now());
         post.setText("test test test text");
         post.setFromId(1);
 
         postDAO.create(post);
-        Post post1 = postDAO.getById(1).get();
+        PostEntity post1 = postDAO.getById(1).get();
         assertEquals(post1.getText(), post.getText());
         assertEquals(postDAO.getById(1).get().getText(), "test test test text");
 
@@ -54,19 +54,19 @@ public class H2PostDAOTest {
 
     @Test
     public void getAllByFromIdTest() throws Exception {
-        Post post1 = new Post();
+        PostEntity post1 = new PostEntity();
         post1.setPostType(0);
         post1.setPublishTime(Instant.now());
         post1.setText("test test test text");
         post1.setFromId(1);
 
-        Post post2 = new Post();
+        PostEntity post2 = new PostEntity();
         post2.setPostType(1);
         post2.setPublishTime(Instant.now());
         post2.setText("123_123");
         post2.setFromId(1);
 
-        Post post3 = new Post();
+        PostEntity post3 = new PostEntity();
         post3.setPostType(1);
         post3.setPublishTime(Instant.now());
         post3.setText("mmm nice");
@@ -76,9 +76,9 @@ public class H2PostDAOTest {
         postDAO.create(post2);
         postDAO.create(post3);
 
-        List<Post> posts = postDAO.getAllByFromId(1);
+        List<PostEntity> posts = postDAO.getAllByFromId(1);
         assertEquals(posts.size(), 2);
-        for (Post post: posts) {
+        for (PostEntity post: posts) {
             assertEquals(post.getFromId(), 1);
         }
 
@@ -89,19 +89,19 @@ public class H2PostDAOTest {
 
     @Test
     public void deletePostByIdTest() throws Exception {
-        Post post1 = new Post();
+        PostEntity post1 = new PostEntity();
         post1.setPostType(0);
         post1.setPublishTime(Instant.now());
         post1.setText("test test test text");
         post1.setFromId(1);
 
-        Post post2 = new Post();
+        PostEntity post2 = new PostEntity();
         post2.setPostType(1);
         post2.setPublishTime(Instant.now());
         post2.setText("123_123");
         post2.setFromId(1);
 
-        Post post3 = new Post();
+        PostEntity post3 = new PostEntity();
         post3.setPostType(1);
         post3.setPublishTime(Instant.now());
         post3.setText("mmm nice");
@@ -121,7 +121,7 @@ public class H2PostDAOTest {
 
     @Test
     public void updatePostTest() throws Exception {
-        Post post1 = new Post();
+        PostEntity post1 = new PostEntity();
         post1.setPostType(0);
         post1.setPublishTime(Instant.now());
         post1.setText("test test test text");
@@ -129,7 +129,7 @@ public class H2PostDAOTest {
 
         postDAO.create(post1);
         assertTrue(postDAO.getById(1).isPresent());
-        Post post2 = postDAO.getById(1).get();
+        PostEntity post2 = postDAO.getById(1).get();
         post2.setText("updated text");
         postDAO.update(post2);
         assertEquals(postDAO.getById(1).get().getText(), "updated text");
@@ -140,31 +140,31 @@ public class H2PostDAOTest {
 
     @Test
     public void getSublistTest() throws Exception {
-        Post post1 = new Post();
+        PostEntity post1 = new PostEntity();
         post1.setPostType(0);
         post1.setPublishTime(Instant.now());
         post1.setText("test test test text 111");
         post1.setFromId(1);
 
-        Post post2 = new Post();
+        PostEntity post2 = new PostEntity();
         post2.setPostType(0);
         post2.setPublishTime(Instant.now());
         post2.setText("test test test text 222");
         post2.setFromId(1);
 
-        Post post3 = new Post();
+        PostEntity post3 = new PostEntity();
         post3.setPostType(0);
         post3.setPublishTime(Instant.now());
         post3.setText("test test test text 333");
         post3.setFromId(1);
 
-        Post post4 = new Post();
+        PostEntity post4 = new PostEntity();
         post4.setPostType(0);
         post4.setPublishTime(Instant.now());
         post4.setText("test test test text 444");
         post4.setFromId(1);
 
-        Post post5 = new Post();
+        PostEntity post5 = new PostEntity();
         post5.setPostType(0);
         post5.setPublishTime(Instant.now());
         post5.setText("test test test text 555");
@@ -176,7 +176,7 @@ public class H2PostDAOTest {
         postDAO.create(post4);
         postDAO.create(post5);
 
-        List<Post> postList = postDAO.getSublistByFromId(1, 0, 100);
+        List<PostEntity> postList = postDAO.getSublistByFromId(1, 0, 100);
 
         assertTrue(postList.size() == 5);
 

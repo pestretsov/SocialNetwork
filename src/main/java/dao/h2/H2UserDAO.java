@@ -2,12 +2,10 @@ package dao.h2;
 
 import common.cp.ConnectionPool;
 import dao.interfaces.UserDAO;
-import model.Post;
-import model.User;
+import model.dbmodel.UserEntity;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,8 +19,8 @@ public class H2UserDAO implements UserDAO {
         this.connectionPool = connectionPool;
     }
 
-    private User parseUser(ResultSet resultSet) throws SQLException {
-        User user = new User();
+    private UserEntity parseUser(ResultSet resultSet) throws SQLException {
+        UserEntity user = new UserEntity();
         user.setId(resultSet.getInt("id"));
         user.setUsername(resultSet.getString("username"));
         user.setPassword(resultSet.getString("password"));
@@ -34,12 +32,12 @@ public class H2UserDAO implements UserDAO {
         return user;
     }
 
-    private Optional<User> parseUserOpt(ResultSet resultSet) throws SQLException {
+    private Optional<UserEntity> parseUserOpt(ResultSet resultSet) throws SQLException {
         return resultSet.next() ? Optional.of(parseUser(resultSet)) : Optional.empty();
     }
 
     // TODO: Optionals
-    private void setUserWithoutId(PreparedStatement statement, User user) throws SQLException {
+    private void setUserWithoutId(PreparedStatement statement, UserEntity user) throws SQLException {
         statement.setString(1, user.getUsername());
         statement.setString(2, user.getPassword());
         statement.setString(3, user.getFirstName());
@@ -50,7 +48,7 @@ public class H2UserDAO implements UserDAO {
     }
 
     @Override
-    public Optional<User> getByUsername(String username) {
+    public Optional<UserEntity> getByUsername(String username) {
         String sql = "SELECT id, username, password, first_name, last_name, sex, birth_date, bio FROM User " +
                 "WHERE username=?";
 
@@ -66,7 +64,7 @@ public class H2UserDAO implements UserDAO {
     }
 
     @Override
-    public Optional<User> getById(int id) {
+    public Optional<UserEntity> getById(int id) {
         String sql = "SELECT id, username, password, first_name, last_name, sex, birth_date, bio FROM User " +
                 "WHERE id=?";
 
@@ -82,7 +80,7 @@ public class H2UserDAO implements UserDAO {
     }
 
     @Override
-    public int create(User user) {
+    public int create(UserEntity user) {
         String sql = "INSERT INTO User (username, password, first_name, last_name, sex, birth_date, bio) " +
                 "VALUES (?,?,?,?,?,?,?)";
 
@@ -103,7 +101,7 @@ public class H2UserDAO implements UserDAO {
     }
 
     @Override
-    public boolean update(User user) {
+    public boolean update(UserEntity user) {
         String sql = "UPDATE User SET username=?, password=?, first_name=?, last_name=?, sex=?, birth_date=?, bio=? WHERE id=?";
 
         try (Connection connection = connectionPool.getConnection();
@@ -130,11 +128,11 @@ public class H2UserDAO implements UserDAO {
     }
 
     @Override
-    public List<User> getUsersFollowingUser(int userId) {
+    public List<UserEntity> getUsersFollowingUser(int userId) {
         String sql = "SELECT id, username, password, first_name, last_name, sex, birth_date, bio" +
                 " FROM User WHERE id IN (SELECT follower_id FROM Follow WHERE user_id=?)";
 
-        List<User> followers = new ArrayList<>();
+        List<UserEntity> followers = new ArrayList<>();
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -153,11 +151,11 @@ public class H2UserDAO implements UserDAO {
     }
 
     @Override
-    public List<User> getUsersFollowedByUser(int userId) {
+    public List<UserEntity> getUsersFollowedByUser(int userId) {
         String sql = "SELECT id, username, password, first_name, last_name, sex, birth_date, bio" +
                 " FROM User WHERE id IN (SELECT user_id FROM Follow WHERE follower_id=?)";
 
-        List<User> followings = new ArrayList<>();
+        List<UserEntity> followings = new ArrayList<>();
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {

@@ -3,7 +3,7 @@ package model.dbmodel;
 /**
  * Created by artemypestretsov on 8/6/16.
  */
-public enum  PostType {
+public enum PostTypeEntity {
     DEFAULT,
     PUBLIC,
     PRIVATE;
@@ -17,7 +17,7 @@ public enum  PostType {
         throw new IllegalStateException("Illegal PostPrivacyType:" + this.name());
     }
 
-    public static PostType getTypeByID(int id) {
+    public static PostTypeEntity getTypeByID(int id) {
         switch (id) {
             case 0: return PUBLIC;
             case 1: return PRIVATE;

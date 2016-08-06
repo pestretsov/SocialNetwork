@@ -1,11 +1,9 @@
 package controllers;
 
 import dao.interfaces.UserDAO;
-import lombok.extern.slf4j.Slf4j;
-import model.User;
+import model.dbmodel.UserEntity;
 import utils.SecurityUtils;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Optional;
 
 /**
@@ -44,14 +41,14 @@ public class LogInServlet extends HttpServlet {
         String password = req.getParameter("j_password");
         String nextURL = Optional.ofNullable((String) session.getAttribute("next")).orElse("/");
 
-        Optional<User> userOpt = userDAO.getByUsername(username);
+        Optional<UserEntity> userOpt = userDAO.getByUsername(username);
 
         if (!userOpt.isPresent()) {
             resp.sendError(406, "This username is not found");
             return;
         }
 
-        User user = userOpt.get();
+        UserEntity user = userOpt.get();
 
         if (securityUtils.validatePassword(password, user.getPassword())) {
             session.setAttribute("sessionUser", user);

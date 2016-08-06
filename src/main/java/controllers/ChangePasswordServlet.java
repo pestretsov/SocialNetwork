@@ -2,7 +2,7 @@ package controllers;
 
 import dao.interfaces.UserDAO;
 import lombok.extern.slf4j.Slf4j;
-import model.User;
+import model.dbmodel.UserEntity;
 import utils.SecurityUtils;
 
 import javax.servlet.ServletException;
@@ -32,7 +32,7 @@ public class ChangePasswordServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
 
-        User sessionUser = (User)session.getAttribute("sessionUser");
+        UserEntity sessionUser = (UserEntity)session.getAttribute("sessionUser");
         log.info("user with userId={} is trying to change password", sessionUser.getUsername());
 
         String oldPassword = req.getParameter("old_password");

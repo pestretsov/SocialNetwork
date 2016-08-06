@@ -2,15 +2,12 @@ package dao.h2;
 
 import common.cp.ConnectionPool;
 import common.cp.SimpleConnectionPool;
-import dao.interfaces.UserDAO;
-import model.Follow;
-import model.User;
+import model.dbmodel.FollowEntity;
+import model.dbmodel.UserEntity;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
-import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
@@ -39,7 +36,7 @@ public class H2FollowDAOTest {
 
     @Test
     public void createFollowTest() throws Exception {
-        Follow follow = new Follow();
+        FollowEntity follow = new FollowEntity();
         follow.setFollowerId(1);
         follow.setUserId(2);
 
@@ -52,15 +49,15 @@ public class H2FollowDAOTest {
 
     @Test
     public void followRelationTest() throws Exception {
-        Follow follow1 = new Follow();
+        FollowEntity follow1 = new FollowEntity();
         follow1.setFollowerId(1);
         follow1.setUserId(2);
 
-        Follow follow2 = new Follow();
+        FollowEntity follow2 = new FollowEntity();
         follow2.setFollowerId(1);
         follow2.setUserId(3);
 
-        Follow follow3 = new Follow();
+        FollowEntity follow3 = new FollowEntity();
         follow3.setFollowerId(1);
         follow3.setUserId(4);
 
@@ -73,11 +70,11 @@ public class H2FollowDAOTest {
         assertEquals(userDAO.getUsersFollowingUser(4).size(), 1);
         assertEquals(userDAO.getUsersFollowedByUser(1).size(), 3);
 
-        for (User user: userDAO.getUsersFollowingUser(2)) {
+        for (UserEntity user: userDAO.getUsersFollowingUser(2)) {
             assertEquals(user.getUsername(), "ambush");
         }
 
-        for (User user: userDAO.getUsersFollowingUser(3)) {
+        for (UserEntity user: userDAO.getUsersFollowingUser(3)) {
             assertEquals(user.getUsername(), "ambush");
         }
 

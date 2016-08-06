@@ -2,14 +2,9 @@ package dao.h2;
 
 import common.cp.ConnectionPool;
 import dao.interfaces.FollowDAO;
-import dao.interfaces.UserDAO;
-import model.Follow;
-import model.User;
+import model.dbmodel.FollowEntity;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by artemypestretsov on 7/23/16.
@@ -25,7 +20,7 @@ public class H2FollowDAO implements FollowDAO {
      * @return this method always returns 0, cause no id is created inside DB
      */
     @Override
-    public int create(Follow follow) {
+    public int create(FollowEntity follow) {
         String sql = "INSERT INTO Follow (follower_id, user_id) VALUES (?,?)";
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -41,7 +36,7 @@ public class H2FollowDAO implements FollowDAO {
         }
     }
 
-    public boolean delete(Follow follow) {
+    public boolean delete(FollowEntity follow) {
         String sql = "DELETE FROM Follow WHERE follower_id=? AND user_id=?";
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -56,12 +51,12 @@ public class H2FollowDAO implements FollowDAO {
 
     // the only follow update is delete
     @Override
-    public boolean update(Follow follow) {
+    public boolean update(FollowEntity follow) {
         return delete(follow);
     }
 
     @Override
-    public Follow getByUserAndFollowerId(int userId, int followerId) {
+    public FollowEntity getByUserAndFollowerId(int userId, int followerId) {
         String sql = "SELECT user_id, follower_id FROM Follow WHERE user_id=? AND follower_id=? ";
 
         try (Connection connection = connectionPool.getConnection();
@@ -78,8 +73,8 @@ public class H2FollowDAO implements FollowDAO {
         }
     }
 
-    private Follow parseFollow(ResultSet resultSet) throws SQLException {
-        Follow follow = new Follow();
+    private FollowEntity parseFollow(ResultSet resultSet) throws SQLException {
+        FollowEntity follow = new FollowEntity();
         follow.setUserId(resultSet.getInt("user_id"));
         follow.setFollowerId(resultSet.getInt("follower_id"));
 

@@ -1,14 +1,11 @@
 package dao.h2;
 
 import common.cp.ConnectionPool;
-import common.cp.ConnectionWrapper;
 import dao.interfaces.PostDAO;
-import model.Post;
-import model.PostType;
+import model.dbmodel.PostEntity;
 
 import java.sql.*;
 import java.util.*;
-import java.util.stream.Stream;
 
 /**
  * Created by artemypestretsov on 7/13/16.
@@ -20,8 +17,8 @@ public class H2PostDAO implements PostDAO {
         this.connectionPool = connectionPool;
     }
 
-    private Post parsePost(ResultSet resultSet) throws SQLException {
-        Post post = new Post();
+    private PostEntity parsePost(ResultSet resultSet) throws SQLException {
+        PostEntity post = new PostEntity();
         post.setId(resultSet.getInt("id"));
         post.setFromId(resultSet.getInt("from_id"));
         post.setPostType(resultSet.getInt("post_type"));
@@ -30,11 +27,11 @@ public class H2PostDAO implements PostDAO {
         return post;
     }
 
-    private Optional<Post> parsePostOpt(ResultSet resultSet) throws SQLException {
+    private Optional<PostEntity> parsePostOpt(ResultSet resultSet) throws SQLException {
         return resultSet.next() ? Optional.of(parsePost(resultSet)) : Optional.empty();
     }
 
-    private void setPostWithoutId(PreparedStatement statement, Post post) throws SQLException {
+    private void setPostWithoutId(PreparedStatement statement, PostEntity post) throws SQLException {
         statement.setInt(1, post.getFromId());
         statement.setInt(2, post.getPostType());
         statement.setString(3, post.getText());
@@ -42,8 +39,8 @@ public class H2PostDAO implements PostDAO {
     }
 
     @Override
-    public List<Post> getAllByFromId(int fromId) {
-        List<Post> allPosts = new ArrayList<>();
+    public List<PostEntity> getAllByFromId(int fromId) {
+        List<PostEntity> allPosts = new ArrayList<>();
 
         String sql = "SELECT id, from_id, post_type, text, publish_time FROM Post WHERE from_id=? ORDER BY id DESC";
 
@@ -63,8 +60,8 @@ public class H2PostDAO implements PostDAO {
     }
 
     @Override
-    public List<Post> getSublistWithOffsetId(int fromId, int offsetId, int limit) {
-        List<Post> allPosts = new ArrayList<>();
+    public List<PostEntity> getSublistWithOffsetId(int fromId, int offsetId, int limit) {
+        List<PostEntity> allPosts = new ArrayList<>();
 
         String sql = "SELECT id, from_id, post_type, text, publish_time FROM Post WHERE from_id=? AND id<? ORDER BY id DESC LIMIT ?";
 
@@ -86,8 +83,8 @@ public class H2PostDAO implements PostDAO {
     }
 
     @Override
-    public List<Post> getSublistByFromId(int fromId, int offset, int limit) {
-        List<Post> allPosts = new ArrayList<>();
+    public List<PostEntity> getSublistByFromId(int fromId, int offset, int limit) {
+        List<PostEntity> allPosts = new ArrayList<>();
 
         String sql = "SELECT id, from_id, post_type, text, publish_time FROM Post WHERE from_id=? ORDER BY id DESC LIMIT ? OFFSET ?";
 
@@ -109,10 +106,10 @@ public class H2PostDAO implements PostDAO {
     }
 
 //    @Override
-//    public List<Post> getPersonalTimelineWithOffsetId(int followerId, int offsetId, int limit) {
-//        List<Post> allPosts = new ArrayList<>();
+//    public List<PostEntity> getPersonalTimelineWithOffsetId(int followerId, int offsetId, int limit) {
+//        List<PostEntity> allPosts = new ArrayList<>();
 //
-//        String sql = "SELECT id, from_id, post_type, text, publish_time FROM Post WHERE from_id IN (SELECT user_id FROM Follow WHERE follower_id=?) AND id<? ORDER BY id DESC LIMIT ?";
+//        String sql = "SELECT id, from_id, post_type, text, publish_time FROM PostEntity WHERE from_id IN (SELECT user_id FROM FollowEntity WHERE follower_id=?) AND id<? ORDER BY id DESC LIMIT ?";
 //
 //        try (Connection connection = connectionPool.getConnection();
 //             PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -132,7 +129,7 @@ public class H2PostDAO implements PostDAO {
 //    }
 
     @Override
-    public int create(Post post) {
+    public int create(PostEntity post) {
         String sql = "INSERT INTO Post (from_id, post_type, text, publish_time) VALUES (?,?,?,?)";
 
         try (Connection connection = connectionPool.getConnection();
@@ -152,7 +149,7 @@ public class H2PostDAO implements PostDAO {
     }
 
     @Override
-    public boolean update(Post post) {
+    public boolean update(PostEntity post) {
         String sql = "UPDATE Post SET from_id=?, post_type=?, text=?, publish_time=? WHERE id=?";
 
         try (Connection connection = connectionPool.getConnection();
@@ -166,7 +163,7 @@ public class H2PostDAO implements PostDAO {
     }
 
     @Override
-    public Optional<Post> getById(int id) {
+    public Optional<PostEntity> getById(int id) {
         String sql = "SELECT id, from_id, post_type, text, publish_time FROM Post WHERE id=?";
 
         try (Connection connection = connectionPool.getConnection();

@@ -1,15 +1,15 @@
 package dao.interfaces;
 
-import model.Post;
+import model.dbmodel.PostEntity;
+
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by artemypestretsov on 7/13/16.
  */
-public interface PostDAO extends DAO<Post> {
-    List<Post> getAllByFromId(int fromId);
-    List<Post> getSublistByFromId(int fromId, int offset, int limit);
-    List<Post> getSublistWithOffsetId(int fromId, int offsetId, int limit);
-//    List<Post> getPersonalTimelineWithOffsetId(int followerId, int offsetId, int limit);
+public interface PostDAO extends DAO<PostEntity> {
+    List<PostEntity> getAllByFromId(int fromId);
+    List<PostEntity> getSublistByFromId(int fromId, int offset, int limit);
+    List<PostEntity> getSublistWithOffsetId(int fromId, int offsetId, int limit);
+//    List<PostEntity> getPersonalTimelineWithOffsetId(int followerId, int offsetId, int limit);
 }

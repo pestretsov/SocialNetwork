@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.interfaces.PostDAO;
 import lombok.extern.slf4j.Slf4j;
-import model.Post;
+import model.dbmodel.PostEntity;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.*;
@@ -44,7 +44,7 @@ public class PostResource {
 
         log.info("trying to GET post with postId={}", id);
 
-        Optional<Post> postOpt = postDAO.getById(id);
+        Optional<PostEntity> postOpt = postDAO.getById(id);
 
         try {
             if (postOpt.isPresent()) {
@@ -68,7 +68,7 @@ public class PostResource {
 //            @QueryParam("offsetId") int offsetId,
 //            @QueryParam("limit") int limit) {
 //
-//        List<Post> posts = postDAO.getPersonalTimelineWithOffsetId(followerId, offsetId, limit);
+//        List<PostEntity> posts = postDAO.getPersonalTimelineWithOffsetId(followerId, offsetId, limit);
 //
 //        try {
 //            String json = toJson(posts);
@@ -85,7 +85,7 @@ public class PostResource {
             @QueryParam("offsetId") int offsetId,
             @QueryParam("limit") int limit) {
 
-        List<Post> posts = postDAO.getSublistWithOffsetId(fromId, offsetId, limit);
+        List<PostEntity> posts = postDAO.getSublistWithOffsetId(fromId, offsetId, limit);
 
         try {
             String json = toJson(posts);
@@ -110,7 +110,7 @@ public class PostResource {
 
     @PUT
     @Consumes(APPLICATION_JSON)
-    public void updatePostById(Post post) {
+    public void updatePostById(PostEntity post) {
         log.info("trying to UPDATE post with postId={}", post.getId());
         // TODO: needs fix -- probably new parser
         post.setPublishTime(Instant.now());

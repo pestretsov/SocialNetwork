@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
  */
 
 @Data
-public class Follow {
+public class FollowEntity {
     // followerId is following userId;
     @NotNull
     private int followerId;

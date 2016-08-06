@@ -12,7 +12,7 @@ import java.time.LocalDate;
  */
 
 @Data
-public class User {
+public class UserEntity {
     private int id; // id INT PRIMARY KEY AUTO_INCREMENT
 
     @Size(max = 255)

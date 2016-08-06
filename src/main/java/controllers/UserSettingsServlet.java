@@ -1,10 +1,8 @@
 package controllers;
 
-import dao.interfaces.PostDAO;
 import dao.interfaces.UserDAO;
 import lombok.extern.slf4j.Slf4j;
-import model.User;
-import utils.Validator;
+import model.dbmodel.UserEntity;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -40,7 +38,7 @@ public class UserSettingsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(true);
 
-        User sessionUser = (User) session.getAttribute("sessionUser");
+        UserEntity sessionUser = (UserEntity) session.getAttribute("sessionUser");
 
         String firstName = req.getParameter("first_name");
         String lastName = req.getParameter("last_name");

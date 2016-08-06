@@ -1,11 +1,8 @@
 package controllers;
 
-import dao.interfaces.UserDAO;
 import lombok.extern.slf4j.Slf4j;
-import model.User;
-import utils.SecurityUtils;
+import model.dbmodel.UserEntity;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,7 +23,7 @@ public class LogOutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
 
-        User sessionUser = (User) req.getSession().getAttribute("sessionUser");
+        UserEntity sessionUser = (UserEntity) req.getSession().getAttribute("sessionUser");
         if (sessionUser != null) {
             log.info("logout userId={}. Redirecting to {}", sessionUser.getId(), "/");
         } else {
