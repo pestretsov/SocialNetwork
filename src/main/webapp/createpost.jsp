@@ -25,7 +25,7 @@
     <div class="container">
         <div class="main-center panel col-md-6 col-md-offset-3">
             <form id="post" method="post" action="<c:url value='/secure/createpost'/>">
-                <h1 id="compose-your-post">Compose your post:</h1>
+                <h1 class="card-title">Compose your post:</h1>
                 <textarea id="post-text" form="post" name="postText" rows="4" class="panel form-control col-md-12" placeholder="Start writing here.."></textarea>
                 <label class="checkbox-inline"><input type="checkbox" name="postType" value="PRIVATE">Show only to followers</label>
                 <input type="submit" class="pull-right btn btn-primary" value="Submit">

@@ -24,7 +24,7 @@
 <div class="container">
     <div class="row">
         <div class="main-center panel col-md-6 col-md-offset-3">
-            <h1 id="welcome-to-socnet">Change user personal info</h1>
+            <h1 class="card-title">Change user personal info</h1>
             <form id="settings" action="<c:url value='/secure/usersettings'/>" method="post">
                 <div class="form-group">
                     <label for="user-new-firstname-input">First name</label>
@@ -43,7 +43,43 @@
                     <textarea form ="settings" id="user-new-bio-input" class="form-control" name="bio" rows="5" wrap="soft" placeholder="Describe yourself here..." >${sessionUser.bio}</textarea>
                 </div>
                 <div class="form-group">
-                    <button class="pull-right btn btn-primary btn-sm" type="submit" name="Update">Change</button>
+                    <button class="pull-right btn btn-primary btn-sm" type="submit" name="Submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="main-center panel col-md-6 col-md-offset-3">
+            <h1 class="card-title">Change password</h1>
+            <form id="changepassword" action="<c:url value='/secure/changepassword'/>" method="post">
+                <div class="form-group">
+                    <label for="user-old-password-input">Old password</label>
+                    <input id="user-old-password-input" class="form-control" type="password" name="old_password" required>
+                </div>
+                <div class="form-group">
+                    <label for="user-new-password-input">New password</label>
+                    <input id="user-new-password-input" class="form-control" type="password" name="new_password" required>
+                </div>
+                <div class="form-group">
+                    <label for="user-new-password-confirm-input">Repeat new password</label>
+                    <input id="user-new-password-confirm-input" class="form-control" type="password" name="new_password_confirm" required>
+                </div>
+                <div class="form-group">
+                    <button class="pull-right btn btn-primary btn-sm" type="submit" name="Submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="main-center panel col-md-6 col-md-offset-3">
+            <h1 class="card-title">Change username</h1>
+            <form id="changeusername" action="<c:url value='/secure/changeusername'/>" method="post">
+                <div class="form-group">
+                    <label for="user-username-input">Username</label>
+                    <input id="user-username-input" class="form-control" type="text" name="new_username" value="${sessionUser.username}" required>
+                </div>
+                <div class="form-group">
+                    <button class="pull-right btn btn-primary btn-sm" type="submit" name="Submit">Submit</button>
                 </div>
             </form>
         </div>

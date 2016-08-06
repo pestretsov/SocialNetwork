@@ -23,7 +23,7 @@
 <body>
     <div class="container">
         <div class="main-center panel col-md-6 col-md-offset-3">
-            <h1 id="welcome-to-socnet">Sign up</h1>
+            <h1 class="card-title">Sign up</h1>
             <form id="signup" action="<c:url value='/signup'/>" method="post">
                 <div class="form-group row">
                     <label for="user-firstname-input">First name</label>
