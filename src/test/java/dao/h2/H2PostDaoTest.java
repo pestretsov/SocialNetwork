@@ -4,6 +4,7 @@ import common.cp.ConnectionPool;
 import common.cp.SimpleConnectionPool;
 import dao.interfaces.PostDAO;
 import model.dbmodel.PostEntity;
+import model.dbmodel.PostTypeEntity;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -39,7 +40,7 @@ public class H2PostDAOTest {
     @Test
     public void createAndGetByIdPostTest() throws Exception {
         PostEntity post = new PostEntity();
-        post.setPostType(0);
+        post.setPostType(PostTypeEntity.getPostTypeById(0));
         post.setPublishTime(Instant.now());
         post.setText("test test test text");
         post.setFromId(1);
@@ -55,19 +56,19 @@ public class H2PostDAOTest {
     @Test
     public void getAllByFromIdTest() throws Exception {
         PostEntity post1 = new PostEntity();
-        post1.setPostType(0);
+        post1.setPostType(PostTypeEntity.getPostTypeById(0));
         post1.setPublishTime(Instant.now());
         post1.setText("test test test text");
         post1.setFromId(1);
 
         PostEntity post2 = new PostEntity();
-        post2.setPostType(1);
+        post2.setPostType(PostTypeEntity.getPostTypeById(1));
         post2.setPublishTime(Instant.now());
         post2.setText("123_123");
         post2.setFromId(1);
 
         PostEntity post3 = new PostEntity();
-        post3.setPostType(1);
+        post3.setPostType(PostTypeEntity.getPostTypeById(1));
         post3.setPublishTime(Instant.now());
         post3.setText("mmm nice");
         post3.setFromId(2);
@@ -90,19 +91,19 @@ public class H2PostDAOTest {
     @Test
     public void deletePostByIdTest() throws Exception {
         PostEntity post1 = new PostEntity();
-        post1.setPostType(0);
+        post1.setPostType(PostTypeEntity.getPostTypeById(1));
         post1.setPublishTime(Instant.now());
         post1.setText("test test test text");
         post1.setFromId(1);
 
         PostEntity post2 = new PostEntity();
-        post2.setPostType(1);
+        post2.setPostType(PostTypeEntity.getPostTypeById(1));
         post2.setPublishTime(Instant.now());
         post2.setText("123_123");
         post2.setFromId(1);
 
         PostEntity post3 = new PostEntity();
-        post3.setPostType(1);
+        post3.setPostType(PostTypeEntity.getPostTypeById(1));
         post3.setPublishTime(Instant.now());
         post3.setText("mmm nice");
         post3.setFromId(2);
@@ -122,7 +123,7 @@ public class H2PostDAOTest {
     @Test
     public void updatePostTest() throws Exception {
         PostEntity post1 = new PostEntity();
-        post1.setPostType(0);
+        post1.setPostType(PostTypeEntity.getPostTypeById(1));
         post1.setPublishTime(Instant.now());
         post1.setText("test test test text");
         post1.setFromId(1);
@@ -141,31 +142,31 @@ public class H2PostDAOTest {
     @Test
     public void getSublistTest() throws Exception {
         PostEntity post1 = new PostEntity();
-        post1.setPostType(0);
+        post1.setPostType(PostTypeEntity.getPostTypeById(0));
         post1.setPublishTime(Instant.now());
         post1.setText("test test test text 111");
         post1.setFromId(1);
 
         PostEntity post2 = new PostEntity();
-        post2.setPostType(0);
+        post2.setPostType(PostTypeEntity.getPostTypeById(0));
         post2.setPublishTime(Instant.now());
         post2.setText("test test test text 222");
         post2.setFromId(1);
 
         PostEntity post3 = new PostEntity();
-        post3.setPostType(0);
+        post3.setPostType(PostTypeEntity.getPostTypeById(0));
         post3.setPublishTime(Instant.now());
         post3.setText("test test test text 333");
         post3.setFromId(1);
 
         PostEntity post4 = new PostEntity();
-        post4.setPostType(0);
+        post4.setPostType(PostTypeEntity.getPostTypeById(0));
         post4.setPublishTime(Instant.now());
         post4.setText("test test test text 444");
         post4.setFromId(1);
 
         PostEntity post5 = new PostEntity();
-        post5.setPostType(0);
+        post5.setPostType(PostTypeEntity.getPostTypeById(0));
         post5.setPublishTime(Instant.now());
         post5.setText("test test test text 555");
         post5.setFromId(1);

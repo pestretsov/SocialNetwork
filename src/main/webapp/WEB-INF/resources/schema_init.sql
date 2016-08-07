@@ -7,7 +7,7 @@ CREATE TABLE User (
   last_name  VARCHAR(255) NOT NULL,
   gender     INT DEFAULT 0,
   birth_date DATE,
-  bio        TEXT,
+  bio        VARCHAR(255),
 );
 
 DROP TABLE IF EXISTS Post;
@@ -15,7 +15,7 @@ CREATE TABLE Post (
   id           INT PRIMARY KEY AUTO_INCREMENT,
   from_id      INT NOT NULL REFERENCES User(id),
   post_type    INT DEFAULT 0,
-  text         TEXT,
+  text         VARCHAR(255),
   publish_time TIMESTAMP NOT NULL
 );
 

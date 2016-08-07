@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.Instant;
+import java.util.Optional;
 
 /**
  * Created by artemypestretsov on 7/29/16.
@@ -42,17 +43,14 @@ public class CreatePostServlet extends HttpServlet {
 
         String text = req.getParameter("postText");
 
-        PostTypeEntity postType = PostTypeEntity.DEFAULT;
-        String postTypeString = req.getParameter("postType");
 
-        if (postTypeString != null) {
-            postType = PostTypeEntity.PRIVATE;
-        }
+        int postType = Optional.ofNullable(req.getParameter("postType")).map(Integer::parseInt).orElse(0);
+
 
         PostEntity post = new PostEntity();
 
         post.setText(text);
-        post.setPostType(postType.getId());
+        post.setPostType(PostTypeEntity.getPostTypeById(postType));
         post.setFromId(user.getId());
         post.setPublishTime(Instant.now());
 

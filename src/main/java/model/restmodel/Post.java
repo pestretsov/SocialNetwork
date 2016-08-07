@@ -2,6 +2,7 @@ package model.restmodel;
 
 import lombok.Data;
 import model.dbmodel.PostEntity;
+import model.dbmodel.PostTypeEntity;
 
 import java.time.Instant;
 
@@ -16,7 +17,7 @@ public class Post {
     private String text;
 
     private Instant publishTime;
-    private int postType;
+    private PostTypeEntity postType;
 
     public Post(PostEntity post, User user) {
         setId(post.getId());

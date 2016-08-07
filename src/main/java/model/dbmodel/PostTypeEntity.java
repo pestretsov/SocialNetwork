@@ -4,11 +4,13 @@ package model.dbmodel;
  * Created by artemypestretsov on 8/6/16.
  */
 public enum PostTypeEntity {
+    DEFAULT,
     PUBLIC,
     PRIVATE;
 
     public static int getIdByPostType(PostTypeEntity postType) {
         switch (postType) {
+            case DEFAULT: return 0;
             case PUBLIC: return 0;
             case PRIVATE: return 1;
         }

@@ -3,6 +3,7 @@ package dao.h2;
 import common.cp.ConnectionPool;
 import dao.interfaces.PostDAO;
 import model.dbmodel.PostEntity;
+import model.dbmodel.PostTypeEntity;
 
 import java.sql.*;
 import java.util.*;
@@ -21,7 +22,7 @@ public class H2PostDAO implements PostDAO {
         PostEntity post = new PostEntity();
         post.setId(resultSet.getInt("id"));
         post.setFromId(resultSet.getInt("from_id"));
-        post.setPostType(resultSet.getInt("post_type"));
+        post.setPostType(PostTypeEntity.getPostTypeById(resultSet.getInt("post_type")));
         post.setText(resultSet.getString("text"));
         post.setPublishTime(resultSet.getTimestamp("publish_time").toInstant());
         return post;
@@ -33,7 +34,7 @@ public class H2PostDAO implements PostDAO {
 
     private void setPostWithoutId(PreparedStatement statement, PostEntity post) throws SQLException {
         statement.setInt(1, post.getFromId());
-        statement.setInt(2, post.getPostType());
+        statement.setInt(2, PostTypeEntity.getIdByPostType(post.getPostType()));
         statement.setString(3, post.getText());
         statement.setTimestamp(4, Timestamp.from(post.getPublishTime()));
     }
