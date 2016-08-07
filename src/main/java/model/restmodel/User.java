@@ -26,6 +26,8 @@ public class User {
 
         setLastName(user.getLastName());
         setFirstName(user.getFirstName());
+        setBirthDate(user.getBirthDate());
+        setSex(user.getSex());
 
         setBio(user.getBio());
     }
