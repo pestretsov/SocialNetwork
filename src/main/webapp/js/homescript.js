@@ -32,20 +32,18 @@ $(function () {
             },
             type: "GET",
             dataType: "json",
-            success: function (posts) {
-                posts.forEach(function (post) {
+            success: function (postViews) {
+                postViews.forEach(function (postView) {
 
-                    var user = post.from;
+                    var user = postView.from;
 
                     var now = new Date();
                     var nowWrapper = moment(now);
-                    console.log(post.publishTime.epochSecond);
-                    console.log(now);
-                    var pastDateWrapper = moment.unix(post.publishTime.epochSecond);
+                    var pastDateWrapper = moment.unix(postView.postPublishTime.epochSecond);
                     var displayDate = pastDateWrapper.from(nowWrapper);
 
                     var prepareHtml = '<div class="row">';
-                    prepareHtml += '<div class="panel post" data-post-id="'+ post.id +'">';
+                    prepareHtml += '<div class="panel post" data-post-id="'+ postView.postId +'">';
 
                     prepareHtml += '<div class="col-md-1">';
                     prepareHtml += '<img class="user-avatar" src="images/artemy.jpg">';
@@ -55,9 +53,9 @@ $(function () {
 
                     prepareHtml += '<div class="row">';
                     prepareHtml += '<div class="col-md-12">';
-                    prepareHtml += '<h3>'+user.firstName + " " + user.lastName +' <span>' + user.username + '</span>'+
+                    prepareHtml += '<h3>'+postView.fromFirstName + " " + postView.fromLastName +' <span>' + postView.fromUsername + '</span>'+
                         '<span> &bull; </span><span>' + displayDate + '</span> </h3>';
-                    prepareHtml += '<p>' + toPlainText(post.text) + '</p>';
+                    prepareHtml += '<p>' + toPlainText(postView.postText) + '</p>';
                     prepareHtml += '</div>';
                     prepareHtml += '</div>';
 
@@ -79,7 +77,7 @@ $(function () {
                     prepareHtml += '</div>';
 
                     postsContainer.append(prepareHtml);
-                    offsetId = post.id;
+                    offsetId = postView.postId;
                 });
 
                 // no more posts
@@ -102,7 +100,7 @@ $(function () {
         var postId = $(this).closest('.post').data("post-id");
 
         $.ajax({
-            url: "/restapi/posts/secure" + postId,
+            url: "/restapi/posts/secure/" + postId,
             type: "DELETE",
             dataType: "json",
             success: $(this).closest('.post').remove()
@@ -135,7 +133,7 @@ $(function () {
                 data: JSON.stringify({
                     id: postId,
                     fromId: sessionUser.id,
-                    postType: 0,
+                    postType: "DEFAULT",
                     text: updatedText,
                     publishTime: currentTime
                 }),

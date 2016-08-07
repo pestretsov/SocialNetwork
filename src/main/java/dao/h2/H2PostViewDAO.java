@@ -33,7 +33,7 @@ public class H2PostViewDAO implements PostViewDAO {
         postView.setFromId(resultSet.getInt("from_id"));
         postView.setFromUsername(resultSet.getString("from_username"));
         postView.setFromFirstName(resultSet.getString("from_first_name"));
-        postView.setFromFirstName(resultSet.getString("from_last_name"));
+        postView.setFromLastName(resultSet.getString("from_last_name"));
 
         return postView;
     }
