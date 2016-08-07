@@ -1,10 +1,10 @@
 package dao.interfaces;
 
-import model.dbmodel.FollowEntity;
+import model.Follow;
 
 /**
  * Created by artemypestretsov on 7/23/16.
  */
-public interface FollowDAO extends DAO<FollowEntity> {
-    FollowEntity getByUserAndFollowerId(int userId, int followerId);
+public interface FollowDAO extends DAO<Follow> {
+    Follow getByUserAndFollowerId(int userId, int followerId);
 }

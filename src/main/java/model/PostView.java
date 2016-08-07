@@ -1,4 +1,4 @@
-package model.dbmodel;
+package model;
 
 import lombok.Data;
 
@@ -12,7 +12,7 @@ import java.time.Instant;
 public class PostView {
     private int postId;
     private String postText;
-    private PostTypeEntity postType;
+    private PostType postType;
     private Instant postPublishTime;
 
     private int fromId;

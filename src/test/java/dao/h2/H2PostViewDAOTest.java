@@ -9,15 +9,16 @@ import common.cp.SimpleConnectionPool;
 import dao.interfaces.PostDAO;
 import dao.interfaces.PostViewDAO;
 import dao.interfaces.UserDAO;
+import model.Post;
+import model.PostType;
+import model.PostView;
 import model.dbmodel.*;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.Assert.*;
 
@@ -42,15 +43,15 @@ public class H2PostViewDAOTest {
 
     @Test
     public void getSublistTest() throws Exception {
-        PostEntity post = new PostEntity();
-        post.setPostType(PostTypeEntity.getPostTypeById(0));
+        Post post = new Post();
+        post.setPostType(PostType.getPostTypeById(0));
         post.setPublishTime(Instant.now());
         post.setText("test test test text");
         post.setFromId(1);
 
         int postId1 = postDAO.create(post);
 
-        post.setPostType(PostTypeEntity.getPostTypeById(0));
+        post.setPostType(PostType.getPostTypeById(0));
         post.setPublishTime(Instant.now());
         post.setText("111111");
         post.setFromId(1);

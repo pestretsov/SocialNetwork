@@ -3,9 +3,9 @@ package controllers;
 import dao.interfaces.FollowDAO;
 import dao.interfaces.UserDAO;
 import lombok.extern.slf4j.Slf4j;
-import model.dbmodel.FollowEntity;
-import model.dbmodel.UserEntity;
-import model.dbmodel.UserGenderEntity;
+import model.Follow;
+import model.User;
+import model.UserGender;
 import utils.SecurityUtils;
 import utils.Validator;
 
@@ -48,7 +48,7 @@ public class SignUpServlet extends HttpServlet {
 
         log.info("attempt to sign up");
 
-        UserEntity user = new UserEntity();
+        User user = new User();
 
         String username = req.getParameter("j_username");
         String password = req.getParameter("j_password");
@@ -79,7 +79,7 @@ public class SignUpServlet extends HttpServlet {
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setBirthDate(LocalDate.parse(birthDate));
-        user.setGender(UserGenderEntity.getUserGenderById(gender));
+        user.setGender(UserGender.getUserGenderById(gender));
         user.setBio(bio);
 
         String nextURL = Optional.ofNullable((String) session.getAttribute("next")).orElse("/");
@@ -88,7 +88,7 @@ public class SignUpServlet extends HttpServlet {
             userDAO.create(user);
             user = userDAO.getByUsername(username).orElseThrow(RuntimeException::new);
 
-            FollowEntity follow = new FollowEntity();
+            Follow follow = new Follow();
             follow.setUserId(user.getId());
             follow.setFollowerId(user.getId());
 

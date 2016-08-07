@@ -1,7 +1,7 @@
 package controllers;
 
 import dao.interfaces.UserDAO;
-import model.dbmodel.UserEntity;
+import model.User;
 import utils.SecurityUtils;
 
 import javax.servlet.ServletException;
@@ -41,14 +41,14 @@ public class LogInServlet extends HttpServlet {
         String password = req.getParameter("j_password");
         String nextURL = Optional.ofNullable((String) session.getAttribute("next")).orElse("/");
 
-        Optional<UserEntity> userOpt = userDAO.getByUsername(username);
+        Optional<User> userOpt = userDAO.getByUsername(username);
 
         if (!userOpt.isPresent()) {
             resp.sendError(406, "This username is not found");
             return;
         }
 
-        UserEntity user = userOpt.get();
+        User user = userOpt.get();
 
         if (securityUtils.validatePassword(password, user.getPassword())) {
             session.setAttribute("sessionUser", user);

@@ -2,7 +2,7 @@ package controllers;
 
 import dao.interfaces.UserDAO;
 import lombok.extern.slf4j.Slf4j;
-import model.dbmodel.UserEntity;
+import model.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,8 +32,8 @@ public class IndexServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(true);
 
-        Optional<UserEntity> userOpt =
-                Optional.ofNullable((UserEntity)session.getAttribute("sessionUser"))
+        Optional<User> userOpt =
+                Optional.ofNullable((User)session.getAttribute("sessionUser"))
                         .map(user -> user.getId())
                         .flatMap(userId -> userDAO.getById(userId));
 

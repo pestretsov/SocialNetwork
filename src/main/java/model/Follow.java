@@ -1,4 +1,4 @@
-package model.dbmodel;
+package model;
 
 import lombok.Data;
 
@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
  */
 
 @Data
-public class FollowEntity {
+public class Follow {
     // followerId is following userId;
     @NotNull
     private int followerId;

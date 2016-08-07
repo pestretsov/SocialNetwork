@@ -2,8 +2,8 @@ package dao.h2;
 
 import common.cp.ConnectionPool;
 import dao.interfaces.UserDAO;
-import model.dbmodel.UserEntity;
-import model.dbmodel.UserGenderEntity;
+import model.User;
+import model.UserGender;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -20,36 +20,36 @@ public class H2UserDAO implements UserDAO {
         this.connectionPool = connectionPool;
     }
 
-    private UserEntity parseUser(ResultSet resultSet) throws SQLException {
-        UserEntity user = new UserEntity();
+    private User parseUser(ResultSet resultSet) throws SQLException {
+        User user = new User();
         user.setId(resultSet.getInt("id"));
         user.setUsername(resultSet.getString("username"));
         user.setPassword(resultSet.getString("password"));
         user.setFirstName(resultSet.getString("first_name"));
         user.setLastName(resultSet.getString("last_name"));
-        user.setGender(UserGenderEntity.getUserGenderById(resultSet.getInt("gender")));
+        user.setGender(UserGender.getUserGenderById(resultSet.getInt("gender")));
         user.setBirthDate(resultSet.getDate("birth_date").toLocalDate());
         user.setBio(resultSet.getString("bio"));
         return user;
     }
 
-    private Optional<UserEntity> parseUserOpt(ResultSet resultSet) throws SQLException {
+    private Optional<User> parseUserOpt(ResultSet resultSet) throws SQLException {
         return resultSet.next() ? Optional.of(parseUser(resultSet)) : Optional.empty();
     }
 
     // TODO: Optionals
-    private void setUserWithoutId(PreparedStatement statement, UserEntity user) throws SQLException {
+    private void setUserWithoutId(PreparedStatement statement, User user) throws SQLException {
         statement.setString(1, user.getUsername());
         statement.setString(2, user.getPassword());
         statement.setString(3, user.getFirstName());
         statement.setString(4, user.getLastName());
-        statement.setInt(5, UserGenderEntity.getIdByUserGender(user.getGender()));
+        statement.setInt(5, UserGender.getIdByUserGender(user.getGender()));
         statement.setDate(6, Date.valueOf(user.getBirthDate()));
         statement.setString(7, user.getBio());
     }
 
     @Override
-    public Optional<UserEntity> getByUsername(String username) {
+    public Optional<User> getByUsername(String username) {
         String sql = "SELECT id, username, password, first_name, last_name, gender, birth_date, bio FROM User " +
                 "WHERE username=?";
 
@@ -65,7 +65,7 @@ public class H2UserDAO implements UserDAO {
     }
 
     @Override
-    public Optional<UserEntity> getById(int id) {
+    public Optional<User> getById(int id) {
         String sql = "SELECT id, username, password, first_name, last_name, gender, birth_date, bio FROM User " +
                 "WHERE id=?";
 
@@ -81,7 +81,7 @@ public class H2UserDAO implements UserDAO {
     }
 
     @Override
-    public int create(UserEntity user) {
+    public int create(User user) {
         String sql = "INSERT INTO User (username, password, first_name, last_name, gender, birth_date, bio) " +
                 "VALUES (?,?,?,?,?,?,?)";
 
@@ -102,7 +102,7 @@ public class H2UserDAO implements UserDAO {
     }
 
     @Override
-    public boolean update(UserEntity user) {
+    public boolean update(User user) {
         String sql = "UPDATE User SET username=?, password=?, first_name=?, last_name=?, gender=?, birth_date=?, bio=? WHERE id=?";
 
         try (Connection connection = connectionPool.getConnection();
@@ -129,11 +129,11 @@ public class H2UserDAO implements UserDAO {
     }
 
     @Override
-    public List<UserEntity> getUsersFollowingUser(int userId) {
+    public List<User> getUsersFollowingUser(int userId) {
         String sql = "SELECT id, username, password, first_name, last_name, gender, birth_date, bio" +
                 " FROM User WHERE id IN (SELECT follower_id FROM Follow WHERE user_id=?)";
 
-        List<UserEntity> followers = new ArrayList<>();
+        List<User> followers = new ArrayList<>();
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -152,11 +152,11 @@ public class H2UserDAO implements UserDAO {
     }
 
     @Override
-    public List<UserEntity> getUsersFollowedByUser(int userId) {
+    public List<User> getUsersFollowedByUser(int userId) {
         String sql = "SELECT id, username, password, first_name, last_name, gender, birth_date, bio" +
                 " FROM User WHERE id IN (SELECT user_id FROM Follow WHERE follower_id=?)";
 
-        List<UserEntity> followings = new ArrayList<>();
+        List<User> followings = new ArrayList<>();
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {

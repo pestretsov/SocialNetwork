@@ -2,7 +2,7 @@ package dao.h2;
 
 import common.cp.ConnectionPool;
 import dao.interfaces.FollowDAO;
-import model.dbmodel.FollowEntity;
+import model.Follow;
 
 import java.sql.*;
 
@@ -20,7 +20,7 @@ public class H2FollowDAO implements FollowDAO {
      * @return this method always returns 0, cause no id is created inside DB
      */
     @Override
-    public int create(FollowEntity follow) {
+    public int create(Follow follow) {
         String sql = "INSERT INTO Follow (follower_id, user_id) VALUES (?,?)";
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -36,7 +36,7 @@ public class H2FollowDAO implements FollowDAO {
         }
     }
 
-    public boolean delete(FollowEntity follow) {
+    public boolean delete(Follow follow) {
         String sql = "DELETE FROM Follow WHERE follower_id=? AND user_id=?";
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -51,12 +51,12 @@ public class H2FollowDAO implements FollowDAO {
 
     // the only follow update is delete
     @Override
-    public boolean update(FollowEntity follow) {
+    public boolean update(Follow follow) {
         return delete(follow);
     }
 
     @Override
-    public FollowEntity getByUserAndFollowerId(int userId, int followerId) {
+    public Follow getByUserAndFollowerId(int userId, int followerId) {
         String sql = "SELECT user_id, follower_id FROM Follow WHERE user_id=? AND follower_id=? ";
 
         try (Connection connection = connectionPool.getConnection();
@@ -73,8 +73,8 @@ public class H2FollowDAO implements FollowDAO {
         }
     }
 
-    private FollowEntity parseFollow(ResultSet resultSet) throws SQLException {
-        FollowEntity follow = new FollowEntity();
+    private Follow parseFollow(ResultSet resultSet) throws SQLException {
+        Follow follow = new Follow();
         follow.setUserId(resultSet.getInt("user_id"));
         follow.setFollowerId(resultSet.getInt("follower_id"));
 

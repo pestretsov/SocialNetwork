@@ -2,9 +2,8 @@ package dao.h2;
 
 import common.cp.ConnectionPool;
 import dao.interfaces.PostViewDAO;
-import model.dbmodel.PostEntity;
-import model.dbmodel.PostTypeEntity;
-import model.dbmodel.PostView;
+import model.PostType;
+import model.PostView;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,7 +27,7 @@ public class H2PostViewDAO implements PostViewDAO {
 
         postView.setPostId(resultSet.getInt("post_id"));
         postView.setPostText(resultSet.getString("post_text"));
-        postView.setPostType(PostTypeEntity.getPostTypeById(resultSet.getInt("post_type")));
+        postView.setPostType(PostType.getPostTypeById(resultSet.getInt("post_type")));
         postView.setPostPublishTime(resultSet.getTimestamp("post_publish_time").toInstant());
 
         postView.setFromId(resultSet.getInt("from_id"));

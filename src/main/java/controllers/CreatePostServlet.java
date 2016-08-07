@@ -2,9 +2,9 @@ package controllers;
 
 import dao.interfaces.PostDAO;
 import lombok.extern.slf4j.Slf4j;
-import model.dbmodel.PostEntity;
-import model.dbmodel.PostTypeEntity;
-import model.dbmodel.UserEntity;
+import model.Post;
+import model.PostType;
+import model.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -39,7 +39,7 @@ public class CreatePostServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
 
-        UserEntity user = (UserEntity) session.getAttribute("sessionUser");
+        User user = (User) session.getAttribute("sessionUser");
 
         String text = req.getParameter("postText");
 
@@ -47,10 +47,10 @@ public class CreatePostServlet extends HttpServlet {
         int postType = Optional.ofNullable(req.getParameter("postType")).map(Integer::parseInt).orElse(0);
 
 
-        PostEntity post = new PostEntity();
+        Post post = new Post();
 
         post.setText(text);
-        post.setPostType(PostTypeEntity.getPostTypeById(postType));
+        post.setPostType(PostType.getPostTypeById(postType));
         post.setFromId(user.getId());
         post.setPublishTime(Instant.now());
 

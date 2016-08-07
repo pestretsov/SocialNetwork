@@ -1,10 +1,9 @@
-package model.dbmodel;
+package model;
 
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.sql.Clob;
 import java.time.Instant;
 
 /**
@@ -12,13 +11,13 @@ import java.time.Instant;
  */
 
 @Data
-public class PostEntity {
+public class Post {
     private int id; // id INT PRIMARY KEY AUTO_INCREMENT
 
     @NotNull
-    private int fromId; // from_id INT NOT NULL REFERENCES UserEntity(id)
+    private int fromId; // from_id INT NOT NULL REFERENCES User(id)
 
-    private PostTypeEntity postType; // post_type INT DEFAULT 0 (0 - public; 1 - private)
+    private PostType postType; // post_type INT DEFAULT 0 (0 - public; 1 - private)
 
     @Size(max = 255)
     private String text; // text TEXT

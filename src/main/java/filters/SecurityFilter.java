@@ -2,7 +2,7 @@ package filters;
 
 import dao.interfaces.UserDAO;
 import lombok.extern.slf4j.Slf4j;
-import model.dbmodel.UserEntity;
+import model.User;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -40,9 +40,9 @@ public class SecurityFilter implements Filter {
         String fromUri = request.getRequestURI();
 
 
-        Optional<UserEntity> userOpt =
-                Optional.ofNullable((UserEntity)session.getAttribute("sessionUser"))
-                        .map(UserEntity::getId)
+        Optional<User> userOpt =
+                Optional.ofNullable((User)session.getAttribute("sessionUser"))
+                        .map(User::getId)
                         .flatMap(userDAO::getById);
 
         if (userOpt.isPresent()) {

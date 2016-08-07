@@ -1,14 +1,14 @@
-package model.dbmodel;
+package model;
 
 /**
  * Created by artemypestretsov on 8/7/16.
  */
-public enum UserGenderEntity {
+public enum UserGender {
     NOT_SPECIFIED,
     FEMALE,
     MALE;
 
-    public static int getIdByUserGender(UserGenderEntity gender) {
+    public static int getIdByUserGender(UserGender gender) {
         switch (gender) {
             case NOT_SPECIFIED: return 0;
             case FEMALE: return 1;
@@ -17,7 +17,7 @@ public enum UserGenderEntity {
         throw new IllegalStateException("Illegal user gender:" + gender.name());
     }
 
-    public static UserGenderEntity getUserGenderById(int id) {
+    public static UserGender getUserGenderById(int id) {
         switch (id) {
             case 0: return NOT_SPECIFIED;
             case 1: return FEMALE;

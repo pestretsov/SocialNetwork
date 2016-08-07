@@ -1,6 +1,5 @@
-package model.dbmodel;
+package model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -12,7 +11,7 @@ import java.time.LocalDate;
  */
 
 @Data
-public class UserEntity {
+public class User {
     private int id; // id INT PRIMARY KEY AUTO_INCREMENT
 
     @Size(max = 255)
@@ -31,10 +30,10 @@ public class UserEntity {
     @NotNull
     private String lastName; // last_name VARCHAR(255) NOT NULL
 
-    private UserRoleEntity role;
+    private UserRole role;
 
     // Optional:
-    private UserGenderEntity gender; // gender INT DEFAULT 0 (0– not specified; 1 – female; 2 – male)
+    private UserGender gender; // gender INT DEFAULT 0 (0– not specified; 1 – female; 2 – male)
     private LocalDate birthDate; // birth_date DATE
     @Size(max = 255)
     private String bio; // bio TEXT

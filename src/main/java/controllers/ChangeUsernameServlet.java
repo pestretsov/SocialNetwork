@@ -2,7 +2,7 @@ package controllers;
 
 import dao.interfaces.UserDAO;
 import lombok.extern.slf4j.Slf4j;
-import model.dbmodel.UserEntity;
+import model.User;
 import utils.Validator;
 
 import javax.servlet.ServletException;
@@ -32,7 +32,7 @@ public class ChangeUsernameServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
 
-        UserEntity sessionUser = (UserEntity)session.getAttribute("sessionUser");
+        User sessionUser = (User)session.getAttribute("sessionUser");
         log.info("user with userId={} is trying to change username", sessionUser.getId());
 
         String newUsername = req.getParameter("new_username");

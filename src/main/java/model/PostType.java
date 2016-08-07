@@ -1,14 +1,14 @@
-package model.dbmodel;
+package model;
 
 /**
  * Created by artemypestretsov on 8/6/16.
  */
-public enum PostTypeEntity {
+public enum PostType {
     DEFAULT,
     PUBLIC,
     PRIVATE;
 
-    public static int getIdByPostType(PostTypeEntity postType) {
+    public static int getIdByPostType(PostType postType) {
         switch (postType) {
             case DEFAULT: return 0;
             case PUBLIC: return 0;
@@ -17,7 +17,7 @@ public enum PostTypeEntity {
         throw new IllegalStateException("Illegal PostType:" + postType.name());
     }
 
-    public static PostTypeEntity getPostTypeById(int id) {
+    public static PostType getPostTypeById(int id) {
         switch (id) {
             case 0: return PUBLIC;
             case 1: return PRIVATE;

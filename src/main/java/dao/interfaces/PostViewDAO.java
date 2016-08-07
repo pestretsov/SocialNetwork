@@ -1,7 +1,6 @@
 package dao.interfaces;
 
-import model.dbmodel.PostEntity;
-import model.dbmodel.PostView;
+import model.PostView;
 
 import java.util.List;
 

@@ -3,8 +3,8 @@ package controllers;
 import dao.interfaces.FollowDAO;
 import dao.interfaces.UserDAO;
 import lombok.extern.slf4j.Slf4j;
-import model.dbmodel.FollowEntity;
-import model.dbmodel.UserEntity;
+import model.Follow;
+import model.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,14 +34,14 @@ public class FollowUserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
 
-        UserEntity sessionUser = (UserEntity)session.getAttribute("sessionUser");
+        User sessionUser = (User)session.getAttribute("sessionUser");
 
         int userToFollowId = Integer.parseInt(req.getParameter("requestUserId"));
 
         log.info("userId={} is trying to follow userId={}", sessionUser.getId(), userToFollowId);
 
         try {
-            FollowEntity follow = new FollowEntity();
+            Follow follow = new Follow();
             follow.setUserId(userToFollowId);
             follow.setFollowerId(sessionUser.getId());
 
@@ -50,8 +50,8 @@ public class FollowUserServlet extends HttpServlet {
             resp.sendError(500, "Something went wrong");
             return;
         }
-        FollowEntity createdFollow = followDAO.getByUserAndFollowerId(userToFollowId, sessionUser.getId());
-        UserEntity user = userDAO.getById(createdFollow.getUserId()).get();
+        Follow createdFollow = followDAO.getByUserAndFollowerId(userToFollowId, sessionUser.getId());
+        User user = userDAO.getById(createdFollow.getUserId()).get();
 
         log.debug("{} now follows {}", sessionUser.getUsername(), user.getUsername());
 

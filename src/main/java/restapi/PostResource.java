@@ -6,10 +6,8 @@ import dao.interfaces.PostDAO;
 import dao.interfaces.PostViewDAO;
 import dao.interfaces.UserDAO;
 import lombok.extern.slf4j.Slf4j;
-import model.dbmodel.PostEntity;
-import model.dbmodel.PostView;
-import model.restmodel.Post;
-import model.restmodel.User;
+import model.Post;
+import model.PostView;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.*;
@@ -58,7 +56,7 @@ public class PostResource {
 
         log.info("trying to GET post with postId={}", id);
 
-        Optional<PostEntity> postOpt = postDAO.getById(id);
+        Optional<Post> postOpt = postDAO.getById(id);
 
         try {
             if (postOpt.isPresent()) {
@@ -83,14 +81,10 @@ public class PostResource {
             @QueryParam("offsetId") int offsetId,
             @QueryParam("limit") int limit) {
 
-        List<PostEntity> posts = postDAO.getPersonalTimelineWithOffsetId(followerId, offsetId, limit);
-
-        List<Post> result = posts.stream()
-                .map(p -> new Post(p, new User(userDAO.getById(p.getFromId()).orElse(null))))
-                .collect(Collectors.toList());
+        List<Post> posts = postDAO.getPersonalTimelineWithOffsetId(followerId, offsetId, limit);
 
         try {
-            String json = toJson(result);
+            String json = toJson(posts);
             return Response.ok(json).build();
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
@@ -106,12 +100,8 @@ public class PostResource {
 
         List<PostView> posts = postViewDAO.getSublist(fromId, offsetId, limit);
 
-        List<Post> result = posts.stream()
-                .map(p -> new Post(postDAO.getById(p.getPostId()).get(), new User(userDAO.getById(p.getFromId()).orElse(null))))
-                .collect(Collectors.toList());
-
         try {
-            String json = toJson(result);
+            String json = toJson(posts);
             return Response.ok(json).build();
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
@@ -134,7 +124,7 @@ public class PostResource {
     @PUT
     @Path("/secure")
     @Consumes(APPLICATION_JSON)
-    public void updatePostById(PostEntity post) {
+    public void updatePostById(Post post) {
         log.info("trying to UPDATE post with postId={}", post.getId());
         // TODO: needs fix -- probably new parser
         post.setPublishTime(Instant.now());
