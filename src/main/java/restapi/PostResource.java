@@ -3,9 +3,11 @@ package restapi;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.interfaces.PostDAO;
+import dao.interfaces.PostViewDAO;
 import dao.interfaces.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.dbmodel.PostEntity;
+import model.dbmodel.PostView;
 import model.restmodel.Post;
 import model.restmodel.User;
 
@@ -30,6 +32,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 public class PostResource {
     private static PostDAO postDAO;
     private static UserDAO userDAO;
+    private static PostViewDAO postViewDAO;
 
     @Context
     public void init(ServletContext servletContext) {
@@ -38,6 +41,9 @@ public class PostResource {
         }
         if (userDAO == null) {
             userDAO = (UserDAO) servletContext.getAttribute("userDAO");
+        }
+        if (postViewDAO == null) {
+            postViewDAO = (PostViewDAO) servletContext.getAttribute("postViewDAO");
         }
     }
 
@@ -98,10 +104,10 @@ public class PostResource {
             @QueryParam("offsetId") int offsetId,
             @QueryParam("limit") int limit) {
 
-        List<PostEntity> posts = postDAO.getSublistWithOffsetId(fromId, offsetId, limit);
+        List<PostView> posts = postViewDAO.getSublist(fromId, offsetId, limit);
 
         List<Post> result = posts.stream()
-                .map(p -> new Post(p, new User(userDAO.getById(p.getFromId()).orElse(null))))
+                .map(p -> new Post(postDAO.getById(p.getPostId()).get(), new User(userDAO.getById(p.getFromId()).orElse(null))))
                 .collect(Collectors.toList());
 
         try {
