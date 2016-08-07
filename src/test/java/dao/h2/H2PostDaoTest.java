@@ -50,7 +50,7 @@ public class H2PostDAOTest {
         assertEquals(post1.getText(), post.getText());
         assertEquals(postDAO.getById(1).get().getText(), "test test test text");
 
-        postDAO.deleteById(post.getId());
+        postDAO.deleteById(post1.getId());
     }
 
     @Test
@@ -73,9 +73,9 @@ public class H2PostDAOTest {
         post3.setText("mmm nice");
         post3.setFromId(2);
 
-        postDAO.create(post1);
-        postDAO.create(post2);
-        postDAO.create(post3);
+        int postId1 = postDAO.create(post1);
+        int postId2 = postDAO.create(post2);
+        int postId3 = postDAO.create(post3);
 
         List<PostEntity> posts = postDAO.getAllByFromId(1);
         assertEquals(posts.size(), 2);
@@ -83,9 +83,9 @@ public class H2PostDAOTest {
             assertEquals(post.getFromId(), 1);
         }
 
-        postDAO.deleteById(post1.getId());
-        postDAO.deleteById(post2.getId());
-        postDAO.deleteById(post3.getId());
+        postDAO.deleteById(postId1);
+        postDAO.deleteById(postId2);
+        postDAO.deleteById(postId3);
     }
 
     @Test
@@ -108,16 +108,16 @@ public class H2PostDAOTest {
         post3.setText("mmm nice");
         post3.setFromId(2);
 
-        postDAO.create(post1);
-        postDAO.create(post2);
-        postDAO.create(post3);
+        int postId1 = postDAO.create(post1);
+        int postId2 = postDAO.create(post2);
+        int postId3 = postDAO.create(post3);
 
         assertTrue(postDAO.deleteById(1));
         assertFalse(postDAO.getById(1).isPresent());
 
-        postDAO.deleteById(post1.getId());
-        postDAO.deleteById(post2.getId());
-        postDAO.deleteById(post3.getId());
+        postDAO.deleteById(postId1);
+        postDAO.deleteById(postId2);
+        postDAO.deleteById(postId3);
     }
 
     @Test
@@ -171,11 +171,11 @@ public class H2PostDAOTest {
         post5.setText("test test test text 555");
         post5.setFromId(1);
 
-        postDAO.create(post1);
-        postDAO.create(post2);
-        postDAO.create(post3);
-        postDAO.create(post4);
-        postDAO.create(post5);
+        int postId1 = postDAO.create(post1);
+        int postId2 = postDAO.create(post2);
+        int postId3 = postDAO.create(post3);
+        int postId4 = postDAO.create(post4);
+        int postId5 = postDAO.create(post5);
 
         List<PostEntity> postList = postDAO.getSublistByFromId(1, 0, 100);
 
@@ -187,11 +187,11 @@ public class H2PostDAOTest {
         postList = postDAO.getSublistByFromId(1, 2, 4);
         assertTrue(postList.size() == 3);
 
-        postDAO.deleteById(post1.getId());
-        postDAO.deleteById(post2.getId());
-        postDAO.deleteById(post3.getId());
-        postDAO.deleteById(post4.getId());
-        postDAO.deleteById(post5.getId());
+        postDAO.deleteById(postId1);
+        postDAO.deleteById(postId2);
+        postDAO.deleteById(postId3);
+        postDAO.deleteById(postId4);
+        postDAO.deleteById(postId5);
     }
 
     @AfterClass

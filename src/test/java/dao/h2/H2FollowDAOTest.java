@@ -4,6 +4,7 @@ import common.cp.ConnectionPool;
 import common.cp.SimpleConnectionPool;
 import model.dbmodel.FollowEntity;
 import model.dbmodel.UserEntity;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -102,5 +103,10 @@ public class H2FollowDAOTest {
         }
 
         followDAO.delete(follow);
+    }
+
+    @AfterClass
+    public static void closeAll() throws Exception {
+        connectionPool.close();
     }
 }
