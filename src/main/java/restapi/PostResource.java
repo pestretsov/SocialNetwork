@@ -17,7 +17,6 @@ import javax.ws.rs.core.Response;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -81,7 +80,7 @@ public class PostResource {
             @QueryParam("offsetId") int offsetId,
             @QueryParam("limit") int limit) {
 
-        List<Post> posts = postDAO.getPersonalTimelineWithOffsetId(followerId, offsetId, limit);
+        List<PostView> posts = postViewDAO.getPersonalTimeline(followerId, offsetId, limit);
 
         try {
             String json = toJson(posts);
@@ -93,12 +92,12 @@ public class PostResource {
 
     @GET
     @Produces(APPLICATION_JSON)
-    public Response getPostsWithOffsetAndLimit(
+    public Response getUserPostsSublist(
             @QueryParam("fromId") int fromId,
             @QueryParam("offsetId") int offsetId,
             @QueryParam("limit") int limit) {
 
-        List<PostView> posts = postViewDAO.getSublist(fromId, offsetId, limit);
+        List<PostView> posts = postViewDAO.getUserPostsSublist(fromId, offsetId, limit);
 
         try {
             String json = toJson(posts);

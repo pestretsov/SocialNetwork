@@ -39,7 +39,7 @@ public class H2PostViewDAO implements PostViewDAO {
     }
 
     @Override
-    public List<PostView> getSublist(int fromId, int offsetId, int limit) {
+    public List<PostView> getUserPostsSublist(int fromId, int offsetId, int limit) {
         List<PostView> sublist = new ArrayList<>();
 
         String sql = "SELECT post_id, post_text, post_type, post_publish_time, from_id, from_username," +
@@ -62,12 +62,27 @@ public class H2PostViewDAO implements PostViewDAO {
     }
 
     @Override
-    public List<PostView> getPersonalTimelineWithOffsetId(int followerId, int offsetId, int limit) {
-        return null;
-    }
+    public List<PostView> getPersonalTimeline(int followerId, int offsetId, int limit) {
+        List<PostView> timeline = new ArrayList<>();
 
-    @Override
-    public List<PostView> getAllPosts(int fromId) {
-        return null;
+        String sql =
+                "SELECT post_id, post_text, post_type, post_publish_time, from_id, " +
+                        "from_username, from_first_name, from_last_name FROM PostView " +
+                        "WHERE from_id IN (SELECT user_id FROM Follow WHERE follower_id=?) AND post_id<? ORDER BY post_id DESC LIMIT ?";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, followerId);
+            statement.setInt(2, offsetId);
+            statement.setInt(3, limit);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    timeline.add(parsePostView(resultSet));
+                }
+            }
+            return timeline;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
