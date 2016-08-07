@@ -35,7 +35,7 @@ $(function () {
             success: function (postViews) {
                 postViews.forEach(function (postView) {
 
-                    var user = postView.from;
+                    var userId = postView.fromId;
 
                     var now = new Date();
                     var nowWrapper = moment(now);
@@ -59,7 +59,7 @@ $(function () {
                     prepareHtml += '</div>';
                     prepareHtml += '</div>';
 
-                    if (user.id == sessionUser.id) {
+                    if (userId == sessionUser.id) {
                         prepareHtml += '<div class="row">';
                         prepareHtml += '<div class="col-md-12">';
 
