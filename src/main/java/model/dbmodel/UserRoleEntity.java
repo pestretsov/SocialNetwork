@@ -12,7 +12,7 @@ public enum UserRoleEntity {
             case USER: return 0;
             case ADMIN: return 1;
         }
-        throw new IllegalStateException("Illegal user sex:" + role.name());
+        throw new IllegalStateException("Illegal user role:" + role.name());
     }
 
     public static UserRoleEntity getUserRoleById(int id) {

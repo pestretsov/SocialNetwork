@@ -4,6 +4,7 @@ import common.cp.ConnectionPool;
 import common.cp.SimpleConnectionPool;
 import dao.interfaces.UserDAO;
 import model.dbmodel.UserEntity;
+import model.dbmodel.UserGenderEntity;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -53,7 +54,7 @@ public class H2UserDAOTest {
     @Test
     public void createUserTest() throws Exception {
         UserEntity user = new UserEntity();
-        user.setSex(1);
+        user.setGender(UserGenderEntity.getUserGenderById(1));
         user.setBirthDate(LocalDate.now());
         user.setLastName("Novik");
         user.setFirstName("Nikita");

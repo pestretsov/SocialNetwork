@@ -2,6 +2,7 @@ package model.restmodel;
 
 import lombok.Data;
 import model.dbmodel.UserEntity;
+import model.dbmodel.UserGenderEntity;
 
 import java.time.LocalDate;
 
@@ -16,7 +17,7 @@ public class User {
     private String firstName;
     private String lastName;
     private String bio;
-    private int sex;
+    private UserGenderEntity gender;
 
     private LocalDate birthDate;
 
@@ -27,7 +28,7 @@ public class User {
         setLastName(user.getLastName());
         setFirstName(user.getFirstName());
         setBirthDate(user.getBirthDate());
-        setSex(user.getSex());
+        setGender(user.getGender());
 
         setBio(user.getBio());
     }

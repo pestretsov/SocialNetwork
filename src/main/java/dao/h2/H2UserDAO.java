@@ -3,6 +3,7 @@ package dao.h2;
 import common.cp.ConnectionPool;
 import dao.interfaces.UserDAO;
 import model.dbmodel.UserEntity;
+import model.dbmodel.UserGenderEntity;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class H2UserDAO implements UserDAO {
         user.setPassword(resultSet.getString("password"));
         user.setFirstName(resultSet.getString("first_name"));
         user.setLastName(resultSet.getString("last_name"));
-        user.setSex(resultSet.getInt("sex"));
+        user.setGender(UserGenderEntity.getUserGenderById(resultSet.getInt("gender")));
         user.setBirthDate(resultSet.getDate("birth_date").toLocalDate());
         user.setBio(resultSet.getString("bio"));
         return user;
@@ -42,14 +43,14 @@ public class H2UserDAO implements UserDAO {
         statement.setString(2, user.getPassword());
         statement.setString(3, user.getFirstName());
         statement.setString(4, user.getLastName());
-        statement.setInt(5, user.getSex());
+        statement.setInt(5, UserGenderEntity.getIdByUserGender(user.getGender()));
         statement.setDate(6, Date.valueOf(user.getBirthDate()));
         statement.setString(7, user.getBio());
     }
 
     @Override
     public Optional<UserEntity> getByUsername(String username) {
-        String sql = "SELECT id, username, password, first_name, last_name, sex, birth_date, bio FROM User " +
+        String sql = "SELECT id, username, password, first_name, last_name, gender, birth_date, bio FROM User " +
                 "WHERE username=?";
 
         try (Connection connection = connectionPool.getConnection();
@@ -65,7 +66,7 @@ public class H2UserDAO implements UserDAO {
 
     @Override
     public Optional<UserEntity> getById(int id) {
-        String sql = "SELECT id, username, password, first_name, last_name, sex, birth_date, bio FROM User " +
+        String sql = "SELECT id, username, password, first_name, last_name, gender, birth_date, bio FROM User " +
                 "WHERE id=?";
 
         try (Connection connection = connectionPool.getConnection();
@@ -81,7 +82,7 @@ public class H2UserDAO implements UserDAO {
 
     @Override
     public int create(UserEntity user) {
-        String sql = "INSERT INTO User (username, password, first_name, last_name, sex, birth_date, bio) " +
+        String sql = "INSERT INTO User (username, password, first_name, last_name, gender, birth_date, bio) " +
                 "VALUES (?,?,?,?,?,?,?)";
 
         try (Connection connection = connectionPool.getConnection();
@@ -102,7 +103,7 @@ public class H2UserDAO implements UserDAO {
 
     @Override
     public boolean update(UserEntity user) {
-        String sql = "UPDATE User SET username=?, password=?, first_name=?, last_name=?, sex=?, birth_date=?, bio=? WHERE id=?";
+        String sql = "UPDATE User SET username=?, password=?, first_name=?, last_name=?, gender=?, birth_date=?, bio=? WHERE id=?";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -129,7 +130,7 @@ public class H2UserDAO implements UserDAO {
 
     @Override
     public List<UserEntity> getUsersFollowingUser(int userId) {
-        String sql = "SELECT id, username, password, first_name, last_name, sex, birth_date, bio" +
+        String sql = "SELECT id, username, password, first_name, last_name, gender, birth_date, bio" +
                 " FROM User WHERE id IN (SELECT follower_id FROM Follow WHERE user_id=?)";
 
         List<UserEntity> followers = new ArrayList<>();
@@ -152,7 +153,7 @@ public class H2UserDAO implements UserDAO {
 
     @Override
     public List<UserEntity> getUsersFollowedByUser(int userId) {
-        String sql = "SELECT id, username, password, first_name, last_name, sex, birth_date, bio" +
+        String sql = "SELECT id, username, password, first_name, last_name, gender, birth_date, bio" +
                 " FROM User WHERE id IN (SELECT user_id FROM Follow WHERE follower_id=?)";
 
         List<UserEntity> followings = new ArrayList<>();

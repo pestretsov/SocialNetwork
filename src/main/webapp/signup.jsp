@@ -38,8 +38,8 @@
                     <input id="user-dob-input" class="form-control" type="date" name="birth_date">
                 </div>
                 <div class="form-group row">
-                    <label for="user-sex-select">Gender</label>
-                    <select id="user-sex-select" name="sex" form="signup" required>
+                    <label for="user-gender-select">Gender</label>
+                    <select id="user-gender-select" name="gender" form="signup" required>
                         <option value="">gender</option>
                         <option value="1">Female</option>
                         <option value="2">Male</option>

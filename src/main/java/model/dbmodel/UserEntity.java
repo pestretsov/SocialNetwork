@@ -31,9 +31,12 @@ public class UserEntity {
     @NotNull
     private String lastName; // last_name VARCHAR(255) NOT NULL
 
+    private UserRoleEntity role;
+
     // Optional:
-    private int sex; // sex INT DEFAULT 0 (0– not specified; 1 – female; 2 – male)
+    private UserGenderEntity gender; // gender INT DEFAULT 0 (0– not specified; 1 – female; 2 – male)
     private LocalDate birthDate; // birth_date DATE
     @Size(max = 255)
     private String bio; // bio TEXT
+
 }
