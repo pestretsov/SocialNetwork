@@ -34,5 +34,6 @@ public class UserEntity {
     // Optional:
     private int sex; // sex INT DEFAULT 0 (0– not specified; 1 – female; 2 – male)
     private LocalDate birthDate; // birth_date DATE
+    @Size(max = 255)
     private String bio; // bio TEXT
 }
