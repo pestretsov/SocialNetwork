@@ -3,6 +3,7 @@ package model.dbmodel;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.sql.Clob;
 import java.time.Instant;
 
@@ -17,8 +18,9 @@ public class PostEntity {
     @NotNull
     private int fromId; // from_id INT NOT NULL REFERENCES UserEntity(id)
 
-    private int postType; // post_type INT DEFAULT 0 (0 - public; 1 - private)
+    private PostTypeEntity postType; // post_type INT DEFAULT 0 (0 - public; 1 - private)
 
+    @Size(max = 255)
     private String text; // text TEXT
 
     @NotNull

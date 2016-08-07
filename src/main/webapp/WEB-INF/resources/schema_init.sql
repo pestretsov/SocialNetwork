@@ -22,11 +22,28 @@ CREATE TABLE Post (
 DROP TABLE IF EXISTS Follow;
 CREATE TABLE Follow (
   follower_id INT NOT NULL REFERENCES User(id) ON UPDATE CASCADE ON DELETE CASCADE,
-  user_id INT NOT NULL REFERENCES User(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  user_id     INT NOT NULL REFERENCES User(id) ON UPDATE CASCADE ON DELETE CASCADE,
   PRIMARY KEY (follower_id, user_id)
 );
 
-CREATE OR REPLACE VIEW PostView(post_id, post_text, post_type, post_publish_time, from_id, from_username, from_first_name, from_last_name)
+DROP TABLE IF EXISTS "Like";
+CREATE TABLE "Like" (
+  id           INT PRIMARY KEY AUTO_INCREMENT,
+  post_id      INT NOT NULL REFERENCES Post(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  user_id      INT NOT NULL REFERENCES User(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  publish_time TIMESTAMP NOT NULL
+);
+
+DROP TABLE IF EXISTS Comment;
+CREATE TABLE Comment (
+  id           INT PRIMARY KEY AUTO_INCREMENT,
+  post_id      INT NOT NULL REFERENCES Post(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  from_id      INT NOT NULL REFERENCES Post(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  publish_time TIMESTAMP NOT NULL
+);
+
+CREATE OR REPLACE VIEW PostView (
+    post_id, post_text, post_type, post_publish_time, from_id, from_username, from_first_name, from_last_name)
 AS SELECT Post.id, Post.text, Post.post_type, Post.publish_time, Post.from_id, User.username, User.first_name, User.last_name
 FROM Post JOIN User ON Post.from_id=User.id;
 
