@@ -48,6 +48,13 @@ $(function () {
                     method: 'POST',
                     data: JSON.stringify({postId: postView.postId})
                 }).done(console.log("liked!"));
+            } else {
+                $.ajax({
+                    url: '/restapi/likes/removelike',
+                    headers: {'Content-type': 'application/json'},
+                    method: 'DELETE',
+                    data: JSON.stringify({postId: postView.postId})
+                }).done(console.log("deleted!"));
             }
         });
         var post = document.createElement("div");
