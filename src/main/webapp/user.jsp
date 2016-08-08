@@ -51,10 +51,19 @@
                 <h3 id="requestUserFullName">${requestUser.firstName} ${requestUser.lastName}</h3>
                 <h4 id="requestUserUsername" data-user-id="${requestUser.id}">@${requestUser.username}</h4>
                 <div class="clearfix"></div>
-                <p>${requestUser.bio}</p>
-                <form action="<c:url value='/secure/follow'/>" method="post">
-                    <button type="submit" class="btn btn-primary btn-sm follow-button" name="requestUserId" value="${requestUser.id}">Follow ${requestUser.firstName}</button>
-                </form>
+                <p class="user-bio">${requestUser.bio}</p>
+                <c:choose>
+                    <c:when test="${requestScope.canFollow}">
+                        <form action="<c:url value='/secure/follow'/>" method="post">
+                            <button type="submit" class="btn btn-primary btn-sm follow-button" name="requestUserId" value="${requestUser.id}">Follow ${requestUser.firstName}</button>
+                        </form>
+                    </c:when>
+                    <c:when test="${(not requestScope.canFollow) && (not (empty sessionUser))}">
+                        <form action="<c:url value='/secure/unfollow'/>" method="post">
+                            <button type="submit" class="btn btn-default btn-sm follow-button" name="requestUserId" value="${requestUser.id}">Following ${requestUser.firstName}</button>
+                        </form>
+                    </c:when>
+                </c:choose>
             </div>
         </div>
         <div class="col-md-6">
@@ -63,7 +72,7 @@
         </div>
         <div class="col-md-2">
             <%--<div class="panel">--%>
-                <%--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>--%>
+            <%--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>--%>
             <%--</div>--%>
         </div>
     </div>

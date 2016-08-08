@@ -29,22 +29,10 @@ import static utils.RestUtils.toJson;
 @Slf4j
 @Path("/likes")
 public class LikeResource {
-    private static PostDAO postDAO;
-    private static UserDAO userDAO;
-    private static PostViewDAO postViewDAO;
     private static LikeDAO likeDAO;
 
     @Context
     public void init(ServletContext servletContext) {
-        if (postDAO == null) {
-            postDAO = (PostDAO) servletContext.getAttribute("postDAO");
-        }
-        if (userDAO == null) {
-            userDAO = (UserDAO) servletContext.getAttribute("userDAO");
-        }
-        if (postViewDAO == null) {
-            postViewDAO = (PostViewDAO) servletContext.getAttribute("postViewDAO");
-        }
         if (likeDAO == null) {
             likeDAO = (LikeDAO) servletContext.getAttribute("likeDAO");
         }

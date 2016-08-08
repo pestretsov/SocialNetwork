@@ -43,7 +43,7 @@
                 <h3 id="requestUserFullName">${sessionUser.firstName} ${sessionUser.lastName}</h3>
                 <h4 id="requestUserUsername" data-user-id="${sessionUser.id}">@${sessionUser.username}</h4>
                 <div class="clearfix"></div>
-                <p>${sessionUser.bio}</p>
+                <p class="user-bio">${sessionUser.bio}</p>
             </div>
         </div>
         <div class="col-md-6">

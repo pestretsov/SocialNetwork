@@ -35,6 +35,7 @@ public class H2FollowDAO extends H2DAO implements FollowDAO {
         }
     }
 
+    @Override
     public boolean delete(Follow follow) {
         String sql = "DELETE FROM Follow WHERE follower_id=? AND user_id=?";
         try (Connection connection = getConnectionPool().getConnection();
@@ -66,6 +67,21 @@ public class H2FollowDAO extends H2DAO implements FollowDAO {
             try (ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
                 return parseFollow(resultSet);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean isFollowing(int userId, int followerId) {
+        String sql = "SELECT user_id FROM Follow WHERE user_id=? AND follower_id=?";
+        try (Connection c = getConnectionPool().getConnection();
+             PreparedStatement statement = c.prepareStatement(sql)) {
+            statement.setInt(1, userId);
+            statement.setInt(2, followerId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                return resultSet.next();
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -102,7 +102,7 @@ $(function () {
                     var postId = $(this).closest('.post').data("post-id");
 
                     $.ajax({
-                        url: "/restapi/posts/secure/" + postId,
+                        url: "/restapi/posts/delete/" + postId,
                         type: "DELETE",
                         dataType: "json",
                         success: $(this).closest('.post').remove()
@@ -160,7 +160,7 @@ $(function () {
 
     function loadPersonalTimeline(offsetId) {
         $.ajax({
-            url: "/restapi/posts/secure",
+            url: "/restapi/posts/gettimeline",
             data: {
                 followerId: sessionUser.id,
                 offsetId: offsetId,

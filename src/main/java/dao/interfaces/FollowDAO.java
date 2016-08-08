@@ -7,4 +7,6 @@ import model.Follow;
  */
 public interface FollowDAO extends DAO<Follow> {
     Follow getByUserAndFollowerId(int userId, int followerId);
+    boolean isFollowing(int userId, int followerId);
+    boolean delete(Follow follow);
 }

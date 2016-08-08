@@ -129,7 +129,7 @@ $(function () {
                     var postId = $(this).closest('.post').data("post-id");
 
                     $.ajax({
-                        url: "/restapi/posts/secure/" + postId,
+                        url: "/restapi/posts/delete/" + postId,
                         type: "DELETE",
                         dataType: "json",
                         success: $(this).closest('.post').remove()
@@ -187,7 +187,7 @@ $(function () {
 
     function loadUserPosts(user, offsetId) {
         $.ajax({
-            url: "/restapi/posts",
+            url: "/restapi/posts/",
             data: {
                 userId: sessionUser.id,
                 fromId: user.id,

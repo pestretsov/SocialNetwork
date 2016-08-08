@@ -46,7 +46,7 @@ public class PostResource {
     }
 
     @GET
-    @Path("{id}")
+    @Path("/{id}")
     @Produces(APPLICATION_JSON)
     public Response getPostById(@PathParam("id") int id) {
 
@@ -70,7 +70,7 @@ public class PostResource {
     }
 
     @GET
-    @Path("/secure")
+    @Path("/gettimeline")
     @Produces(APPLICATION_JSON)
     public Response getPersonalTimelineWithOffsetAndLimit(
             @QueryParam("followerId") int followerId,
@@ -81,7 +81,7 @@ public class PostResource {
 
         try {
             String json = toJson(posts);
-            log.debug("userId={} requested timeline={}", followerId, json);
+            log.debug("userId={} requested timeline", followerId);
             return Response.ok(json).build();
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
@@ -100,7 +100,7 @@ public class PostResource {
 
         try {
             String json = toJson(posts);
-            log.debug("userId={} requested sublist={}", userId, json);
+            log.debug("userId={} requested sublist of userId={}", userId, fromId);
             return Response.ok(json).build();
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
@@ -108,7 +108,7 @@ public class PostResource {
     }
 
     @DELETE
-    @Path("/secure/{id}")
+    @Path("/delete/{id}")
     public void deletePostById(@PathParam("id") int id) {
         log.info("trying to DELETE post with postId={}", id);
         if (postDAO.getById(id).isPresent()) {
@@ -121,7 +121,7 @@ public class PostResource {
     }
 
     @PUT
-    @Path("/secure")
+    @Path("/update")
     @Consumes(APPLICATION_JSON)
     public void updatePostById(Post post) {
         log.info("trying to UPDATE post with postId={}", post.getId());
