@@ -36,7 +36,7 @@ $(function () {
         likeGlyph.className += "glyphicon glyphicon-heart";
 
         if (!postView.likable) {
-            likeGlyph.className += "post-like-engaged";
+            likeGlyph.className += " post-like-engaged";
         }
 
         likeButton.appendChild(likeGlyph);
@@ -66,18 +66,12 @@ $(function () {
         var postContent = document.createElement("div");
         postContent.className = "col-md-11";
 
-        postContent.innerHTML += '<div class="row">';
-        postContent.innerHTML += '<div class="col-md-12">';
         postContent.innerHTML += '<h3>' + postView.fromFirstName + ' ' + postView.fromLastName + ' <span>@' + postView.fromUsername + '</span><span> &bull; </span><span>' + displayDate(postView.postPublishTime.epochSecond) + '</span></h3>';
         postContent.innerHTML += '<p>' + toPlainText(postView.postText) + '</p>';
         postContent.innerHTML += '</div>';
         postContent.innerHTML += '</div>';
 
-        var postToolbarRow = document.createElement("div");
-        postToolbarRow.className = "row";
-
         var postToolbar = document.createElement("div");
-        postToolbar.className = "col-md-12";
 
         postToolbar.appendChild(likeButton);
 
@@ -150,9 +144,9 @@ $(function () {
             postToolbar.appendChild(editButtonsDiv);
         }
 
-        postToolbarRow.appendChild(postToolbar);
+        // postToolbarRow.appendChild(postToolbar);
 
-        postContent.appendChild(postToolbarRow);
+        postContent.appendChild(postToolbar);
         post.appendChild(postContent);
 
         return post;

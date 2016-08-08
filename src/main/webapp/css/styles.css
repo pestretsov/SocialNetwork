@@ -107,6 +107,12 @@ div.col-md-1 {
     margin: 0;
 }
 
+
+.post h3 span {
+    font-size: 12px;
+    color: #AAB8C2;
+}
+
 .post h4 {
     color: #AAB8C2;
     font-size: 14px;
@@ -116,11 +122,6 @@ div.col-md-1 {
     font-size: 12px;
     margin-top: 10px;
     margin-bottom: 10px;
-}
-
-.post span {
-    font-size: 12px;
-    color: #AAB8C2;
 }
 
 .post-remove, .post-edit, .post-edit-ok, .post-like {
