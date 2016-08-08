@@ -1,6 +1,5 @@
 package restapi;
 
-import com.sun.deploy.net.HttpRequest;
 import dao.interfaces.LikeDAO;
 import dao.interfaces.PostDAO;
 import dao.interfaces.PostViewDAO;
@@ -87,5 +86,4 @@ public class LikeResource {
             return Response.serverError().entity("Error adding like").build();
         }
     }
-
 }

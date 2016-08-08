@@ -14,12 +14,148 @@ $(function () {
         return sessionUser.id === reqUser.id;
     }
 
-    var postsContainer = $("#posts");
+    var postsContainer = document.getElementById("posts");
 
     var offsetPostId = 100000000;
 
     function toPlainText(string) {
         return string.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+    
+    function displayDate(timestamp) {
+        var now = new Date();
+        var nowWrapper = moment(now);
+        var pastDateWrapper = moment.unix(timestamp);
+        return pastDateWrapper.from(nowWrapper);
+    }
+
+    function addPostView(postView) {
+        var likeButton = document.createElement("div");
+        likeButton.className += "post-like";
+        var likeGlyph = document.createElement("span");
+        likeGlyph.className += "glyphicon glyphicon-heart";
+
+        if (!postView.likable) {
+            likeGlyph.className += "post-like-engaged";
+        }
+
+        likeButton.appendChild(likeGlyph);
+        var likeCount = document.createElement("span");
+        if (postView.likeCount > 0) {
+            likeCount.innerText = postView.likeCount;
+        }
+        likeButton.appendChild(likeCount);
+
+        likeButton.click(function () {
+            if (postView.likable) {
+                $.ajax({
+                    url: '/rest/likes/addlike',
+                    headers: {'Content-type': 'application/json'},
+                    method: 'POST',
+                    data: JSON.stringify({postId: post.id})
+                }).done(console.log("liked!"));
+            }
+        });
+
+        var post = document.createElement("div");
+        post.className = "post panel row";
+
+        post.setAttribute("data-post-id", postView.postId);
+        post.innerHTML += '<div class="col-md-1"><img class="user-avatar" src="/images/artemy.jpg"></div>';
+
+        var postContent = document.createElement("div");
+        postContent.className = "col-md-11";
+
+        postContent.innerHTML += '<div class="row">';
+        postContent.innerHTML += '<div class="col-md-12">';
+        postContent.innerHTML += '<h3>' + postView.fromFirstName + ' ' + postView.fromLastName + ' <span>@' + postView.fromUsername + '</span><span> &bull; </span><span>' + displayDate(postView.postPublishTime.epochSecond) + '</span></h3>';
+        postContent.innerHTML += '<p>' + toPlainText(postView.postText) + '</p>';
+        postContent.innerHTML += '</div>';
+        postContent.innerHTML += '</div>';
+
+        var postToolbarRow = document.createElement("div");
+        postToolbarRow.className = "row";
+
+        var postToolbar = document.createElement("div");
+        postToolbar.className = "col-md-12";
+
+        postToolbar.appendChild(likeButton);
+
+        if (requestUserIsSessionUser(requestUser, sessionUser)) {
+            var editButtonsDiv = document.createElement("div");
+            editButtonsDiv.className = "pull-right";
+
+            var removeButton = document.createElement("span");
+            var editButton = document.createElement("span");
+            var editOkButton = document.createElement("span");
+
+            removeButton.className = "post-remove glyphicon glyphicon-remove-circle";
+            editButton.className = "post-edit glyphicon glyphicon-edit";
+            editOkButton.className = "hidden post-edit-ok glyphicon glyphicon-ok";
+
+            editButtonsDiv.appendChild(removeButton);
+            editButtonsDiv.appendChild(editButton);
+            editButtonsDiv.appendChild(editOkButton);
+
+            if (requestUserIsSessionUser(requestUser, sessionUser)) {
+                removeButton.addEventListener('click', function () {
+                    var postId = $(this).closest('.post').data("post-id");
+
+                    $.ajax({
+                        url: "/restapi/posts/secure/" + postId,
+                        type: "DELETE",
+                        dataType: "json",
+                        success: $(this).closest('.post').remove()
+                    });
+                });
+
+                // editButtonsDiv.on('click', '.post-edit', function () {
+                //     var p = $(this).parent('div').parent('div').parent('div').siblings('div').children('div').children('p');
+                //     var save = $(this).siblings('.post-edit-ok');
+                //     var edit = $(this);
+                //     var text = p.text().replace("\n", "").trim();
+                //
+                //     p.replaceWith("<textarea class='post-edit-text'>" + text + "</textarea>");
+                //
+                //     edit.addClass("hidden");
+                //     save.removeClass("hidden");
+                //
+                //     save.off('click').click(function () {
+                //         var postId = $(this).closest('.post').data("post-id");
+                //         var textArea = $(this).parent('div').parent('div').parent('div').siblings('div').children('div').children("textarea");
+                //         var updatedText = textArea.val();
+                //
+                //         $.ajax({
+                //             url: "/restapi/posts/secure",
+                //             type: "PUT",
+                //             method: "PUT",
+                //             headers: {'Content-Type': 'application/json'},
+                //             dataType: "json",
+                //             data: JSON.stringify({
+                //                 id: postId,
+                //                 fromId: requestUser.id,
+                //                 text: updatedText
+                //             }),
+                //             success: function () {
+                //                 textArea.replaceWith('<p>' + updatedText + '</p>');
+                //
+                //                 save.addClass("hidden");
+                //                 edit.removeClass("hidden");
+                //             }
+                //         });
+                //     });
+                // });
+            }
+
+            postToolbar.appendChild(editButtonsDiv);
+        }
+
+        postToolbarRow.appendChild(postToolbar);
+
+        postContent.appendChild(postToolbarRow);
+        post.appendChild(postContent);
+
+        return post;
     }
 
     function loadUserPosts(user, offsetId) {
@@ -35,47 +171,7 @@ $(function () {
             dataType: "json",
             success: function (postViews) {
                 postViews.forEach(function (postView) {
-                    var now = new Date();
-                    var nowWrapper = moment(now);
-                    var pastDateWrapper = moment.unix(postView.postPublishTime.epochSecond);
-                    var displayDate = pastDateWrapper.from(nowWrapper);
-
-                    var prepareHtml = '<div class="row">';
-                    prepareHtml += '<div class="panel post" data-post-id="'+ postView.postId +'">';
-
-                    prepareHtml += '<div class="col-md-1">';
-                        prepareHtml += '<img class="user-avatar" src="/images/artemy.jpg">';
-                    prepareHtml += '</div>';
-
-                    prepareHtml += '<div class="col-md-11">';
-
-                        prepareHtml += '<div class="row">';
-                            prepareHtml += '<div class="col-md-12">';
-                            prepareHtml += '<h3>'+postView.fromFirstName+" "+postView.fromLastName+' <span>@' + postView.fromUsername + '</span>'+
-                                                    '<span> &bull; </span><span>' + displayDate + '</span> </h3>';
-                            prepareHtml += '<p>' + toPlainText(postView.postText) + '</p>';
-                            prepareHtml += '</div>';
-                        prepareHtml += '</div>';
-
-                        if (requestUserIsSessionUser(requestUser, sessionUser)) {
-                            prepareHtml += '<div class="row">';
-                            prepareHtml += '<div class="col-md-12">';
-
-                            prepareHtml += '<span class="post-remove glyphicon glyphicon-remove-circle"></span>';
-                            prepareHtml += '<span class="post-edit glyphicon glyphicon-edit"></span>';
-                            prepareHtml += '<span class="hidden post-edit-ok glyphicon glyphicon-ok"></span>';
-
-                            prepareHtml += '</div>';
-                            prepareHtml += '</div>';
-                        }
-
-                    prepareHtml += '</div>';
-
-                    prepareHtml += '</div>';
-                    prepareHtml += '</div>';
-
-
-                    postsContainer.append(prepareHtml);
+                    postsContainer.appendChild(addPostView(postView));
                     offsetId = postView.postId;
                 });
 
@@ -94,54 +190,4 @@ $(function () {
     }
 
     loadUserPosts(requestUser, offsetPostId);
-
-    if (requestUserIsSessionUser(requestUser, sessionUser)) {
-        postsContainer.on('click', '.post-remove', function () {
-            var postId = $(this).closest('.post').data("post-id");
-
-            $.ajax({
-                url: "/restapi/posts/secure/" + postId,
-                type: "DELETE",
-                dataType: "json",
-                success: $(this).closest('.post').remove()
-            });
-        });
-
-        postsContainer.on('click', '.post-edit', function () {
-            var p = $(this).parent('div').parent('div').siblings('div').children('div').children('p');
-            var save = $(this).siblings('.post-edit-ok');
-            var edit = $(this);
-            var text = p.text().replace("\n", "").trim();
-
-            p.replaceWith("<textarea class='post-edit-text'>" + text + "</textarea>");
-
-            edit.addClass("hidden");
-            save.removeClass("hidden");
-
-            save.off('click').click(function () {
-                var postId = $(this).closest('.post').data("post-id");
-                var textArea = $(this).parent('div').parent('div').siblings('div').children('div').children("textarea");
-                var updatedText = textArea.val();
-
-                $.ajax({
-                    url: "/restapi/posts/secure",
-                    type: "PUT",
-                    method: "PUT",
-                    headers: {'Content-Type': 'application/json'},
-                    dataType: "json",
-                    data: JSON.stringify({
-                        id: postId,
-                        fromId: requestUser.id,
-                        text: updatedText
-                    }),
-                    success: function () {
-                        textArea.replaceWith('<p>' + updatedText + '</p>');
-
-                        save.addClass("hidden");
-                        edit.removeClass("hidden");
-                    }
-                });
-            });
-        });
-    }
 });

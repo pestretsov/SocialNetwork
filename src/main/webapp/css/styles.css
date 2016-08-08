@@ -123,14 +123,30 @@ div.col-md-1 {
     color: #AAB8C2;
 }
 
-.post-remove, .post-edit, .post-edit-ok{
+.post-remove, .post-edit, .post-edit-ok, .post-like {
     font-size: 14px;
     color: #AAB8C2;
     margin-right: 15px;
 }
 
+.post-like {
+    float: left;
+}
+
 .post-remove:hover, .post-edit:hover, .post-edit-ok:hover {
     color: #14171A;
+}
+
+.post-like:hover .glyphicon {
+    color: red;
+}
+
+.post-like-engaged {
+    color: red;
+}
+
+.post-like-engaged:hover {
+    color: #AAB8C2;
 }
 
 .post-edit-text {

@@ -20,5 +20,6 @@ public class PostView {
     private String fromFirstName;
     private String fromLastName;
 
+    private int likeCount;
     private boolean likable;
 }
