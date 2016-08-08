@@ -15,11 +15,10 @@ import java.util.List;
 /**
  * Created by artemypestretsov on 8/7/16.
  */
-public class H2PostViewDAO implements PostViewDAO {
-    private final ConnectionPool connectionPool;
+public class H2PostViewDAO extends H2DAO implements PostViewDAO {
 
     public H2PostViewDAO(ConnectionPool connectionPool) {
-        this.connectionPool = connectionPool;
+        super(connectionPool);
     }
 
     private PostView parsePostView(ResultSet resultSet) throws SQLException {
@@ -45,7 +44,7 @@ public class H2PostViewDAO implements PostViewDAO {
         String sql = "SELECT post_id, post_text, post_type, post_publish_time, from_id, from_username," +
                 " from_first_name, from_last_name FROM PostView WHERE from_id=? AND post_id<? ORDER BY post_id DESC LIMIT ?";
 
-        try (Connection connection = connectionPool.getConnection();
+        try (Connection connection = getConnectionPool().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, fromId);
             statement.setInt(2, offsetId);
@@ -70,7 +69,7 @@ public class H2PostViewDAO implements PostViewDAO {
                         "from_username, from_first_name, from_last_name FROM PostView " +
                         "WHERE from_id IN (SELECT user_id FROM Follow WHERE follower_id=?) AND post_id<? ORDER BY post_id DESC LIMIT ?";
 
-        try (Connection connection = connectionPool.getConnection();
+        try (Connection connection = getConnectionPool().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, followerId);
             statement.setInt(2, offsetId);

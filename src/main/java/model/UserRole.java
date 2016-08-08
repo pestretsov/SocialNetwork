@@ -7,6 +7,10 @@ public enum UserRole {
     ADMIN,
     USER;
 
+    public int getId() {
+        return UserRole.getIdByUserRole(this);
+    }
+
     public static int getIdByUserRole(UserRole role) {
         switch (role) {
             case USER: return 0;

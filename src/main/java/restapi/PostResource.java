@@ -125,8 +125,6 @@ public class PostResource {
     @Consumes(APPLICATION_JSON)
     public void updatePostById(Post post) {
         log.info("trying to UPDATE post with postId={}", post.getId());
-        // TODO: needs fix -- probably new parser
-        post.setPublishTime(Instant.now());
         postDAO.update(post);
         log.info("post with postId={} was updated", post.getId());
     }

@@ -4,6 +4,7 @@ import common.cp.ConnectionPool;
 import dao.interfaces.UserDAO;
 import model.User;
 import model.UserGender;
+import model.UserRole;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,11 +14,10 @@ import java.util.Optional;
 /**
  * Created by artemypestretsov on 7/13/16.
  */
-public class H2UserDAO implements UserDAO {
-    private final ConnectionPool connectionPool;
+public class H2UserDAO extends H2DAO implements UserDAO {
 
     public H2UserDAO(ConnectionPool connectionPool) {
-        this.connectionPool = connectionPool;
+        super(connectionPool);
     }
 
     private User parseUser(ResultSet resultSet) throws SQLException {
@@ -43,9 +43,17 @@ public class H2UserDAO implements UserDAO {
         statement.setString(2, user.getPassword());
         statement.setString(3, user.getFirstName());
         statement.setString(4, user.getLastName());
-        statement.setInt(5, UserGender.getIdByUserGender(user.getGender()));
-        statement.setDate(6, Date.valueOf(user.getBirthDate()));
+
+        int userGender = Optional.ofNullable(user.getGender()).map(UserGender::getIdByUserGender).orElse(UserGender.NOT_SPECIFIED.getId());
+
+        Date birthDate = Optional.ofNullable(user.getBirthDate()).map(Date::valueOf).orElse(null);
+
+        int userRole = Optional.ofNullable(user.getRole()).map(UserRole::getId).orElse(UserRole.USER.getId());
+
+        statement.setInt(5, userGender);
+        statement.setDate(6, birthDate);
         statement.setString(7, user.getBio());
+        statement.setInt(8, userRole);
     }
 
     @Override
@@ -53,7 +61,7 @@ public class H2UserDAO implements UserDAO {
         String sql = "SELECT id, username, password, first_name, last_name, gender, birth_date, bio FROM User " +
                 "WHERE username=?";
 
-        try (Connection connection = connectionPool.getConnection();
+        try (Connection connection = getConnectionPool().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, username);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -69,7 +77,7 @@ public class H2UserDAO implements UserDAO {
         String sql = "SELECT id, username, password, first_name, last_name, gender, birth_date, bio FROM User " +
                 "WHERE id=?";
 
-        try (Connection connection = connectionPool.getConnection();
+        try (Connection connection = getConnectionPool().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -85,7 +93,7 @@ public class H2UserDAO implements UserDAO {
         String sql = "INSERT INTO User (username, password, first_name, last_name, gender, birth_date, bio) " +
                 "VALUES (?,?,?,?,?,?,?)";
 
-        try (Connection connection = connectionPool.getConnection();
+        try (Connection connection = getConnectionPool().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             setUserWithoutId(statement, user);
             statement.executeUpdate();
@@ -105,7 +113,7 @@ public class H2UserDAO implements UserDAO {
     public boolean update(User user) {
         String sql = "UPDATE User SET username=?, password=?, first_name=?, last_name=?, gender=?, birth_date=?, bio=? WHERE id=?";
 
-        try (Connection connection = connectionPool.getConnection();
+        try (Connection connection = getConnectionPool().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             setUserWithoutId(statement, user);
             statement.setInt(8, user.getId());
@@ -119,7 +127,7 @@ public class H2UserDAO implements UserDAO {
     public boolean deleteById(int id) {
         String sql = "DELETE FROM User WHERE id=?";
 
-        try (Connection connection = connectionPool.getConnection();
+        try (Connection connection = getConnectionPool().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
             return statement.executeUpdate() != 0;
@@ -135,7 +143,7 @@ public class H2UserDAO implements UserDAO {
 
         List<User> followers = new ArrayList<>();
 
-        try (Connection connection = connectionPool.getConnection();
+        try (Connection connection = getConnectionPool().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, userId);
@@ -158,7 +166,7 @@ public class H2UserDAO implements UserDAO {
 
         List<User> followings = new ArrayList<>();
 
-        try (Connection connection = connectionPool.getConnection();
+        try (Connection connection = getConnectionPool().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, userId);

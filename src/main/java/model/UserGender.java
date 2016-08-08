@@ -8,6 +8,10 @@ public enum UserGender {
     FEMALE,
     MALE;
 
+    public int getId() {
+        return UserGender.getIdByUserGender(this);
+    }
+
     public static int getIdByUserGender(UserGender gender) {
         switch (gender) {
             case NOT_SPECIFIED: return 0;

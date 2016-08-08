@@ -9,11 +9,10 @@ import java.sql.*;
 /**
  * Created by artemypestretsov on 7/23/16.
  */
-public class H2FollowDAO implements FollowDAO {
-    private final ConnectionPool connectionPool;
+public class H2FollowDAO extends H2DAO implements FollowDAO {
 
     public H2FollowDAO(ConnectionPool connectionPool) {
-        this.connectionPool = connectionPool;
+        super(connectionPool);
     }
 
     /**
@@ -22,7 +21,7 @@ public class H2FollowDAO implements FollowDAO {
     @Override
     public int create(Follow follow) {
         String sql = "INSERT INTO Follow (follower_id, user_id) VALUES (?,?)";
-        try (Connection connection = connectionPool.getConnection();
+        try (Connection connection = getConnectionPool().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, follow.getFollowerId());
@@ -38,7 +37,7 @@ public class H2FollowDAO implements FollowDAO {
 
     public boolean delete(Follow follow) {
         String sql = "DELETE FROM Follow WHERE follower_id=? AND user_id=?";
-        try (Connection connection = connectionPool.getConnection();
+        try (Connection connection = getConnectionPool().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, follow.getFollowerId());
@@ -59,7 +58,7 @@ public class H2FollowDAO implements FollowDAO {
     public Follow getByUserAndFollowerId(int userId, int followerId) {
         String sql = "SELECT user_id, follower_id FROM Follow WHERE user_id=? AND follower_id=? ";
 
-        try (Connection connection = connectionPool.getConnection();
+        try (Connection connection = getConnectionPool().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, userId);

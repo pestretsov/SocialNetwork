@@ -18,7 +18,7 @@ import java.util.Optional;
  */
 
 @WebServlet(urlPatterns = "/login")
-public class LogInServlet extends HttpServlet {
+public class SignInServlet extends HttpServlet {
     private UserDAO userDAO;
     private SecurityUtils securityUtils;
 

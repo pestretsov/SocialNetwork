@@ -18,12 +18,6 @@ $(function () {
 
     var offsetPostId = 100000000;
 
-    function epochToDate(utcSeconds) {
-        var d = new Date(0); // The 0 there is the key, which sets the date to the epoch
-        d.setUTCSeconds(utcSeconds);
-        return d;
-    }
-
     function toPlainText(string) {
         return string.replace(/</g, "&lt;").replace(/>/g, "&gt;");
     }
@@ -49,7 +43,7 @@ $(function () {
                     prepareHtml += '<div class="panel post" data-post-id="'+ postView.postId +'">';
 
                     prepareHtml += '<div class="col-md-1">';
-                        prepareHtml += '<img class="user-avatar" src="images/artemy.jpg">';
+                        prepareHtml += '<img class="user-avatar" src="/images/artemy.jpg">';
                     prepareHtml += '</div>';
 
                     prepareHtml += '<div class="col-md-11">';
@@ -127,7 +121,6 @@ $(function () {
                 var postId = $(this).closest('.post').data("post-id");
                 var textArea = $(this).parent('div').parent('div').siblings('div').children('div').children("textarea");
                 var updatedText = textArea.val();
-                var currentTime = new Date().toISOString();
 
                 $.ajax({
                     url: "/restapi/posts/secure",
@@ -138,9 +131,7 @@ $(function () {
                     data: JSON.stringify({
                         id: postId,
                         fromId: requestUser.id,
-                        postType: "DEFAULT",
-                        text: updatedText,
-                        publishTime: currentTime
+                        text: updatedText
                     }),
                     success: function () {
                         textArea.replaceWith('<p>' + updatedText + '</p>');

@@ -21,12 +21,11 @@ import java.util.Optional;
 @WebServlet(urlPatterns = {"/user/*"})
 public class UserServlet extends HttpServlet {
     private UserDAO userDAO;
-    private PostDAO postDAO;
 
     @Override
     public void init() throws ServletException {
+        super.init();
         userDAO = (UserDAO) getServletContext().getAttribute("userDAO");
-        postDAO = (PostDAO) getServletContext().getAttribute("postDAO");
     }
 
     @Override
@@ -40,8 +39,7 @@ public class UserServlet extends HttpServlet {
         if (userOpt.isPresent()) {
             log.info("got user with username={}", path);
             req.setAttribute("requestUser", userOpt.get());
-            req.setAttribute("userPosts", postDAO.getAllByFromId(userOpt.get().getId()));
-            req.getRequestDispatcher("/user.jsp").forward(req, resp);
+            getServletContext().getRequestDispatcher("/user.jsp").forward(req, resp);
         } else {
             log.warn("no such user with username={}", path);
             resp.sendError(406, "No user with such username found!");

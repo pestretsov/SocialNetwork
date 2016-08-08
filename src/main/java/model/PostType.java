@@ -8,6 +8,10 @@ public enum PostType {
     PUBLIC,
     PRIVATE;
 
+    public int getId() {
+        return getIdByPostType(this);
+    }
+
     public static int getIdByPostType(PostType postType) {
         switch (postType) {
             case DEFAULT: return 0;

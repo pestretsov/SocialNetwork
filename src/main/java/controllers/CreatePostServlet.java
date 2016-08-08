@@ -44,19 +44,19 @@ public class CreatePostServlet extends HttpServlet {
         String text = req.getParameter("postText");
 
 
-        int postType = Optional.ofNullable(req.getParameter("postType")).map(Integer::parseInt).orElse(0);
+        PostType postType = Optional.ofNullable(req.getParameter("postType")).map(PostType::valueOf).orElse(PostType.DEFAULT);
 
 
         Post post = new Post();
 
         post.setText(text);
-        post.setPostType(PostType.getPostTypeById(postType));
+        post.setPostType(postType);
         post.setFromId(user.getId());
         post.setPublishTime(Instant.now());
 
-        postDAO.create(post);
+        post.setId(postDAO.create(post));
 
-        log.info("postId={}, fromId={}", post.getId(), post.getFromId());
+        log.info("postId={}, postType={}, fromId={}", post.getId(), postType,post.getFromId());
 
         resp.sendRedirect("/");
     }
