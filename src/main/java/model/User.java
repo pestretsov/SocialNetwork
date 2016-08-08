@@ -37,5 +37,4 @@ public class User {
     private LocalDate birthDate; // birth_date DATE
     @Size(max = 255)
     private String bio; // bio TEXT
-
 }

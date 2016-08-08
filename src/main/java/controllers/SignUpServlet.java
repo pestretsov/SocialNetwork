@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 /**
@@ -68,18 +69,26 @@ public class SignUpServlet extends HttpServlet {
         }
 
         String bio = Optional.ofNullable(req.getParameter("bio")).orElse("");
-        String birthDate = Optional.ofNullable(req.getParameter("birth_date")).orElse("");
+
+        LocalDate birthDate;
+        try {
+            birthDate = Optional.ofNullable(req.getParameter("birth_date")).map(LocalDate::parse).orElse(null);
+        } catch (DateTimeParseException e) {
+            birthDate = null;
+        }
 
         String passwordHash = securityUtils.encrypt(password);
 
-        int gender = Optional.ofNullable(req.getParameter("gender")).map(Integer::parseInt).orElse(0);
+        UserGender gender = Optional.ofNullable(req.getParameter("gender"))
+                .map(UserGender::valueOf).orElse(UserGender.NOT_SPECIFIED);
 
         user.setUsername(username);
         user.setPassword(passwordHash);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setBirthDate(LocalDate.parse(birthDate));
-        user.setGender(UserGender.getUserGenderById(gender));
+        log.debug("Trying to parse date = {}", birthDate);
+        user.setBirthDate(birthDate);
+        user.setGender(gender);
         user.setBio(bio);
 
         String nextURL = Optional.ofNullable((String) session.getAttribute("next")).orElse("/");

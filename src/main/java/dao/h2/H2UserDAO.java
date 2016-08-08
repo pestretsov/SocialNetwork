@@ -28,8 +28,9 @@ public class H2UserDAO extends H2DAO implements UserDAO {
         user.setFirstName(resultSet.getString("first_name"));
         user.setLastName(resultSet.getString("last_name"));
         user.setGender(UserGender.getUserGenderById(resultSet.getInt("gender")));
-        user.setBirthDate(resultSet.getDate("birth_date").toLocalDate());
+        user.setBirthDate(Optional.ofNullable(resultSet.getDate("birth_date")).map(Date::toLocalDate).orElse(null));
         user.setBio(resultSet.getString("bio"));
+        user.setRole(UserRole.getUserRoleById(resultSet.getInt("role")));
         return user;
     }
 
@@ -58,7 +59,7 @@ public class H2UserDAO extends H2DAO implements UserDAO {
 
     @Override
     public Optional<User> getByUsername(String username) {
-        String sql = "SELECT id, username, password, first_name, last_name, gender, birth_date, bio FROM User " +
+        String sql = "SELECT id, username, password, first_name, last_name, gender, birth_date, bio, role FROM User " +
                 "WHERE username=?";
 
         try (Connection connection = getConnectionPool().getConnection();
@@ -74,7 +75,7 @@ public class H2UserDAO extends H2DAO implements UserDAO {
 
     @Override
     public Optional<User> getById(int id) {
-        String sql = "SELECT id, username, password, first_name, last_name, gender, birth_date, bio FROM User " +
+        String sql = "SELECT id, username, password, first_name, last_name, gender, birth_date, bio, role FROM User " +
                 "WHERE id=?";
 
         try (Connection connection = getConnectionPool().getConnection();
@@ -90,8 +91,8 @@ public class H2UserDAO extends H2DAO implements UserDAO {
 
     @Override
     public int create(User user) {
-        String sql = "INSERT INTO User (username, password, first_name, last_name, gender, birth_date, bio) " +
-                "VALUES (?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO User (username, password, first_name, last_name, gender, birth_date, bio, role) " +
+                "VALUES (?,?,?,?,?,?,?,?)";
 
         try (Connection connection = getConnectionPool().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -111,7 +112,7 @@ public class H2UserDAO extends H2DAO implements UserDAO {
 
     @Override
     public boolean update(User user) {
-        String sql = "UPDATE User SET username=?, password=?, first_name=?, last_name=?, gender=?, birth_date=?, bio=? WHERE id=?";
+        String sql = "UPDATE User SET username=?, password=?, first_name=?, last_name=?, gender=?, birth_date=?, bio=?, role=? WHERE id=?";
 
         try (Connection connection = getConnectionPool().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -138,7 +139,7 @@ public class H2UserDAO extends H2DAO implements UserDAO {
 
     @Override
     public List<User> getUsersFollowingUser(int userId) {
-        String sql = "SELECT id, username, password, first_name, last_name, gender, birth_date, bio" +
+        String sql = "SELECT id, username, password, first_name, last_name, gender, birth_date, bio, role" +
                 " FROM User WHERE id IN (SELECT follower_id FROM Follow WHERE user_id=?)";
 
         List<User> followers = new ArrayList<>();
@@ -161,7 +162,7 @@ public class H2UserDAO extends H2DAO implements UserDAO {
 
     @Override
     public List<User> getUsersFollowedByUser(int userId) {
-        String sql = "SELECT id, username, password, first_name, last_name, gender, birth_date, bio" +
+        String sql = "SELECT id, username, password, first_name, last_name, gender, birth_date, bio, role" +
                 " FROM User WHERE id IN (SELECT user_id FROM Follow WHERE follower_id=?)";
 
         List<User> followings = new ArrayList<>();

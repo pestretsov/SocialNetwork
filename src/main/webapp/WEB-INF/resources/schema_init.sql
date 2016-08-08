@@ -14,6 +14,7 @@ CREATE TABLE User (
   gender     INT DEFAULT 0,
   birth_date DATE,
   bio        VARCHAR(255),
+  role       INT DEFAULT 0
 );
 
 CREATE TABLE Post (
@@ -49,6 +50,6 @@ CREATE OR REPLACE VIEW PostView (post_id, post_text, post_type, post_publish_tim
 AS SELECT Post.id, Post.text, Post.post_type, Post.publish_time, Post.from_id, User.username, User.first_name, User.last_name
    FROM Post JOIN User ON Post.from_id=User.id;
 
-INSERT INTO USER (USERNAME, PASSWORD, FIRST_NAME, LAST_NAME, GENDER, BIRTH_DATE, BIO)
-VALUES ('ambush', '4297715b943c507b0bcefe8da5d5fed8165a4b8152e019e6e0af73e18e7ff8b891f9b7eb0432ed6cebbceac8a48f1c68', 'Artemy', 'Pestretsov', '1', '1995-11-02', 'nothing do here');
+INSERT INTO USER (USERNAME, PASSWORD, FIRST_NAME, LAST_NAME, GENDER, BIRTH_DATE, BIO, role)
+VALUES ('ambush', '4297715b943c507b0bcefe8da5d5fed8165a4b8152e019e6e0af73e18e7ff8b891f9b7eb0432ed6cebbceac8a48f1c68', 'Artemy', 'Pestretsov', '1', '1995-11-02', 'nothing do here', 0);
 

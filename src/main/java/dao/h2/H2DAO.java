@@ -7,6 +7,7 @@ import common.cp.ConnectionPool;
  */
 public class H2DAO {
     private final ConnectionPool connectionPool;
+
     public H2DAO(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }

@@ -38,11 +38,11 @@
                     <input id="user-dob-input" class="form-control" type="date" name="birth_date">
                 </div>
                 <div class="form-group row">
-                    <label for="user-gender-select">Gender</label>
-                    <select id="user-gender-select" name="gender" form="signup" required>
-                        <option value="">gender</option>
-                        <option value="1">Female</option>
-                        <option value="2">Male</option>
+                    <label for="user-gender-select">Gender</label><br>
+                    <select id="user-gender-select" name="gender" form="signup">
+                        <option value="NOT_SPECIFIED">gender</option>
+                        <option value="FEMALE">Female</option>
+                        <option value="MALE">Male</option>
                     </select>
                 </div>
                 <div class="form-group row">
