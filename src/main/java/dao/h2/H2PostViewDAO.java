@@ -34,7 +34,7 @@ public class H2PostViewDAO extends H2DAO implements PostViewDAO {
         postView.setFromFirstName(resultSet.getString("from_first_name"));
         postView.setFromLastName(resultSet.getString("from_last_name"));
 
-        postView.setCanLike(resultSet.getInt("can_like") == 0);
+        postView.setLikable(resultSet.getInt("likable") == 0);
 
         return postView;
     }
@@ -47,7 +47,7 @@ public class H2PostViewDAO extends H2DAO implements PostViewDAO {
                 "from_username, from_first_name, from_last_name, " +
                 "(SELECT COUNT(\"Like\".id) FROM \"Like\" " +
                 "WHERE \"Like\".post_id=PostView.post_id AND \"Like\".user_id=? " +
-                "GROUP BY \"Like\".id) AS can_like " +
+                "GROUP BY \"Like\".id) AS likable " +
                 "FROM PostView " +
                 "WHERE from_id=? AND" +
                 " post_id<? ORDER BY post_id DESC LIMIT ?";
@@ -78,7 +78,7 @@ public class H2PostViewDAO extends H2DAO implements PostViewDAO {
                         "from_username, from_first_name, from_last_name, " +
                         "(SELECT COUNT(\"Like\".id) FROM \"Like\" " +
                         "WHERE \"Like\".post_id=PostView.post_id AND \"Like\".user_id=? " +
-                        "GROUP BY \"Like\".id) AS can_like " +
+                        "GROUP BY \"Like\".id) AS likable " +
                         "FROM PostView " +
                         "WHERE from_id IN (SELECT user_id FROM Follow WHERE follower_id=?) AND" +
                         " post_id<? ORDER BY post_id DESC LIMIT ?";

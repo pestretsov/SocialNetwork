@@ -20,5 +20,5 @@ public class PostView {
     private String fromFirstName;
     private String fromLastName;
 
-    private boolean canLike;
+    private boolean likable;
 }

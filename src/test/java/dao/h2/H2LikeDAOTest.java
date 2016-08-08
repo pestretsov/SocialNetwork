@@ -22,6 +22,7 @@ public class H2LikeDAOTest {
     private static H2PostDAO postDAO;
     private static H2UserDAO userDAO;
     private static H2LikeDAO likeDAO;
+    private static H2PostViewDAO postViewDAO;
 
     @BeforeClass
     public static void connectionPoolTest() throws Exception {
@@ -30,6 +31,7 @@ public class H2LikeDAOTest {
         postDAO = new H2PostDAO(connectionPool);
         userDAO = new H2UserDAO(connectionPool);
         likeDAO = new H2LikeDAO(connectionPool);
+        postViewDAO = new H2PostViewDAO(connectionPool);
     }
 
     @AfterClass
@@ -50,6 +52,22 @@ public class H2LikeDAOTest {
 
         assertTrue(likeDAO.removeLike(post.getId(), user.getId()));
         assertFalse(likeDAO.hasLike(post.getId(), user.getId()));
+
+        postDAO.deleteById(post.getId());
+    }
+
+    @Test
+    public void canLikeTest() throws Exception {
+        Post post = new Post();
+        post.setFromId(1);
+        post.setId(postDAO.create(post));
+
+        User user = userDAO.getById(2).get();
+
+        assertTrue(likeDAO.addLike(post.getId(), user.getId()) >= 0);
+        assertTrue(likeDAO.hasLike(post.getId(), user.getId()));
+
+        assertFalse(postViewDAO.getUserPostsSublist(2, 1, 1000, 3).get(0).isLikable());
 
         postDAO.deleteById(post.getId());
     }

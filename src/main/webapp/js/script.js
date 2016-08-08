@@ -26,6 +26,7 @@ $(function () {
         $.ajax({
             url: "/restapi/posts",
             data: {
+                userId: sessionUser.id,
                 fromId: user.id,
                 offsetId: offsetId,
                 limit: 3
