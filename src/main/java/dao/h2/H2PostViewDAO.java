@@ -35,6 +35,7 @@ public class H2PostViewDAO extends H2DAO implements PostViewDAO {
         postView.setFromLastName(resultSet.getString("from_last_name"));
 
         postView.setLikable(resultSet.getInt("likable") == 0);
+        postView.setLikeCount(resultSet.getInt("like_count"));
 
         return postView;
     }
@@ -46,8 +47,8 @@ public class H2PostViewDAO extends H2DAO implements PostViewDAO {
         String sql = "SELECT post_id, post_text, post_type, post_publish_time, from_id, " +
                 "from_username, from_first_name, from_last_name, " +
                 "(SELECT COUNT(\"Like\".id) FROM \"Like\" " +
-                "WHERE \"Like\".post_id=PostView.post_id AND \"Like\".user_id=? " +
-                "GROUP BY \"Like\".id) AS likable " +
+                "WHERE \"Like\".post_id=PostView.post_id AND \"Like\".user_id=? GROUP BY \"Like\".id) AS likable," +
+                "(SELECT COUNT(\"Like\".id) FROM \"Like\" WHERE \"Like\".post_id=PostView.post_id GROUP BY  \"Like\".id) AS like_count " +
                 "FROM PostView " +
                 "WHERE from_id=? AND" +
                 " post_id<? ORDER BY post_id DESC LIMIT ?";
@@ -76,9 +77,8 @@ public class H2PostViewDAO extends H2DAO implements PostViewDAO {
         String sql =
                 "SELECT post_id, post_text, post_type, post_publish_time, from_id, " +
                         "from_username, from_first_name, from_last_name, " +
-                        "(SELECT COUNT(\"Like\".id) FROM \"Like\" " +
-                        "WHERE \"Like\".post_id=PostView.post_id AND \"Like\".user_id=? " +
-                        "GROUP BY \"Like\".id) AS likable " +
+                        "(SELECT COUNT(\"Like\".id) FROM \"Like\" WHERE \"Like\".post_id=PostView.post_id AND \"Like\".user_id=? GROUP BY \"Like\".id) AS likable, " +
+                        "(SELECT COUNT(\"Like\".id) FROM \"Like\" WHERE \"Like\".post_id=PostView.post_id GROUP BY \"Like\".id) AS like_count " +
                         "FROM PostView " +
                         "WHERE from_id IN (SELECT user_id FROM Follow WHERE follower_id=?) AND" +
                         " post_id<? ORDER BY post_id DESC LIMIT ?";

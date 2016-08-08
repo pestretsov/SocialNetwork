@@ -127,6 +127,7 @@ div.col-md-1 {
     font-size: 14px;
     color: #AAB8C2;
     margin-right: 15px;
+    clear: both;
 }
 
 .post-like {
@@ -137,16 +138,16 @@ div.col-md-1 {
     color: #14171A;
 }
 
-.post-like:hover .glyphicon {
+.post-like span {
+    margin-right: 15px;
+}
+
+.post-like .glyphicon:hover {
     color: red;
 }
 
 .post-like-engaged {
     color: red;
-}
-
-.post-like-engaged:hover {
-    color: #AAB8C2;
 }
 
 .post-edit-text {
