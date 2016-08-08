@@ -117,7 +117,7 @@ public class H2UserDAO extends H2DAO implements UserDAO {
         try (Connection connection = getConnectionPool().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             setUserWithoutId(statement, user);
-            statement.setInt(8, user.getId());
+            statement.setInt(9, user.getId());
             return statement.executeUpdate() != 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);

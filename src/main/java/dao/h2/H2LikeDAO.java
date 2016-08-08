@@ -53,7 +53,7 @@ public class H2LikeDAO extends H2DAO implements LikeDAO {
         String sql = "DELETE FROM \"Like\" WHERE post_id=? AND user_id=?";
 
         try (Connection connection = getConnectionPool().getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, postId);
             statement.setInt(2, userId);
@@ -68,7 +68,7 @@ public class H2LikeDAO extends H2DAO implements LikeDAO {
     public boolean hasLike(int postId, int userId) {
         String sql = "SELECT post_id, user_id FROM \"Like\" WHERE post_id=? AND user_id=?";
         try (Connection connection = getConnectionPool().getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, postId);
             statement.setInt(2, userId);
