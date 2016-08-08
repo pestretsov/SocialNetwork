@@ -31,9 +31,9 @@ $(function () {
 
     function addPostView(postView) {
         var likeButton = document.createElement("div");
-        likeButton.className += "post-like";
+        likeButton.className = "post-like";
         var likeGlyph = document.createElement("span");
-        likeGlyph.className += "glyphicon glyphicon-heart";
+        likeGlyph.className = "glyphicon glyphicon-heart";
 
         if (!postView.likable) {
             likeGlyph.className += " post-like-engaged";
@@ -47,20 +47,46 @@ $(function () {
         likeButton.appendChild(likeCount);
 
         likeButton.addEventListener('click', function () {
+            function onSuccess() {
+                if (postView.likable) {
+                    postView.likeCount++;
+                } else {
+                    postView.likeCount--;
+                }
+
+                likeGlyph.className = "glyphicon glyphicon-heart";
+
+                likeGlyph.className = "glyphicon glyphicon-heart";
+                if (postView.likable) {
+                    likeGlyph.className += " post-like-engaged";
+                }
+
+                if (postView.likeCount != 0) {
+                    likeCount.innerText = postView.likeCount;
+                } else {
+                    likeCount.innerText = "";
+                }
+
+                postView.likable = !postView.likable;
+            }
+
+
             if (postView.likable) {
                 $.ajax({
                     url: '/restapi/likes/addlike',
                     headers: {'Content-type': 'application/json'},
                     method: 'POST',
-                    data: JSON.stringify({postId: postView.postId})
-                }).done(console.log("liked!"));
+                    data: JSON.stringify({postId: postView.postId}),
+                    success: onSuccess()
+                });
             } else {
                 $.ajax({
                     url: '/restapi/likes/removelike',
                     headers: {'Content-type': 'application/json'},
                     method: 'DELETE',
-                    data: JSON.stringify({postId: postView.postId})
-                }).done(console.log("deleted!"));
+                    data: JSON.stringify({postId: postView.postId}),
+                    success: onSuccess()
+                });
             }
         });
 
