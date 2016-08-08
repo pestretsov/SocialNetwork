@@ -2,6 +2,7 @@ package dao.h2;
 
 import common.cp.ConnectionPool;
 import dao.interfaces.LikeDAO;
+import model.Like;
 
 import java.sql.*;
 import java.time.Instant;
@@ -45,6 +46,11 @@ public class H2LikeDAO extends H2DAO implements LikeDAO {
     }
 
     @Override
+    public int addLike(Like like) {
+        return addLike(like.getPostId(), like.getUserId());
+    }
+
+    @Override
     public boolean removeLike(int postId, int userId) {
         if (!hasLike(postId, userId)) {
             return false;
@@ -62,6 +68,11 @@ public class H2LikeDAO extends H2DAO implements LikeDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public boolean removeLike(Like like) {
+        return removeLike(like.getPostId(), like.getUserId());
     }
 
     @Override
