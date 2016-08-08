@@ -1,5 +1,6 @@
 package restapi;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import dao.interfaces.LikeDAO;
 import dao.interfaces.PostDAO;
 import dao.interfaces.PostViewDAO;
@@ -21,6 +22,7 @@ import javax.ws.rs.core.Response;
 import java.util.Optional;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static utils.RestUtils.toJson;
 
 /**
  * Created by artemypestretsov on 8/8/16.
@@ -74,7 +76,7 @@ public class LikeResource {
         like.setUserId(sessionUser.getId());
 
         try {
-            log.info("userId={} it trying to add like to postId={}", like.getUserId(), like.getPostId());
+            log.info("userId={} is trying to add like to postId={}", like.getUserId(), like.getPostId());
             if (likeDAO.addLike(like) >= 0) {
                 log.info("userId={} has added like to postId={}", like.getUserId(), like.getPostId());
             } else {
@@ -82,7 +84,7 @@ public class LikeResource {
             }
             return Response.ok().build();
         } catch (RuntimeException e) {
-            log.warn("Error adding userId={} like to postId={}", like.getUserId(), like.getPostId());
+            log.warn("Error adding userId={} like to postId={}, error={}", like.getUserId(), like.getPostId(), e);
             return Response.serverError().entity("Error adding like").build();
         }
     }

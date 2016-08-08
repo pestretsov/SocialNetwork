@@ -46,13 +46,13 @@ $(function () {
         }
         likeButton.appendChild(likeCount);
 
-        likeButton.click(function () {
+        likeButton.addEventListener('click', function () {
             if (postView.likable) {
                 $.ajax({
-                    url: '/rest/likes/addlike',
+                    url: '/restapi/likes/addlike',
                     headers: {'Content-type': 'application/json'},
                     method: 'POST',
-                    data: JSON.stringify({postId: post.id})
+                    data: JSON.stringify({postId: postView.postId})
                 }).done(console.log("liked!"));
             }
         });

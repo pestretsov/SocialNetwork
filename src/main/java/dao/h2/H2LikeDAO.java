@@ -2,6 +2,7 @@ package dao.h2;
 
 import common.cp.ConnectionPool;
 import dao.interfaces.LikeDAO;
+import lombok.extern.slf4j.Slf4j;
 import model.Like;
 
 import java.sql.*;
@@ -10,6 +11,7 @@ import java.time.Instant;
 /**
  * Created by artemypestretsov on 8/8/16.
  */
+@Slf4j
 public class H2LikeDAO extends H2DAO implements LikeDAO {
 
     public H2LikeDAO(ConnectionPool connectionPool) {
@@ -21,7 +23,6 @@ public class H2LikeDAO extends H2DAO implements LikeDAO {
         if (hasLike(postId, userId)) {
             return -1;
         }
-
         String sql = "INSERT INTO \"Like\" (post_id, user_id, publish_time) VALUES (?,?,?)";
 
         try (Connection connection = getConnectionPool().getConnection();
@@ -31,7 +32,7 @@ public class H2LikeDAO extends H2DAO implements LikeDAO {
             statement.setInt(2, userId);
             statement.setTimestamp(3, Timestamp.from(Instant.now()));
 
-            statement.execute();
+            statement.executeUpdate();
 
             try (ResultSet keys = statement.getGeneratedKeys()) {
                 if (keys.next()) {

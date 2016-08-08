@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static utils.RestUtils.toJson;
 
 /**
  * Created by artemypestretsov on 7/29/16.
@@ -42,10 +43,6 @@ public class PostResource {
         if (postViewDAO == null) {
             postViewDAO = (PostViewDAO) servletContext.getAttribute("postViewDAO");
         }
-    }
-
-    public String toJson(Object object) throws JsonProcessingException {
-        return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(object);
     }
 
     @GET
@@ -84,6 +81,7 @@ public class PostResource {
 
         try {
             String json = toJson(posts);
+            log.debug("userId={} requested timeline={}", followerId, json);
             return Response.ok(json).build();
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
@@ -102,6 +100,7 @@ public class PostResource {
 
         try {
             String json = toJson(posts);
+            log.debug("userId={} requested sublist={}", userId, json);
             return Response.ok(json).build();
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
