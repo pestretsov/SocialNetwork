@@ -19,4 +19,6 @@ public class PostView {
     private String fromUsername;
     private String fromFirstName;
     private String fromLastName;
+
+    private boolean canLike;
 }

@@ -93,11 +93,12 @@ public class PostResource {
     @GET
     @Produces(APPLICATION_JSON)
     public Response getUserPostsSublist(
+            @QueryParam("userId") int userId,
             @QueryParam("fromId") int fromId,
             @QueryParam("offsetId") int offsetId,
             @QueryParam("limit") int limit) {
 
-        List<PostView> posts = postViewDAO.getUserPostsSublist(fromId, offsetId, limit);
+        List<PostView> posts = postViewDAO.getUserPostsSublist(userId, fromId, offsetId, limit);
 
         try {
             String json = toJson(posts);

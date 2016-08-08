@@ -79,14 +79,14 @@ public class H2PostViewDAOTest {
         int postId4 = postDAO.create(post4);
         int postId5 = postDAO.create(post5);
 
-        List<PostView> postList = postViewDAO.getUserPostsSublist(1, 1000000, 10);
+        List<PostView> postList = postViewDAO.getUserPostsSublist(1,1, 1000000, 10);
 
         assertTrue(postList.size() == 5);
 
-        postList = postViewDAO.getUserPostsSublist(1, 5, 3);
+        postList = postViewDAO.getUserPostsSublist(1, 1, 5, 3);
         assertTrue(postList.size() == 3);
 
-        postList = postViewDAO.getUserPostsSublist(1, 4, 1000);
+        postList = postViewDAO.getUserPostsSublist(1,1, 4, 1000);
         assertTrue(postList.size() == 3);
 
         postDAO.deleteById(postId1);
