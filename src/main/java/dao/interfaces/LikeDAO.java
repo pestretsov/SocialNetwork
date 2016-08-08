@@ -5,5 +5,6 @@ package dao.interfaces;
  */
 public interface LikeDAO {
     int addLike(int postId, int userId);
-    int removeLike(int postId, int userId);
+    boolean removeLike(int postId, int userId);
+    boolean hasLike(int postId, int userId);
 }
