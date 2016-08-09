@@ -1,7 +1,6 @@
 package restapi;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.interfaces.FollowDAO;
 import dao.interfaces.PostDAO;
 import dao.interfaces.PostViewDAO;
@@ -10,8 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 import model.Post;
 import model.PostType;
 import model.PostView;
+import model.User;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
@@ -23,6 +24,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static utils.RestUtils.getSessionUserOpt;
 import static utils.RestUtils.toJson;
 
 /**
@@ -53,6 +55,9 @@ public class PostResource {
         }
     }
 
+    @Context
+    HttpServletRequest request;
+
     @GET
     @Path("/{id}")
     @Produces(APPLICATION_JSON)
@@ -62,15 +67,31 @@ public class PostResource {
 
         Optional<Post> postOpt = postDAO.getById(id);
 
-        try {
-            if (postOpt.isPresent()) {
-                log.info("got post with postId={}", id);
-                String json = toJson(postOpt.get());
-                return Response.ok(json).build();
+        if (!postOpt.isPresent()) {
+            log.warn("no such post with postId={}", id);
+            return Response.noContent().build();
+        }
+
+        Post post = postOpt.get();
+
+        if (post.getPostType() == PostType.PRIVATE) {
+            Optional<User> sessionUser = getSessionUserOpt(request.getSession());
+            if (!sessionUser.isPresent()) {
+                log.warn("No user session found. Cannot add like");
+                return Response.status(Response.Status.FORBIDDEN)
+                        .entity("User is not signedup").build();
             } else {
-                log.warn("no such post with postId={}", id);
-                return Response.noContent().build();
+                if (!followDAO.isFollowing(post.getFromId(), sessionUser.get().getId())) {
+                    return Response.status(Response.Status.FORBIDDEN)
+                            .entity("Cannot see private posts").build();
+                }
             }
+        }
+
+        try {
+            log.info("got post with postId={}", id);
+            String json = toJson(post);
+            return Response.ok(json).build();
         } catch (JsonProcessingException e) {
             log.warn("JsonProcessingException thrown trying to get post with postId={}", id);
             throw new RuntimeException(e);
@@ -84,6 +105,12 @@ public class PostResource {
             @QueryParam("followerId") int followerId,
             @QueryParam("offsetId") int offsetId,
             @QueryParam("limit") int limit) {
+
+        if (!getSessionUserOpt(request.getSession()).isPresent()) {
+            log.warn("No user session found. Cannot add like");
+            return Response.status(Response.Status.FORBIDDEN)
+                    .entity("User is not signedup").build();
+        }
 
         List<PostView> posts = postViewDAO.getPersonalTimeline(followerId, offsetId, limit);
 
@@ -122,11 +149,19 @@ public class PostResource {
 
     @DELETE
     @Path("/delete/{id}")
-    public void deletePostById(@PathParam("id") int id) {
+    public Response deletePostById(@PathParam("id") int id) {
+
+        if (!getSessionUserOpt(request.getSession()).isPresent()) {
+            log.warn("No user session found. Cannot add like");
+            return Response.status(Response.Status.FORBIDDEN)
+                    .entity("User is not signedup").build();
+        }
+
         log.info("trying to DELETE post with postId={}", id);
         if (postDAO.getById(id).isPresent()) {
             log.info("post with postId={} was deleted", id);
             postDAO.deleteById(id);
+            return Response.ok().build();
         } else {
             log.info("no such post with postId={}", id);
             throw new RuntimeException("Resource with such path is unavailable");
@@ -136,9 +171,21 @@ public class PostResource {
     @PUT
     @Path("/update")
     @Consumes(APPLICATION_JSON)
-    public void updatePostById(Post post) {
-        log.info("trying to UPDATE post with postId={}", post.getId());
-        postDAO.update(post);
-        log.info("post with postId={} was updated", post.getId());
+    public Response updatePostById(Post post) {
+
+        if (!getSessionUserOpt(request.getSession()).isPresent()) {
+            log.warn("No user session found. Cannot add like");
+            return Response.status(Response.Status.FORBIDDEN)
+                    .entity("User is not signedup").build();
+        }
+
+        try {
+            log.info("trying to UPDATE post with postId={}", post.getId());
+            postDAO.update(post);
+            log.info("post with postId={} was updated", post.getId());
+            return Response.ok().build();
+        } catch (RuntimeException e) {
+            return Response.serverError().entity("Error updating post").build();
+        }
     }
 }
