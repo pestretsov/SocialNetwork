@@ -2,11 +2,13 @@ package restapi;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dao.interfaces.FollowDAO;
 import dao.interfaces.PostDAO;
 import dao.interfaces.PostViewDAO;
 import dao.interfaces.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.Post;
+import model.PostType;
 import model.PostView;
 
 import javax.servlet.ServletContext;
@@ -17,6 +19,8 @@ import javax.ws.rs.core.Response;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static utils.RestUtils.toJson;
@@ -30,6 +34,7 @@ import static utils.RestUtils.toJson;
 public class PostResource {
     private static PostDAO postDAO;
     private static UserDAO userDAO;
+    private static FollowDAO followDAO;
     private static PostViewDAO postViewDAO;
 
     @Context
@@ -42,6 +47,9 @@ public class PostResource {
         }
         if (postViewDAO == null) {
             postViewDAO = (PostViewDAO) servletContext.getAttribute("postViewDAO");
+        }
+        if (followDAO == null) {
+            followDAO = (FollowDAO) servletContext.getAttribute("followDAO");
         }
     }
 
@@ -96,7 +104,12 @@ public class PostResource {
             @QueryParam("offsetId") int offsetId,
             @QueryParam("limit") int limit) {
 
+
         List<PostView> posts = postViewDAO.getUserPostsSublist(userId, fromId, offsetId, limit);
+
+        if (!followDAO.isFollowing(userId, fromId)) {
+            posts = posts.stream().filter(pv -> pv.getPostType() != PostType.PRIVATE).collect(Collectors.toList());
+        }
 
         try {
             String json = toJson(posts);
