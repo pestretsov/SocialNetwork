@@ -11,6 +11,6 @@ import javax.servlet.http.HttpServlet;
 
 @Slf4j
 @WebServlet(urlPatterns = "/discover")
-public class DiscoverServlet extends HttpServlet {
+public class DiscoverServlet extends BaseServlet {
 
 }

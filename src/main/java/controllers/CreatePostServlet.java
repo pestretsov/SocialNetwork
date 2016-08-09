@@ -22,13 +22,7 @@ import java.util.Optional;
 
 @Slf4j
 @WebServlet(urlPatterns = "/secure/createpost")
-public class CreatePostServlet extends HttpServlet {
-    private PostDAO postDAO;
-
-    @Override
-    public void init() throws ServletException {
-        postDAO = (PostDAO) getServletContext().getAttribute("postDAO");
-    }
+public class CreatePostServlet extends BaseServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

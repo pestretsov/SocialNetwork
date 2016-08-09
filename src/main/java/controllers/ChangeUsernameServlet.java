@@ -19,14 +19,7 @@ import java.io.IOException;
 
 @Slf4j
 @WebServlet(urlPatterns = "/secure/changeusername")
-public class ChangeUsernameServlet extends HttpServlet {
-
-    private UserDAO userDAO;
-
-    @Override
-    public void init() throws ServletException {
-        userDAO = (UserDAO) getServletContext().getAttribute("userDAO");
-    }
+public class ChangeUsernameServlet extends BaseServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

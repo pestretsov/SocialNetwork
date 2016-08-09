@@ -18,15 +18,7 @@ import java.util.Optional;
  */
 
 @WebServlet(urlPatterns = "/login")
-public class SignInServlet extends HttpServlet {
-    private UserDAO userDAO;
-    private SecurityUtils securityUtils;
-
-    @Override
-    public void init() throws ServletException {
-        userDAO = (UserDAO) getServletContext().getAttribute("userDAO");
-        securityUtils = (SecurityUtils) getServletContext().getAttribute("securityUtils");
-    }
+public class SignInServlet extends BaseServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

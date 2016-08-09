@@ -21,16 +21,7 @@ import java.util.Optional;
 
 @Slf4j
 @WebServlet(urlPatterns = "")
-public class IndexServlet extends HttpServlet {
-
-    private UserDAO userDAO;
-    private FollowDAO followDAO;
-
-    @Override
-    public void init() throws ServletException {
-        userDAO = (UserDAO) getServletContext().getAttribute("userDAO");
-        followDAO = (FollowDAO) getServletContext().getAttribute("followDAO");
-    }
+public class IndexServlet extends BaseServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

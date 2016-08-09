@@ -19,15 +19,7 @@ import java.util.Optional;
  */
 @Slf4j
 @WebServlet(urlPatterns = "/followings/*")
-public class UserFollowingsServlet extends HttpServlet {
-    private UserDAO userDAO;
-    private FollowDAO followDAO;
-
-    @Override
-    public void init() throws ServletException {
-        userDAO = (UserDAO) getServletContext().getAttribute("userDAO");
-        followDAO = (FollowDAO) getServletContext().getAttribute("followDAO");
-    }
+public class UserFollowingsServlet extends BaseServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

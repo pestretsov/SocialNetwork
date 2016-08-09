@@ -17,7 +17,7 @@ import java.io.IOException;
 
 @Slf4j
 @WebServlet(urlPatterns = "/logout")
-public class SignOutServlet extends HttpServlet {
+public class SignOutServlet extends BaseServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

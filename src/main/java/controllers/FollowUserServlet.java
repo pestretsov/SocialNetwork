@@ -20,15 +20,7 @@ import java.io.IOException;
 
 @Slf4j
 @WebServlet(urlPatterns = "/secure/follow")
-public class FollowUserServlet extends HttpServlet {
-    private UserDAO userDAO;
-    private FollowDAO followDAO;
-
-    @Override
-    public void init() throws ServletException {
-        userDAO = (UserDAO) getServletContext().getAttribute("userDAO");
-        followDAO = (FollowDAO) getServletContext().getAttribute("followDAO");
-    }
+public class FollowUserServlet extends BaseServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

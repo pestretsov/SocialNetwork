@@ -26,17 +26,7 @@ import java.util.Optional;
 
 @Slf4j
 @WebServlet(urlPatterns = "/signup")
-public class SignUpServlet extends HttpServlet {
-    private UserDAO userDAO;
-    private FollowDAO followDAO;
-    private SecurityUtils securityUtils;
-
-    @Override
-    public void init() throws ServletException {
-        userDAO = (UserDAO) getServletContext().getAttribute("userDAO");
-        followDAO = (FollowDAO) getServletContext().getAttribute("followDAO");
-        securityUtils = (SecurityUtils) getServletContext().getAttribute("securityUtils");
-    }
+public class SignUpServlet extends BaseServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

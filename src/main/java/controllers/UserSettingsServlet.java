@@ -21,13 +21,7 @@ import java.util.Optional;
 
 @Slf4j
 @WebServlet(urlPatterns = "/secure/usersettings")
-public class UserSettingsServlet extends HttpServlet {
-    private UserDAO userDAO;
-
-    @Override
-    public void init() throws ServletException {
-        userDAO = (UserDAO) getServletContext().getAttribute("userDAO");
-    }
+public class UserSettingsServlet extends BaseServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

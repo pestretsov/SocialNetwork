@@ -18,15 +18,7 @@ import java.io.IOException;
  */
 @Slf4j
 @WebServlet(urlPatterns = "/secure/changepassword")
-public class ChangePasswordServlet extends HttpServlet {
-    private UserDAO userDAO;
-    private SecurityUtils securityUtils;
-
-    @Override
-    public void init() throws ServletException {
-        userDAO = (UserDAO) getServletContext().getAttribute("userDAO");
-        securityUtils = (SecurityUtils) getServletContext().getAttribute("securityUtils");
-    }
+public class ChangePasswordServlet extends BaseServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

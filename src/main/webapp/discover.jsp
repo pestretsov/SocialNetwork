@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<jsp:useBean id="followingsList" scope="request" type="java.util.List<model.User>"/>
+<jsp:useBean id="discoverUsersList" scope="request" type="java.util.List<model.User>"/>
 <html>
 <head>
     <meta charset="utf-8">
@@ -19,7 +19,7 @@
     <title>Discover</title>
 </head>
 <body>
-<c:forEach items="${followingsList}" var="following">
+<c:forEach items="${discoverUsersList}" var="user">
     <div class="col-md-4">
         <div id="user-info" class="panel">
             <div class="row">
@@ -27,9 +27,10 @@
                     <div class="pull-left">
                         <img class="user-avatar" src="<c:url value='/images/artemy.jpg'/>">
                     </div>
-                    <h3 id="requestUserFullName">${following.firstName} ${following.lastName}</h3>
-                    <h4 id="requestUserUsername" data-user-id="${following.id}">@${following.username}</h4>
+                    <h3 id="requestUserFullName">${user.firstName} ${user.lastName}</h3>
+                    <h4 id="requestUserUsername" data-user-id="${user.id}">@${user.username}</h4>
                     <div class="clearfix"></div>
+                    <p class="user-bio">${user.bio}</p>
                 </div>
             </div>
             <div class="row">
