@@ -24,7 +24,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static utils.RestUtils.getSessionUserOpt;
+import static utils.SecurityUtils.getSessionUserOpt;
 import static utils.RestUtils.toJson;
 
 /**

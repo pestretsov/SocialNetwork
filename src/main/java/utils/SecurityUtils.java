@@ -1,10 +1,14 @@
 package utils;
 
+import model.User;
+
+import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Optional;
 import java.util.Random;
 
 /**
@@ -49,6 +53,13 @@ public class SecurityUtils {
         md.update(input.getBytes(), 0, input.length());
 
         return new BigInteger(1, md.digest()).toString(16);
+    }
+
+    public static Optional<User> getSessionUserOpt(HttpSession httpSession) {
+        Optional<User> sessionUserOpt = Optional.ofNullable(httpSession)
+                .map(session -> (User) session.getAttribute("sessionUser"));
+
+        return sessionUserOpt;
     }
 }
 

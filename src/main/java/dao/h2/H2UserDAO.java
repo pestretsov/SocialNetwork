@@ -182,4 +182,49 @@ public class H2UserDAO extends H2DAO implements UserDAO {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public List<User> getUsersNotFollowedByUser(int userId) {
+        String sql = "SELECT id, username, password, first_name, last_name, gender, birth_date, bio, role" +
+                " FROM User WHERE id NOT IN (SELECT user_id FROM Follow WHERE follower_id=?) AND id<>?";
+
+        List<User> notFollowedUsers = new ArrayList<>();
+
+        try (Connection connection = getConnectionPool().getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, userId);
+            statement.setInt(2, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    notFollowedUsers.add(parseUser(resultSet));
+                }
+            }
+
+            return notFollowedUsers;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        String sql = "SELECT id, username, password, first_name, last_name, gender, birth_date, bio, role" +
+                " FROM User";
+        List<User> allUsers = new ArrayList<>();
+
+        try (Connection connection = getConnectionPool().getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    allUsers.add(parseUser(resultSet));
+                }
+            }
+
+            return allUsers;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

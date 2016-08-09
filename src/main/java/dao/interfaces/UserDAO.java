@@ -12,4 +12,6 @@ public interface UserDAO extends DAO<User> {
     Optional<User> getByUsername(String username);
     List<User> getUsersFollowingUser(int userId);
     List<User> getUsersFollowedByUser(int userId);
+    List<User> getUsersNotFollowedByUser(int userId);
+    List<User> getAllUsers();
 }
