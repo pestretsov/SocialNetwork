@@ -20,6 +20,8 @@ public class PostView {
     private String fromFirstName;
     private String fromLastName;
 
+    // not in DB schema:
     private int likeCount;
     private boolean likable;
+    private boolean editable;
 }
