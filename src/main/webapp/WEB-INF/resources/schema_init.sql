@@ -1,4 +1,5 @@
 DROP VIEW IF EXISTS PostView;
+DROP VIEW IF EXISTS CommentView;
 DROP TABLE IF EXISTS "Like";
 DROP TABLE IF EXISTS Comment;
 DROP TABLE IF EXISTS Follow;
@@ -50,6 +51,10 @@ CREATE TABLE Comment (
 CREATE OR REPLACE VIEW PostView (post_id, post_text, post_type, post_publish_time, from_id, from_username, from_first_name, from_last_name)
 AS SELECT Post.id, Post.text, Post.post_type, Post.publish_time, Post.from_id, User.username, User.first_name, User.last_name
    FROM Post JOIN User ON Post.from_id=User.id;
+
+CREATE OR REPLACE VIEW CommentView (comment_id, post_id, comment_text, comment_publish_time, from_id, from_username, from_first_name, from_last_name)
+AS SELECT Comment.id, Comment.post_id, Comment.text, Comment.publish_time, Comment.from_id, User.username, User.first_name, User.last_name
+   FROM Comment JOIN User ON Comment.from_id=User.id;
 
 INSERT INTO USER (USERNAME, PASSWORD, FIRST_NAME, LAST_NAME, GENDER, BIRTH_DATE, BIO, role)
 VALUES ('ambush', '4297715b943c507b0bcefe8da5d5fed8165a4b8152e019e6e0af73e18e7ff8b891f9b7eb0432ed6cebbceac8a48f1c68', 'Artemy', 'Pestretsov', '1', '1995-11-02', 'nothing do here', 0);

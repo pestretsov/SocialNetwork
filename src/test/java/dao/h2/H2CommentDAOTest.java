@@ -21,7 +21,6 @@ public class H2CommentDAOTest {
 
     private static ConnectionPool connectionPool;
     private static H2PostDAO postDAO;
-    private static H2UserDAO userDAO;
     private static H2CommentDAO commentDAO;
 
     @BeforeClass
@@ -29,7 +28,6 @@ public class H2CommentDAOTest {
         connectionPool = SimpleConnectionPool.create(RESOURCES_FILE_PATH + DB_PROPERTIES);
         connectionPool.executeScript(RESOURCES_FILE_PATH + DB_PREPARE_FILE_NAME);
         postDAO = new H2PostDAO(connectionPool);
-        userDAO = new H2UserDAO(connectionPool);
         commentDAO = new H2CommentDAO(connectionPool);
     }
 
