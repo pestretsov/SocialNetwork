@@ -74,6 +74,42 @@ public class H2FollowDAO extends H2DAO implements FollowDAO {
     }
 
     @Override
+    public int getAllFollowingsByUser(int followerId) {
+        String sql = "SELECT COUNT(*) AS followings_count FROM Follow WHERE follower_id=? AND user_id<>?";
+
+        try (Connection connection = getConnectionPool().getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, followerId);
+            statement.setInt(2, followerId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getInt("followings_count");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public int getAllFollowersByUser(int userId) {
+        String sql = "SELECT COUNT(*) AS followers_count FROM Follow WHERE user_id=? AND follower_id<>?";
+
+        try (Connection connection = getConnectionPool().getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, userId);
+            statement.setInt(2, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getInt("followers_count");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public boolean isFollowing(int userId, int followerId) {
         String sql = "SELECT user_id FROM Follow WHERE user_id=? AND follower_id=?";
         try (Connection c = getConnectionPool().getConnection();

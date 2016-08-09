@@ -159,8 +159,8 @@ public class PostResource {
 
         log.info("trying to DELETE post with postId={}", id);
         if (postDAO.getById(id).isPresent()) {
-            log.info("post with postId={} was deleted", id);
             postDAO.deleteById(id);
+            log.info("post with postId={} was deleted", id);
             return Response.ok().build();
         } else {
             log.info("no such post with postId={}", id);

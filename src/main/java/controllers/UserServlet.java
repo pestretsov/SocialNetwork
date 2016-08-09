@@ -56,6 +56,9 @@ public class UserServlet extends HttpServlet {
                 req.setAttribute("canFollow", false);
             }
 
+            req.setAttribute("followersCount", followDAO.getAllFollowersByUser(userOpt.get().getId()));
+            req.setAttribute("followingsCount", followDAO.getAllFollowingsByUser(userOpt.get().getId()));
+
             getServletContext().getRequestDispatcher("/user.jsp").forward(req, resp);
         } else {
             log.warn("no such user with username={}", path);

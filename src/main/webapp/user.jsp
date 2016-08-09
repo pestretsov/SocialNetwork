@@ -45,25 +45,37 @@
     <div class="row">
         <div class="col-md-4">
             <div id="user-info" class="panel">
-                <div class="pull-left">
-                    <img class="user-avatar" src="<c:url value='/images/artemy.jpg'/>">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="pull-left">
+                            <img class="user-avatar" src="<c:url value='/images/artemy.jpg'/>">
+                        </div>
+                        <h3 id="requestUserFullName">${requestUser.firstName} ${requestUser.lastName}</h3>
+                        <h4 id="requestUserUsername" data-user-id="${requestUser.id}">@${requestUser.username}</h4>
+                        <div class="clearfix"></div>
+                        <p class="user-bio">${requestUser.bio}</p>
+                    </div>
                 </div>
-                <h3 id="requestUserFullName">${requestUser.firstName} ${requestUser.lastName}</h3>
-                <h4 id="requestUserUsername" data-user-id="${requestUser.id}">@${requestUser.username}</h4>
-                <div class="clearfix"></div>
-                <p class="user-bio">${requestUser.bio}</p>
-                <c:choose>
-                    <c:when test="${requestScope.canFollow}">
-                        <form action="<c:url value='/secure/follow'/>" method="post">
-                            <button type="submit" class="btn btn-primary btn-sm follow-button" name="requestUserId" value="${requestUser.id}">Follow ${requestUser.firstName}</button>
-                        </form>
-                    </c:when>
-                    <c:when test="${(not requestScope.canFollow) && (not (empty sessionUser))}">
-                        <form action="<c:url value='/secure/unfollow'/>" method="post">
-                            <button type="submit" class="btn btn-default btn-sm follow-button" name="requestUserId" value="${requestUser.id}">Following ${requestUser.firstName}</button>
-                        </form>
-                    </c:when>
-                </c:choose>
+                <div class="row">
+                    <div class="col-md-6"><a>Followers ${requestScope.followersCount}</a></div>
+                    <div class="col-md-6"><a>Following ${requestScope.followingsCount}</a></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <c:choose>
+                            <c:when test="${requestScope.canFollow}">
+                                <form action="<c:url value='/secure/follow'/>" method="post">
+                                    <button type="submit" class="btn btn-primary btn-sm follow-button" name="requestUserId" value="${requestUser.id}">Follow ${requestUser.firstName}</button>
+                                </form>
+                            </c:when>
+                            <c:when test="${(not requestScope.canFollow) && (not (empty sessionUser))}">
+                                <form action="<c:url value='/secure/unfollow'/>" method="post">
+                                    <button type="submit" class="btn btn-default btn-sm follow-button" name="requestUserId" value="${requestUser.id}">Following ${requestUser.firstName}</button>
+                                </form>
+                            </c:when>
+                        </c:choose>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-md-6">

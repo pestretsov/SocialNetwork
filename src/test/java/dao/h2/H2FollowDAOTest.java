@@ -105,6 +105,26 @@ public class H2FollowDAOTest {
         followDAO.delete(follow);
     }
 
+    @Test
+    public void countersTest() throws Exception {
+        Follow follow1 = new Follow();
+        follow1.setUserId(1);
+        follow1.setFollowerId(2);
+
+        followDAO.create(follow1);
+
+        Follow follow2 = new Follow();
+        follow2.setUserId(1);
+        follow2.setFollowerId(3);
+
+        followDAO.create(follow2);
+
+        assertEquals(followDAO.getAllFollowersByUser(1), 2);
+
+        followDAO.delete(follow1);
+        followDAO.delete(follow2);
+    }
+
     @AfterClass
     public static void closeAll() throws Exception {
         connectionPool.close();
