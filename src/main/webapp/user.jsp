@@ -57,8 +57,8 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6"><a>Followers ${requestScope.followersCount}</a></div>
-                    <div class="col-md-6"><a>Following ${requestScope.followingsCount}</a></div>
+                    <div class="col-md-6"><a href="<c:url value='/followers/${requestUser.username}'/>">Followers ${requestScope.followersCount}</a></div>
+                    <div class="col-md-6"><a href="<c:url value='/followings/${requestUser.username}'/>">Following ${requestScope.followingsCount}</a></div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">

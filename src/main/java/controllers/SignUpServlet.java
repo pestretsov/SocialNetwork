@@ -86,7 +86,6 @@ public class SignUpServlet extends HttpServlet {
         user.setPassword(passwordHash);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        log.debug("Trying to parse date = {}", birthDate);
         user.setBirthDate(birthDate);
         user.setGender(gender);
         user.setBio(bio);
