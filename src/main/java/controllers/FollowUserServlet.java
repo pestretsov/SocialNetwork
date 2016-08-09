@@ -38,6 +38,11 @@ public class FollowUserServlet extends HttpServlet {
 
         int userToFollowId = Integer.parseInt(req.getParameter("requestUserId"));
 
+        if (userToFollowId == sessionUser.getId()) {
+            resp.sendError(500, "Cannot follow yourself");
+            return;
+        }
+
         log.info("userId={} is trying to follow userId={}", sessionUser.getId(), userToFollowId);
 
         try {

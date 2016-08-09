@@ -85,24 +85,12 @@ public class H2FollowDAOTest {
     }
 
     @Test
-    public void followYourselfTest() throws Exception {
+    public void cannotFollowYourselfTest() throws Exception {
         Follow follow = new Follow();
         follow.setFollowerId(1);
         follow.setUserId(1);
 
-        followDAO.create(follow);
-
-        followDAO.getByUserAndFollowerId(1, 1);
-
-        for (User user: userDAO.getUsersFollowingUser(1)) {
-            assertEquals(user.getUsername(), "ambush");
-        }
-
-        for (User user: userDAO.getUsersFollowedByUser(1)) {
-            assertEquals(user.getUsername(), "ambush");
-        }
-
-        followDAO.delete(follow);
+        assertEquals(followDAO.create(follow), -1);
     }
 
     @Test

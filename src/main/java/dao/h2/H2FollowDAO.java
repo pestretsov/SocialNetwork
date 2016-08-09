@@ -20,6 +20,10 @@ public class H2FollowDAO extends H2DAO implements FollowDAO {
      */
     @Override
     public int create(Follow follow) {
+        if (follow.getUserId() == follow.getFollowerId()) {
+            return -1;
+        }
+
         String sql = "INSERT INTO Follow (follower_id, user_id) VALUES (?,?)";
         try (Connection connection = getConnectionPool().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {

@@ -30,65 +30,69 @@ $(function () {
     }
 
     function addPostView(postView) {
-        var likeButton = document.createElement("div");
-        likeButton.className = "post-like";
-        var likeGlyph = document.createElement("span");
-        likeGlyph.className = "glyphicon glyphicon-heart";
+        function addLikeButton() {
+            var likeButton = document.createElement("div");
+            likeButton.className = "post-like";
+            var likeGlyph = document.createElement("span");
+            likeGlyph.className = "glyphicon glyphicon-heart";
 
-        if (!postView.likable) {
-            likeGlyph.className += " post-like-engaged";
-        }
-
-        likeButton.appendChild(likeGlyph);
-        var likeCount = document.createElement("span");
-        if (postView.likeCount > 0) {
-            likeCount.innerText = postView.likeCount;
-        }
-        likeButton.appendChild(likeCount);
-
-        likeButton.addEventListener('click', function () {
-            function onSuccess() {
-                if (postView.likable) {
-                    postView.likeCount++;
-                } else {
-                    postView.likeCount--;
-                }
-
-                likeGlyph.className = "glyphicon glyphicon-heart";
-
-                likeGlyph.className = "glyphicon glyphicon-heart";
-                if (postView.likable) {
-                    likeGlyph.className += " post-like-engaged";
-                }
-
-                if (postView.likeCount != 0) {
-                    likeCount.innerText = postView.likeCount;
-                } else {
-                    likeCount.innerText = "";
-                }
-
-                postView.likable = !postView.likable;
+            if (!postView.likable) {
+                likeGlyph.className += " post-like-engaged";
             }
 
-
-            if (postView.likable) {
-                $.ajax({
-                    url: '/restapi/likes/addlike',
-                    headers: {'Content-type': 'application/json'},
-                    method: 'POST',
-                    data: JSON.stringify({postId: postView.postId}),
-                    success: onSuccess()
-                });
-            } else {
-                $.ajax({
-                    url: '/restapi/likes/removelike',
-                    headers: {'Content-type': 'application/json'},
-                    method: 'DELETE',
-                    data: JSON.stringify({postId: postView.postId}),
-                    success: onSuccess()
-                });
+            likeButton.appendChild(likeGlyph);
+            var likeCount = document.createElement("span");
+            if (postView.likeCount > 0) {
+                likeCount.innerText = postView.likeCount;
             }
-        });
+            likeButton.appendChild(likeCount);
+
+            likeButton.addEventListener('click', function () {
+                function onSuccess() {
+                    if (postView.likable) {
+                        postView.likeCount++;
+                    } else {
+                        postView.likeCount--;
+                    }
+
+                    likeGlyph.className = "glyphicon glyphicon-heart";
+
+                    likeGlyph.className = "glyphicon glyphicon-heart";
+                    if (postView.likable) {
+                        likeGlyph.className += " post-like-engaged";
+                    }
+
+                    if (postView.likeCount != 0) {
+                        likeCount.innerText = postView.likeCount;
+                    } else {
+                        likeCount.innerText = "";
+                    }
+
+                    postView.likable = !postView.likable;
+                }
+
+
+                if (postView.likable) {
+                    $.ajax({
+                        url: '/restapi/likes/addlike',
+                        headers: {'Content-type': 'application/json'},
+                        method: 'POST',
+                        data: JSON.stringify({postId: postView.postId}),
+                        success: onSuccess()
+                    });
+                } else {
+                    $.ajax({
+                        url: '/restapi/likes/removelike',
+                        headers: {'Content-type': 'application/json'},
+                        method: 'DELETE',
+                        data: JSON.stringify({postId: postView.postId}),
+                        success: onSuccess()
+                    });
+                }
+            });
+
+            return likeButton;
+        }
 
         var post = document.createElement("div");
         post.className = "post panel row";
@@ -105,7 +109,10 @@ $(function () {
         postContent.innerHTML += '</div>';
 
         var postToolbar = document.createElement("div");
-        postToolbar.appendChild(likeButton);
+
+        if (sessionUser.id != null) {
+            postToolbar.appendChild(addLikeButton());
+        }
 
         if (postView.editable) {
             var editButtonsDiv = document.createElement("div");
