@@ -105,10 +105,9 @@ $(function () {
         postContent.innerHTML += '</div>';
 
         var postToolbar = document.createElement("div");
-
         postToolbar.appendChild(likeButton);
 
-        if (requestUserIsSessionUser(requestUser, sessionUser)) {
+        if (postView.editable) {
             var editButtonsDiv = document.createElement("div");
             editButtonsDiv.className = "pull-right";
 
@@ -124,19 +123,18 @@ $(function () {
             editButtonsDiv.appendChild(editButton);
             editButtonsDiv.appendChild(editOkButton);
 
-            if (requestUserIsSessionUser(requestUser, sessionUser)) {
-                removeButton.addEventListener('click', function () {
-                    var postId = $(this).closest('.post').data("post-id");
-
-                    $.ajax({
-                        url: "/restapi/posts/delete/" + postId,
-                        type: "DELETE",
-                        dataType: "json",
-                        success: $(this).closest('.post').remove()
-                    });
+            removeButton.addEventListener('click', function () {
+                var postId = $(this).closest('.post').data("post-id");
+                $.ajax({
+                    url: "/restapi/posts/delete/" + postId,
+                    type: "DELETE",
+                    dataType: "json",
+                    success: $(this).closest('.post').remove()
                 });
+            });
 
-                // editButtonsDiv.on('click', '.post-edit', function () {
+            postToolbar.appendChild(editButtonsDiv);
+            // editButtonsDiv.on('click', '.post-edit', function () {
                 //     var p = $(this).parent('div').parent('div').parent('div').siblings('div').children('div').children('p');
                 //     var save = $(this).siblings('.post-edit-ok');
                 //     var edit = $(this);
@@ -172,12 +170,7 @@ $(function () {
                 //         });
                 //     });
                 // });
-            }
-
-            postToolbar.appendChild(editButtonsDiv);
         }
-
-        // postToolbarRow.appendChild(postToolbar);
 
         postContent.appendChild(postToolbar);
         post.appendChild(postContent);

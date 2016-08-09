@@ -25,12 +25,12 @@ $(function () {
 
     function addPostView(postView) {
         var likeButton = document.createElement("div");
-        likeButton.className += "post-like";
+        likeButton.className = "post-like";
         var likeGlyph = document.createElement("span");
-        likeGlyph.className += "glyphicon glyphicon-heart";
+        likeGlyph.className = "glyphicon glyphicon-heart";
 
         if (!postView.likable) {
-            likeGlyph.className += "post-like-engaged";
+            likeGlyph.className += " post-like-engaged";
         }
 
         likeButton.appendChild(likeGlyph);
@@ -41,22 +41,49 @@ $(function () {
         likeButton.appendChild(likeCount);
 
         likeButton.addEventListener('click', function () {
+            function onSuccess() {
+                if (postView.likable) {
+                    postView.likeCount++;
+                } else {
+                    postView.likeCount--;
+                }
+
+                likeGlyph.className = "glyphicon glyphicon-heart";
+
+                likeGlyph.className = "glyphicon glyphicon-heart";
+                if (postView.likable) {
+                    likeGlyph.className += " post-like-engaged";
+                }
+
+                if (postView.likeCount != 0) {
+                    likeCount.innerText = postView.likeCount;
+                } else {
+                    likeCount.innerText = "";
+                }
+
+                postView.likable = !postView.likable;
+            }
+
+
             if (postView.likable) {
                 $.ajax({
                     url: '/restapi/likes/addlike',
                     headers: {'Content-type': 'application/json'},
                     method: 'POST',
-                    data: JSON.stringify({postId: postView.postId})
-                }).done(console.log("liked!"));
+                    data: JSON.stringify({postId: postView.postId}),
+                    success: onSuccess()
+                });
             } else {
                 $.ajax({
                     url: '/restapi/likes/removelike',
                     headers: {'Content-type': 'application/json'},
                     method: 'DELETE',
-                    data: JSON.stringify({postId: postView.postId})
-                }).done(console.log("deleted!"));
+                    data: JSON.stringify({postId: postView.postId}),
+                    success: onSuccess()
+                });
             }
         });
+
         var post = document.createElement("div");
         post.className = "post panel row";
 
@@ -66,22 +93,15 @@ $(function () {
         var postContent = document.createElement("div");
         postContent.className = "col-md-11";
 
-        postContent.innerHTML += '<div class="row">';
-        postContent.innerHTML += '<div class="col-md-12">';
         postContent.innerHTML += '<h3>' + postView.fromFirstName + ' ' + postView.fromLastName + ' <span>@' + postView.fromUsername + '</span><span> &bull; </span><span>' + displayDate(postView.postPublishTime.epochSecond) + '</span></h3>';
         postContent.innerHTML += '<p>' + toPlainText(postView.postText) + '</p>';
         postContent.innerHTML += '</div>';
         postContent.innerHTML += '</div>';
 
-        var postToolbarRow = document.createElement("div");
-        postToolbarRow.className = "row";
-
         var postToolbar = document.createElement("div");
-        postToolbar.className = "col-md-12";
 
         postToolbar.appendChild(likeButton);
-
-        if (postView.fromId == sessionUser.id) {
+        if (postView.editable) {
             var editButtonsDiv = document.createElement("div");
             editButtonsDiv.className = "pull-right";
 
@@ -97,62 +117,56 @@ $(function () {
             editButtonsDiv.appendChild(editButton);
             editButtonsDiv.appendChild(editOkButton);
 
-            if (postView.fromId == sessionUser.id) {
-                removeButton.addEventListener('click', function () {
-                    var postId = $(this).closest('.post').data("post-id");
-
-                    $.ajax({
-                        url: "/restapi/posts/delete/" + postId,
-                        type: "DELETE",
-                        dataType: "json",
-                        success: $(this).closest('.post').remove()
-                    });
+            removeButton.addEventListener('click', function () {
+                var postId = $(this).closest('.post').data("post-id");
+                $.ajax({
+                    url: "/restapi/posts/delete/" + postId,
+                    type: "DELETE",
+                    dataType: "json",
+                    success: $(this).closest('.post').remove()
                 });
+            });
 
-                // editButtonsDiv.on('click', '.post-edit', function () {
-                //     var p = $(this).parent('div').parent('div').parent('div').siblings('div').children('div').children('p');
-                //     var save = $(this).siblings('.post-edit-ok');
-                //     var edit = $(this);
-                //     var text = p.text().replace("\n", "").trim();
-                //
-                //     p.replaceWith("<textarea class='post-edit-text'>" + text + "</textarea>");
-                //
-                //     edit.addClass("hidden");
-                //     save.removeClass("hidden");
-                //
-                //     save.off('click').click(function () {
-                //         var postId = $(this).closest('.post').data("post-id");
-                //         var textArea = $(this).parent('div').parent('div').parent('div').siblings('div').children('div').children("textarea");
-                //         var updatedText = textArea.val();
-                //
-                //         $.ajax({
-                //             url: "/restapi/posts/secure",
-                //             type: "PUT",
-                //             method: "PUT",
-                //             headers: {'Content-Type': 'application/json'},
-                //             dataType: "json",
-                //             data: JSON.stringify({
-                //                 id: postId,
-                //                 fromId: requestUser.id,
-                //                 text: updatedText
-                //             }),
-                //             success: function () {
-                //                 textArea.replaceWith('<p>' + updatedText + '</p>');
-                //
-                //                 save.addClass("hidden");
-                //                 edit.removeClass("hidden");
-                //             }
-                //         });
-                //     });
-                // });
-            }
-
+            // editButtonsDiv.on('click', '.post-edit', function () {
+            //     var p = $(this).parent('div').parent('div').parent('div').siblings('div').children('div').children('p');
+            //     var save = $(this).siblings('.post-edit-ok');
+            //     var edit = $(this);
+            //     var text = p.text().replace("\n", "").trim();
+            //
+            //     p.replaceWith("<textarea class='post-edit-text'>" + text + "</textarea>");
+            //
+            //     edit.addClass("hidden");
+            //     save.removeClass("hidden");
+            //
+            //     save.off('click').click(function () {
+            //         var postId = $(this).closest('.post').data("post-id");
+            //         var textArea = $(this).parent('div').parent('div').parent('div').siblings('div').children('div').children("textarea");
+            //         var updatedText = textArea.val();
+            //
+            //         $.ajax({
+            //             url: "/restapi/posts/secure",
+            //             type: "PUT",
+            //             method: "PUT",
+            //             headers: {'Content-Type': 'application/json'},
+            //             dataType: "json",
+            //             data: JSON.stringify({
+            //                 id: postId,
+            //                 fromId: requestUser.id,
+            //                 text: updatedText
+            //             }),
+            //             success: function () {
+            //                 textArea.replaceWith('<p>' + updatedText + '</p>');
+            //
+            //                 save.addClass("hidden");
+            //                 edit.removeClass("hidden");
+            //             }
+            //         });
+            //     });
+            // });
             postToolbar.appendChild(editButtonsDiv);
         }
 
-        postToolbarRow.appendChild(postToolbar);
-
-        postContent.appendChild(postToolbarRow);
+        postContent.appendChild(postToolbar);
         post.appendChild(postContent);
 
         return post;

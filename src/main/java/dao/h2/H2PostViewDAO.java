@@ -50,7 +50,7 @@ public class H2PostViewDAO extends H2DAO implements PostViewDAO {
                 "(SELECT COUNT(\"Like\".id) FROM \"Like\" " +
                 "WHERE \"Like\".post_id=PostView.post_id AND \"Like\".user_id=? GROUP BY \"Like\".id) AS likable," +
                 "(SELECT COUNT(\"Like\".id) FROM \"Like\" WHERE \"Like\".post_id=PostView.post_id GROUP BY  \"Like\".id) AS like_count, " +
-                "(SELECT COUNT(PostView.post_id) FROM PostView WHERE PostView.from_id=?) AS editable " +
+                "(SELECT COUNT(PostView.post_id) FROM PostView pv WHERE pv.from_id=? AND pv.post_id=PostView.post_id) AS editable " +
                 "FROM PostView " +
                 "WHERE from_id=? AND" +
                 " post_id<? ORDER BY post_id DESC LIMIT ?";
@@ -82,7 +82,7 @@ public class H2PostViewDAO extends H2DAO implements PostViewDAO {
                         "from_username, from_first_name, from_last_name, " +
                         "(SELECT COUNT(\"Like\".id) FROM \"Like\" WHERE \"Like\".post_id=PostView.post_id AND \"Like\".user_id=? GROUP BY \"Like\".id) AS likable, " +
                         "(SELECT COUNT(\"Like\".id) FROM \"Like\" WHERE \"Like\".post_id=PostView.post_id GROUP BY \"Like\".id) AS like_count, " +
-                        "(SELECT COUNT(PostView.post_id) FROM PostView WHERE PostView.from_id=?) AS editable " +
+                        "(SELECT COUNT(PostView.post_id) FROM PostView pv WHERE pv.from_id=? AND pv.post_id=PostView.post_id) AS editable " +
                         "FROM PostView " +
                         "WHERE from_id IN (SELECT user_id FROM Follow WHERE follower_id=?) AND" +
                         " post_id<? ORDER BY post_id DESC LIMIT ?";
