@@ -77,7 +77,7 @@ public class PostResource {
         if (post.getPostType() == PostType.PRIVATE) {
             Optional<User> sessionUser = getSessionUserOpt(request.getSession());
             if (!sessionUser.isPresent()) {
-                log.warn("No user session found. Cannot add like");
+                log.warn("No user session found. Cannot get private post");
                 return Response.status(Response.Status.FORBIDDEN)
                         .entity("User is not signedup").build();
             } else {
@@ -107,7 +107,7 @@ public class PostResource {
             @QueryParam("limit") int limit) {
 
         if (!getSessionUserOpt(request.getSession()).isPresent()) {
-            log.warn("No user session found. Cannot add like");
+            log.warn("No user session found. Cannot get timeline");
             return Response.status(Response.Status.FORBIDDEN)
                     .entity("User is not signedup").build();
         }
@@ -134,7 +134,7 @@ public class PostResource {
 
         List<PostView> posts = postViewDAO.getUserPostsSublist(userId, fromId, offsetId, limit);
 
-        if (!followDAO.isFollowing(userId, fromId)) {
+        if (!followDAO.isFollowing(userId, fromId) && userId != fromId) {
             posts = posts.stream().filter(pv -> pv.getPostType() != PostType.PRIVATE).collect(Collectors.toList());
         }
 

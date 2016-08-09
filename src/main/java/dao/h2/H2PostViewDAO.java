@@ -77,23 +77,23 @@ public class H2PostViewDAO extends H2DAO implements PostViewDAO {
     public List<PostView> getPersonalTimeline(int userId, int offsetId, int limit) {
         List<PostView> timeline = new ArrayList<>();
 
-        String sql =
-                "SELECT post_id, post_text, post_type, post_publish_time, from_id, " +
-                        "from_username, from_first_name, from_last_name, " +
-                        "(SELECT COUNT(\"Like\".id) FROM \"Like\" WHERE \"Like\".post_id=PostView.post_id AND \"Like\".user_id=? GROUP BY \"Like\".id) AS likable, " +
-                        "(SELECT COUNT(\"Like\".id) FROM \"Like\" WHERE \"Like\".post_id=PostView.post_id GROUP BY \"Like\".id) AS like_count, " +
-                        "(SELECT COUNT(PostView.post_id) FROM PostView pv WHERE pv.from_id=? AND pv.post_id=PostView.post_id) AS editable " +
-                        "FROM PostView " +
-                        "WHERE from_id IN (SELECT user_id FROM Follow WHERE follower_id=?) AND" +
-                        " post_id<? ORDER BY post_id DESC LIMIT ?";
+        String sql = "SELECT post_id, post_text, post_type, post_publish_time, from_id, " +
+                "from_username, from_first_name, from_last_name, " +
+                "(SELECT COUNT(\"Like\".id) FROM \"Like\" WHERE \"Like\".post_id=PostView.post_id AND \"Like\".user_id=? GROUP BY \"Like\".id) AS likable, " +
+                "(SELECT COUNT(\"Like\".id) FROM \"Like\" WHERE \"Like\".post_id=PostView.post_id GROUP BY \"Like\".id) AS like_count, " +
+                "(SELECT COUNT(PostView.post_id) FROM PostView pv WHERE pv.from_id=? AND pv.post_id=PostView.post_id) AS editable " +
+                "FROM PostView " +
+                "WHERE from_id IN (SELECT user_id FROM Follow WHERE follower_id=?) OR from_id=? AND" +
+                " post_id<? ORDER BY post_id DESC LIMIT ?";
 
         try (Connection connection = getConnectionPool().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userId);
             statement.setInt(2, userId);
             statement.setInt(3, userId);
-            statement.setInt(4, offsetId);
-            statement.setInt(5, limit);
+            statement.setInt(4, userId);
+            statement.setInt(5, offsetId);
+            statement.setInt(6, limit);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     timeline.add(parsePostView(resultSet));

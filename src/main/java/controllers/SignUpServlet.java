@@ -96,12 +96,6 @@ public class SignUpServlet extends HttpServlet {
             userDAO.create(user);
             user = userDAO.getByUsername(username).orElseThrow(RuntimeException::new);
 
-            Follow follow = new Follow();
-            follow.setUserId(user.getId());
-            follow.setFollowerId(user.getId());
-
-            followDAO.create(follow);
-
             session.setAttribute("sessionUser", user);
             resp.sendRedirect(nextURL);
         } catch (RuntimeException e) {

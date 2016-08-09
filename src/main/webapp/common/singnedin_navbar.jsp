@@ -9,7 +9,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <ul class="nav navbar-nav">
     <li class="active"><a href="<c:url value='/'/>"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-    <li><a href="#" ><span class="glyphicon glyphicon-envelope"></span> Messages</a></li>
+    <li><a href="<c:url value="/discover"/>" ><span class="glyphicon glyphicon-move"></span> Discover</a></li>
 </ul>
 <ul class="nav navbar-nav navbar-right">
     <li class="dropdown">

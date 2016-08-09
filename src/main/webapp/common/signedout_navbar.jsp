@@ -7,6 +7,9 @@
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<ul class="nav navbar-nav">
+    <li><a href="<c:url value="/discover"/>" ><span class="glyphicon glyphicon-move"></span> Discover</a></li>
+</ul>
 <ul class="nav navbar-nav navbar-right">
     <li>
         <form class="navbar-form navbar-right" action="<c:url value="/login"/>" method="post">
