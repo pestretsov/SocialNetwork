@@ -37,13 +37,21 @@
     <div class="row">
         <div class="col-md-4">
             <div id="user-info" class="panel">
-                <div class="pull-left">
-                    <img class="user-avatar" src="<c:url value='/images/artemy.jpg'/>">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="pull-left">
+                            <img class="user-avatar" src="<c:url value='/images/artemy.jpg'/>">
+                        </div>
+                        <h3 id="requestUserFullName">${sessionUser.firstName} ${sessionUser.lastName}</h3>
+                        <h4 id="requestUserUsername" data-user-id="${sessionUser.id}">@${sessionUser.username}</h4>
+                        <div class="clearfix"></div>
+                        <p class="user-bio">${sessionUser.bio}</p>
+                    </div>
                 </div>
-                <h3 id="requestUserFullName">${sessionUser.firstName} ${sessionUser.lastName}</h3>
-                <h4 id="requestUserUsername" data-user-id="${sessionUser.id}">@${sessionUser.username}</h4>
-                <div class="clearfix"></div>
-                <p class="user-bio">${sessionUser.bio}</p>
+                <div class="row">
+                    <div class="col-md-6"><a href="<c:url value='/followers/${sessionUser.username}'/>">Followers ${requestScope.followersCount}</a></div>
+                    <div class="col-md-6"><a href="<c:url value='/followings/${sessionUser.username}'/>">Following ${requestScope.followingsCount}</a></div>
+                </div>
             </div>
         </div>
         <div class="col-md-6">

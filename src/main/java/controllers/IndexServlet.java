@@ -1,7 +1,9 @@
 package controllers;
 
+import dao.interfaces.FollowDAO;
 import dao.interfaces.UserDAO;
 import lombok.extern.slf4j.Slf4j;
+import model.Follow;
 import model.User;
 
 import javax.servlet.ServletException;
@@ -22,10 +24,12 @@ import java.util.Optional;
 public class IndexServlet extends HttpServlet {
 
     private UserDAO userDAO;
+    private FollowDAO followDAO;
 
     @Override
     public void init() throws ServletException {
         userDAO = (UserDAO) getServletContext().getAttribute("userDAO");
+        followDAO = (FollowDAO) getServletContext().getAttribute("followDAO");
     }
 
     @Override
@@ -38,7 +42,10 @@ public class IndexServlet extends HttpServlet {
                         .flatMap(userId -> userDAO.getById(userId));
 
         if (userOpt.isPresent()) {
-            log.info("userId={} is present. Redirecting to {}", userOpt.get().getId(), "/home.jsp");
+            int userId = userOpt.get().getId();
+            req.setAttribute("followersCount", followDAO.getAllFollowersByUser(userId));
+            req.setAttribute("followingsCount", followDAO.getAllFollowingsByUser(userId));
+            log.info("userId={} is present. Redirecting to {}", userId, "/home.jsp");
             getServletContext().getRequestDispatcher("/home.jsp").forward(req, resp);
         } else {
             log.info("no session. Redirecting to {}", "/login.jsp");
