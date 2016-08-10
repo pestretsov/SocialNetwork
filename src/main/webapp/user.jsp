@@ -56,21 +56,31 @@
                         <p class="user-bio">${requestUser.bio}</p>
                     </div>
                 </div>
+            </div>
+            <div>
                 <div class="row">
-                    <div class="col-md-6"><a href="<c:url value='/followers/${requestUser.username}'/>">Followers ${requestScope.followersCount}</a></div>
-                    <div class="col-md-6"><a href="<c:url value='/followings/${requestUser.username}'/>">Following ${requestScope.followingsCount}</a></div>
+
+                    <div class="col-md-12">
+                    <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                        <a role="button" class="btn btn-default" href="<c:url value='/followers/${requestUser.username}'/>">Followers ${requestScope.followersCount}</a>
+                        <a role="button" class="btn btn-default" href="<c:url value='/followings/${requestUser.username}'/>">Following ${requestScope.followingsCount}</a>
+                    </div>
+                    </div>
+
+                    <%--<div class="col-md-6"><a href="<c:url value='/followers/${requestUser.username}'/>"></a></div>--%>
+                    <%--<div class="col-md-6"><a></a></div>--%>
                 </div>
-                <div class="row">
+                <div class="row top-10">
                     <div class="col-md-12">
                         <c:choose>
                             <c:when test="${requestScope.canFollow}">
                                 <form action="<c:url value='/secure/follow'/>" method="post">
-                                    <button type="submit" class="btn btn-primary btn-sm follow-button" name="requestUserId" value="${requestUser.id}">Follow ${requestUser.firstName}</button>
+                                    <button type="submit" class="btn btn-primary btn-sm btn-block follow-button" name="requestUserId" value="${requestUser.id}">Follow ${requestUser.firstName}</button>
                                 </form>
                             </c:when>
                             <c:when test="${(not requestScope.canFollow) && (not (empty sessionUser))}">
                                 <form action="<c:url value='/secure/unfollow'/>" method="post">
-                                    <button type="submit" class="btn btn-default btn-sm follow-button" name="requestUserId" value="${requestUser.id}">Following ${requestUser.firstName}</button>
+                                    <button type="submit" class="btn btn-danger btn-sm btn-block follow-button" name="requestUserId" value="${requestUser.id}">Unfollow ${requestUser.firstName}</button>
                                 </form>
                             </c:when>
                         </c:choose>

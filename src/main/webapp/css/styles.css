@@ -165,3 +165,7 @@ div.col-md-1 {
     border: solid 1px;
     border-radius: 2px;
 }
+
+.top-10 {
+    margin-top: 10px;
+}

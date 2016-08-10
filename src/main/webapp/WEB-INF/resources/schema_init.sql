@@ -47,10 +47,29 @@ CREATE TABLE Comment (
   publish_time TIMESTAMP NOT NULL
 );
 
-
-CREATE OR REPLACE VIEW PostView (post_id, post_text, post_type, post_publish_time, from_id, from_username, from_first_name, from_last_name)
-AS SELECT Post.id, Post.text, Post.post_type, Post.publish_time, Post.from_id, User.username, User.first_name, User.last_name
-   FROM Post JOIN User ON Post.from_id=User.id;
+CREATE OR REPLACE VIEW PostView (
+    post_id,
+    post_text,
+    post_type,
+    post_publish_time,
+    from_id,
+    from_username,
+    from_first_name,
+    from_last_name,
+    like_count) AS
+  SELECT Post.id,
+    Post.text,
+    Post.post_type,
+    Post.publish_time,
+    Post.from_id,
+    User.username,
+    User.first_name,
+    User.last_name,
+    COUNT("Like".id)
+  FROM Post
+     JOIN User ON Post.from_id=User.id
+     LEFT JOIN "Like" ON Post.id = "Like".post_id
+  GROUP BY Post.id;
 
 CREATE OR REPLACE VIEW CommentView (comment_id, post_id, comment_text, comment_publish_time, from_id, from_username, from_first_name, from_last_name)
 AS SELECT Comment.id, Comment.post_id, Comment.text, Comment.publish_time, Comment.from_id, User.username, User.first_name, User.last_name

@@ -186,14 +186,18 @@ $(function () {
                 postViews.forEach(function (postView) {
                     postsContainer.appendChild(addPostView(postView));
                     offsetId = postView.postId;
+                    console.log("update offsetId=" + postView.postId);
                 });
 
+                console.log("remaining="+postViews.length);
                 // no more posts
                 if (postViews.length == 0) {
                     $(window).off('scroll');
+                    console.log("scroll off");
                 } else {
                     $(window).off('scroll').scroll(function () {
-                        if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+                        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+                            console.log("scroll true offsetId="+offsetId);
                             loadPersonalTimeline(offsetId);
                         }
                     });

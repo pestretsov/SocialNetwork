@@ -35,10 +35,10 @@ public class H2PostViewDAO extends H2DAO implements PostViewDAO {
         postView.setFromUsername(resultSet.getString("from_username"));
         postView.setFromFirstName(resultSet.getString("from_first_name"));
         postView.setFromLastName(resultSet.getString("from_last_name"));
+        postView.setLikeCount(resultSet.getInt("like_count"));
 
         if (!onlySchema) {
             postView.setLikable(resultSet.getInt("likable") == 0);
-            postView.setLikeCount(resultSet.getInt("like_count"));
             postView.setEditable(resultSet.getInt("editable") > 0);
         }
 
@@ -51,7 +51,7 @@ public class H2PostViewDAO extends H2DAO implements PostViewDAO {
 
     public Optional<PostView> getPostViewById(int postId) {
         String sql = "SELECT post_id, post_text, post_type, post_publish_time, from_id, " +
-                "from_username, from_first_name, from_last_name FROM PostView WHERE post_id=?";
+                "from_username, from_first_name, from_last_name, like_count FROM PostView WHERE post_id=?";
 
         try (Connection connection = getConnectionPool().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -69,10 +69,9 @@ public class H2PostViewDAO extends H2DAO implements PostViewDAO {
         List<PostView> sublist = new ArrayList<>();
 
         String sql = "SELECT post_id, post_text, post_type, post_publish_time, from_id, " +
-                "from_username, from_first_name, from_last_name, " +
+                "from_username, from_first_name, from_last_name, like_count, " +
                 "(SELECT COUNT(\"Like\".id) FROM \"Like\" " +
-                "WHERE \"Like\".post_id=PostView.post_id AND \"Like\".user_id=? GROUP BY \"Like\".id) AS likable," +
-                "(SELECT COUNT(\"Like\".id) FROM \"Like\" WHERE \"Like\".post_id=PostView.post_id GROUP BY  \"Like\".id) AS like_count, " +
+                "WHERE \"Like\".post_id=PostView.post_id AND \"Like\".user_id=? GROUP BY \"Like\".id) AS likable, " +
                 "(SELECT COUNT(PostView.post_id) FROM PostView pv WHERE pv.from_id=? AND pv.post_id=PostView.post_id) AS editable " +
                 "FROM PostView " +
                 "WHERE from_id=? AND" +
@@ -100,13 +99,13 @@ public class H2PostViewDAO extends H2DAO implements PostViewDAO {
     public List<PostView> getPersonalTimeline(int userId, int offsetId, int limit) {
         List<PostView> timeline = new ArrayList<>();
 
-        String sql = "SELECT post_id, post_text, post_type, post_publish_time, from_id, " +
-                "from_username, from_first_name, from_last_name, " +
+        String sql = "SELECT post_id, post_text, post_type, post_publish_time," +
+                " from_id, from_username, from_first_name, from_last_name, like_count, " +
                 "(SELECT COUNT(\"Like\".id) FROM \"Like\" WHERE \"Like\".post_id=PostView.post_id AND \"Like\".user_id=? GROUP BY \"Like\".id) AS likable, " +
-                "(SELECT COUNT(\"Like\".id) FROM \"Like\" WHERE \"Like\".post_id=PostView.post_id GROUP BY \"Like\".id) AS like_count, " +
                 "(SELECT COUNT(PostView.post_id) FROM PostView pv WHERE pv.from_id=? AND pv.post_id=PostView.post_id) AS editable " +
                 "FROM PostView " +
-                "WHERE from_id IN (SELECT user_id FROM Follow WHERE follower_id=?) OR from_id=? AND" +
+                "WHERE (from_id IN " +
+                "(SELECT user_id FROM Follow WHERE follower_id=?) OR from_id=?) AND" +
                 " post_id<? ORDER BY post_id DESC LIMIT ?";
 
         try (Connection connection = getConnectionPool().getConnection();

@@ -202,11 +202,12 @@ $(function () {
                 });
 
                 // no more posts
-                if (postsViews.length == 0) {
+                if (postViews.length == 0) {
                     $(window).off('scroll');
                 } else {
                     $(window).off('scroll').scroll(function () {
-                        if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+                        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+                            console.log("getComments");
                             loadUserPosts(user, offsetId);
                         }
                     });
