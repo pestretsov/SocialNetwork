@@ -8,6 +8,8 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="ru" scope="application"/>
 <jsp:useBean id="sessionUser" scope="session" type="model.User"/>
 <html>
 <head>
@@ -48,12 +50,17 @@
                         <p class="user-bio">${sessionUser.bio}</p>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6"><a href="<c:url value='/followers/${sessionUser.username}'/>">Followers ${requestScope.followersCount}</a></div>
-                    <div class="col-md-6"><a href="<c:url value='/followings/${sessionUser.username}'/>">Following ${requestScope.followingsCount}</a></div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                        <a role="button" class="btn btn-default" href="<c:url value='/followers/${sessionUser.username}'/>"><fmt:message key="body.followers"/> ${requestScope.followersCount}</a>
+                        <a role="button" class="btn btn-default" href="<c:url value='/followings/${sessionUser.username}'/>"><fmt:message key="body.following"/> ${requestScope.followingsCount}</a>
+                    </div>
                 </div>
             </div>
         </div>
+
         <div class="col-md-6">
             <%--AJAX HERE--%>
             <div id="timeline"></div>

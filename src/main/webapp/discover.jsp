@@ -7,6 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="ru" scope="application"/>
 <jsp:useBean id="discoverUsersList" scope="request" type="java.util.List<model.User>"/>
 <html>
 <head>
@@ -40,7 +42,7 @@
     </nav>
 </header>
 <div class="container">
-    <h1>Discover interesting people:</h1>
+    <h1><fmt:message key="discover.title"/></h1>
     <div class="row">
         <c:forEach items="${discoverUsersList}" var="user">
             <div class="col-md-4">

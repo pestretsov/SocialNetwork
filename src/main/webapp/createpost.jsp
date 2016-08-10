@@ -7,6 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="ru" scope="application"/>
 <jsp:useBean id="sessionUser" scope="session" type="model.User"/>
 <!DOCTYPE html>
 <html>
@@ -19,16 +21,16 @@
     <link rel="stylesheet" href="<c:url value='/css/bootstrap.min.css'/>"/>
     <link rel="stylesheet" href="<c:url value='/css/styles.css'/>"/>
 
-    <title>${sessionUser.firstName}'s new post</title>
+    <title>${sessionUser.firstName}</title>
 </head>
 <body>
     <div class="container">
         <div class="main-center panel col-md-6 col-md-offset-3">
             <form id="post" method="post" action="<c:url value='/secure/createpost'/>">
-                <h1 class="card-title">Compose your post:</h1>
-                <textarea id="post-text" form="post" name="postText" rows="4" class="panel form-control col-md-12" placeholder="Start writing here.." maxlength="255" required></textarea>
-                <label class="checkbox-inline"><input type="checkbox" name="postType" value="PRIVATE">Show only to followers</label>
-                <input type="submit" class="pull-right btn btn-primary" value="Submit">
+                <h1 class="card-title"><fmt:message key="addpost.title"/></h1>
+                <textarea id="post-text" form="post" name="postText" rows="4" class="panel form-control col-md-12" placeholder="<fmt:message key="addpost.placeholder"/>" maxlength="255" required></textarea>
+                <label class="checkbox-inline"><input type="checkbox" name="postType" value="PRIVATE"><fmt:message key="addpost.privacy"/></label>
+                <input type="submit" class="pull-right btn btn-primary" value="<fmt:message key="addpost.submit"/>">
             </form>
         </div>
     </div>

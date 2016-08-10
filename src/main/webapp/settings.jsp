@@ -7,6 +7,8 @@
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="ru" scope="application"/>
 <jsp:useBean id="sessionUser" scope="session" type="model.User"/>
 <!DOCTYPE html>
 <html>
@@ -24,62 +26,62 @@
 <div class="container">
     <div class="row">
         <div class="main-center panel col-md-6 col-md-offset-3">
-            <h1 class="card-title">Change user personal info</h1>
+            <h1 class="card-title"><fmt:message key="settings.title"/></h1>
             <form id="settings" action="<c:url value='/secure/usersettings'/>" method="post">
                 <div class="form-group">
-                    <label for="user-new-firstname-input">First name</label>
+                    <label for="user-new-firstname-input"><fmt:message key="settings.firstName"/></label>
                     <input id="user-new-firstname-input" class="form-control" type="text" name="first_name" value="${sessionUser.firstName}" required>
                 </div>
                 <div class="form-group">
-                    <label for="user-new-lastname-input">Last name</label>
+                    <label for="user-new-lastname-input"><fmt:message key="settings.lastName"/></label>
                     <input id="user-new-lastname-input" class="form-control" type="text" name="last_name" value="${sessionUser.lastName}" required>
                 </div>
                 <div class="form-group">
-                    <label for="user-new-dob-input">Birthday</label>
+                    <label for="user-new-dob-input"><fmt:message key="settings.birthday"/></label>
                     <input id="user-new-dob-input" class="form-control" type="date" name="birth_date" value="${sessionUser.birthDate.toString()}" required>
                 </div>
                 <div class="form-group">
-                    <label for="user-new-bio-input">Bio</label>
-                    <textarea form ="settings" id="user-new-bio-input" class="form-control" name="bio" rows="5" wrap="soft" placeholder="Describe yourself here..." >${sessionUser.bio}</textarea>
+                    <label for="user-new-bio-input"><fmt:message key="settings.bio"/></label>
+                    <textarea form ="settings" id="user-new-bio-input" class="form-control" name="bio" rows="5" wrap="soft" placeholder="<fmt:message key="settings.bioPlaceholder"/>" >${sessionUser.bio}</textarea>
                 </div>
                 <div class="form-group">
-                    <button class="pull-right btn btn-primary btn-sm" type="submit" name="Submit">Submit</button>
+                    <button class="pull-right btn btn-primary btn-sm" type="submit" name="Submit"><fmt:message key="settings.submitPersonalInfoChange"/></button>
                 </div>
             </form>
         </div>
     </div>
     <div class="row">
         <div class="main-center panel col-md-6 col-md-offset-3">
-            <h1 class="card-title">Change password</h1>
+            <h1 class="card-title"><fmt:message key="settings.changePasswordTitle"/></h1>
             <form id="changepassword" action="<c:url value='/secure/changepassword'/>" method="post">
                 <div class="form-group">
-                    <label for="user-old-password-input">Old password</label>
+                    <label for="user-old-password-input"><fmt:message key="settings.oldPassword"/></label>
                     <input id="user-old-password-input" class="form-control" type="password" name="old_password" required>
                 </div>
                 <div class="form-group">
-                    <label for="user-new-password-input">New password</label>
+                    <label for="user-new-password-input"><fmt:message key="settings.newPassword"/></label>
                     <input id="user-new-password-input" class="form-control" type="password" name="new_password" required>
                 </div>
                 <div class="form-group">
-                    <label for="user-new-password-confirm-input">Repeat new password</label>
+                    <label for="user-new-password-confirm-input"><fmt:message key="settings.repeatNewPassword"/></label>
                     <input id="user-new-password-confirm-input" class="form-control" type="password" name="new_password_confirm" required>
                 </div>
                 <div class="form-group">
-                    <button class="pull-right btn btn-primary btn-sm" type="submit" name="Submit">Submit</button>
+                    <button class="pull-right btn btn-primary btn-sm" type="submit" name="Submit"><fmt:message key="settings.submitPasswordChange"/></button>
                 </div>
             </form>
         </div>
     </div>
     <div class="row">
         <div class="main-center panel col-md-6 col-md-offset-3">
-            <h1 class="card-title">Change username</h1>
+            <h1 class="card-title"><fmt:message key="settings.changeUsernameTitle"/></h1>
             <form id="changeusername" action="<c:url value='/secure/changeusername'/>" method="post">
                 <div class="form-group">
-                    <label for="user-username-input">Username</label>
+                    <label for="user-username-input"><fmt:message key="settings.username"/></label>
                     <input id="user-username-input" class="form-control" type="text" name="new_username" value="${sessionUser.username}" required>
                 </div>
                 <div class="form-group">
-                    <button class="pull-right btn btn-primary btn-sm" type="submit" name="Submit">Submit</button>
+                    <button class="pull-right btn btn-primary btn-sm" type="submit" name="Submit"><fmt:message key="settings.submitUsernameChange"/></button>
                 </div>
             </form>
         </div>

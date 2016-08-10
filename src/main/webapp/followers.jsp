@@ -1,3 +1,4 @@
+<%--@elvariable id="requestUser" type="model.User"--%>
 <%--
   Created by IntelliJ IDEA.
   User: artemypestretsov
@@ -7,6 +8,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="ru" scope="application"/>
 <jsp:useBean id="followersList" scope="request" type="java.util.List<model.User>"/>
 <html>
 <head>
@@ -40,13 +43,7 @@
     </nav>
 </header>
 <div class="container">
-    <c:if test="${(not (empty sessionUser)) && (sessionUser.id eq requestUser.id)}">
-        <h2>Your followers:</h2>
-    </c:if>
-    <%--@elvariable id="requestUser" type="model.User"--%>
-    <c:if test="${(empty sessionUser) || not (sessionUser.id eq requestUser.id)}">
-        <h2>${requestUser.firstName}'s followers:</h2>
-    </c:if>
+    <h2>${requestUser.firstName}: <fmt:message key="followers.title"/></h2>
 
     <div class="row">
         <c:forEach items="${followersList}" var="follower">

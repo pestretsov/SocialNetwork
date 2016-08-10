@@ -7,6 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="ru" scope="application"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,17 +26,17 @@
 <body>
     <div class="container">
         <div class="main-center panel col-md-4 col-md-offset-4">
-            <h1 class="card-title">Welcome to SocNet</h1>
+            <h1 class="card-title"><fmt:message key="signin.title"/></h1>
             <form action="<c:url value='/login'/>" method="post">
                 <div class="form-group">
-                    <input class="form-control" type="text" name="j_username" value="" placeholder="username" required>
+                    <input class="form-control" type="text" name="j_username" value="" placeholder="<fmt:message key="signin.usernamePlaceholder"/>" required>
                 </div>
                 <div class="form-group">
-                    <input class="form-control" type="password" name="j_password" value="" placeholder="password" required>
+                    <input class="form-control" type="password" name="j_password" value="" placeholder="<fmt:message key="signin.passwordPlaceholder"/>" required>
                 </div>
-                <button type="submit" class="btn btn-primary btn-sm btn-block login-button">Sign in</button>
+                <button type="submit" class="btn btn-primary btn-sm btn-block login-button"><fmt:message key="signin.button"/></button>
             </form>
-            <p class="sign-up">Don't have an account yet? <a href="<c:url value="/signup"/>">Sign up >></a></p>
+            <p class="sign-up"><fmt:message key="signin.signupText"/> <a href="<c:url value="/signup"/>"><fmt:message key="signin.signupHref"/> >></a></p>
         </div>
     </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

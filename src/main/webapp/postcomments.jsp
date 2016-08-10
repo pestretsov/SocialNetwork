@@ -7,6 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="ru" scope="application"/>
 <script>
     var postId = ${requestScope.postId};
     var sessionUserId = ${sessionScope.sessionUser.id};
@@ -43,14 +45,14 @@
                 <div class="panel">
                     <div class="panel-body">
                         <div class="form-group">
-                            <textarea id="commenttext" name="text" class="form-control" rows="2" placeholder="Share your opinion..."
+                            <textarea id="commenttext" name="text" class="form-control" rows="2" placeholder="<fmt:message key="comments.placeholder"/>"
                                       maxlength="255"></textarea>
                         </div>
-                        <button id="addcomment" type="submit" class="btn btn-primary pull-right">Add comment</button>
+                        <button id="addcomment" type="submit" class="btn btn-primary pull-right"><fmt:message key="comments.submit"/></button>
                     </div>
                 </div>
             </div>
-            <div id="comments"><h4>comments:</h4></div>
+            <div id="comments"><h4><fmt:message key="comments.title"/></h4></div>
         </div>
     </div>
     <div class="col-md-3">
