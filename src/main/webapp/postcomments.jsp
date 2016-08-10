@@ -9,6 +9,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script>
     var postId = ${requestScope.postId};
+    var sessionUserId = ${sessionScope.sessionUser.id};
 </script>
 <html>
 <head>
@@ -38,11 +39,21 @@
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <div id="post"></div>
-            <h1>comments:</h1>
-            <div id="comments"></div>
+            <div class="row">
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <textarea id="commenttext" name="text" class="form-control" rows="2" placeholder="Share your opinion..."
+                                      maxlength="255"></textarea>
+                        </div>
+                        <button id="addcomment" type="submit" class="btn btn-primary pull-right">Add comment</button>
+                    </div>
+                </div>
+            </div>
+            <div id="comments"><h4>comments:</h4></div>
         </div>
-        <div class="col-md-3">
-        </div>
+    </div>
+    <div class="col-md-3">
     </div>
 </div>
 

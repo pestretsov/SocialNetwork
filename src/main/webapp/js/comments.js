@@ -84,7 +84,7 @@ $(function () {
         var prepareHtml = '<div class="row">';
         prepareHtml += '<div class="panel post">';
         prepareHtml += '<div class="col-md-2">';
-        prepareHtml += '<img class="user-avatar" src="images/artemy.jpg">';
+        prepareHtml += '<img class="user-avatar" src="/images/artemy.jpg">';
         prepareHtml += '</div>';
 
         prepareHtml += '<div class="col-md-10">';
@@ -98,6 +98,26 @@ $(function () {
         prepareHtml += '</div>';
 
         postContainer.append(prepareHtml);
+        console.log(sessionUserId);
+
+        $("#addcomment").click(function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: "POST",
+                method: 'POST',
+                url: "/restapi/comments/addcomment",
+                headers: {'Content-type': 'application/json'},
+                data: JSON.stringify({
+                    postId: postId,
+                    fromId: sessionUserId,
+                    text: $("#commenttext").val()
+                }),
+                success: function () {
+                    window.location.reload();
+                }
+            })
+        });
     };
 
     function loadComments(postId, offsetId, limit) {

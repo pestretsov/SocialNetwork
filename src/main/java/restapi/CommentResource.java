@@ -35,7 +35,7 @@ public class CommentResource {
         }
 
         if (commentViewDAO == null) {
-            commentDAO = (CommentDAO) servletContext.getAttribute("commentViewDAO");
+            commentViewDAO = (CommentViewDAO) servletContext.getAttribute("commentViewDAO");
         }
     }
 
@@ -79,7 +79,7 @@ public class CommentResource {
         }
 
         try {
-            log.info("userId={} is trying to add comment to postId={}", comment.getFromId(), comment.getPostId());
+            log.info("userId={} is trying to add comment={} to postId={}", comment.getFromId(),comment ,comment.getPostId());
             if (commentDAO.addPostComment(comment) >= 0) {
                 log.info("userId={} has added comment to postId={}", comment.getFromId(), comment.getPostId());
             } else {
@@ -87,8 +87,8 @@ public class CommentResource {
             }
             return Response.ok().build();
         } catch (RuntimeException e) {
-            log.warn("Error adding userId={} like to postId={}, error={}", comment.getFromId(), comment.getPostId(), e);
-            return Response.serverError().entity("Error adding like").build();
+            log.warn("Error adding userId={} comment to postId={}, error={}", comment.getFromId(), comment.getPostId(), e);
+            return Response.serverError().entity("Error adding comment").build();
         }
     }
 }

@@ -35,6 +35,8 @@ public class ServicesInitializer implements ServletContextListener {
         PostViewDAO postViewDAO = new H2PostViewDAO(connectionPool);
         FollowDAO followDAO = new H2FollowDAO(connectionPool);
         LikeDAO likeDAO = new H2LikeDAO(connectionPool);
+        CommentDAO commentDAO = new H2CommentDAO(connectionPool);
+        CommentViewDAO commentViewDAO = new H2CommentViewDAO(connectionPool);
         SecurityUtils securityUtils = new SecurityUtils();
 
         sce.getServletContext().setAttribute("userDAO", userDAO);
@@ -43,6 +45,8 @@ public class ServicesInitializer implements ServletContextListener {
         sce.getServletContext().setAttribute("postViewDAO", postViewDAO);
         sce.getServletContext().setAttribute("likeDAO", likeDAO);
         sce.getServletContext().setAttribute("securityUtils", securityUtils);
+        sce.getServletContext().setAttribute("commentDAO", commentDAO);
+        sce.getServletContext().setAttribute("commentViewDAO", commentViewDAO);
 
         String scriptFilePath = servletContext.getRealPath(RESOURCES_FILE_PATH + DB_INIT_SCRIPT_FILE_NAME);
         connectionPool.executeScript(scriptFilePath);
