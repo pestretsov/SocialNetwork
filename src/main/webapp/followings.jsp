@@ -56,7 +56,7 @@
                             <div class="pull-left">
                                 <img class="user-avatar" src="<c:url value='/images/artemy.jpg'/>">
                             </div>
-                            <h3 id="requestUserFullName">${following.firstName} ${following.lastName}</h3>
+                            <a href="<c:url value='/user/${following.username}'/>"><h3 id="requestUserFullName">${following.firstName} ${following.lastName}</h3></a>
                             <h4 id="requestUserUsername" data-user-id="${following.id}">@${following.username}</h4>
                             <div class="clearfix"></div>
                         </div>

@@ -50,7 +50,7 @@
                         <div class="pull-left">
                             <img class="user-avatar" src="<c:url value='/images/artemy.jpg'/>">
                         </div>
-                        <h3 id="requestUserFullName">${requestUser.firstName} ${requestUser.lastName}</h3>
+                        <a href="<c:url value='/user/${requestUser.username}'/>"><h3 id="requestUserFullName">${requestUser.firstName} ${requestUser.lastName}</h3></a>
                         <h4 id="requestUserUsername" data-user-id="${requestUser.id}">@${requestUser.username}</h4>
                         <div class="clearfix"></div>
                         <p class="user-bio">${requestUser.bio}</p>
@@ -107,4 +107,3 @@
 
 </body>
 </html>
-

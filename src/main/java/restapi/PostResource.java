@@ -142,15 +142,18 @@ public class PostResource {
     @Path("/gettimeline")
     @Produces(APPLICATION_JSON)
     public Response getPersonalTimelineWithOffsetAndLimit(
-            @QueryParam("followerId") int followerId,
             @QueryParam("offsetId") int offsetId,
             @QueryParam("limit") int limit) {
 
-        if (!getSessionUserOpt(request.getSession()).isPresent()) {
+        Optional<User> sessionUserOpt = getSessionUserOpt(request.getSession());
+
+        if (!sessionUserOpt.isPresent()) {
             log.warn("No user session found. Cannot get timeline");
             return Response.status(Response.Status.FORBIDDEN)
                     .entity("User is not signedup").build();
         }
+
+        int followerId = sessionUserOpt.get().getId();
 
         List<PostView> posts = postViewDAO.getPersonalTimeline(followerId, offsetId, limit);
 
@@ -174,6 +177,7 @@ public class PostResource {
 
         List<PostView> posts = postViewDAO.getUserPostsSublist(userId, fromId, offsetId, limit);
 
+        // TODO: fix
         if (!followDAO.isFollowing(userId, fromId) && userId != fromId) {
             posts = posts.stream().filter(pv -> pv.getPostType() != PostType.PRIVATE).collect(Collectors.toList());
         }

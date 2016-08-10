@@ -42,7 +42,7 @@
                         <div class="pull-left">
                             <img class="user-avatar" src="<c:url value='/images/artemy.jpg'/>">
                         </div>
-                        <h3 id="requestUserFullName">${sessionUser.firstName} ${sessionUser.lastName}</h3>
+                        <a href="<c:url value='/user/${sessionUser.username}'/>"><h3 id="requestUserFullName">${sessionUser.firstName} ${sessionUser.lastName}</h3></a>
                         <h4 id="requestUserUsername" data-user-id="${sessionUser.id}">@${sessionUser.username}</h4>
                         <div class="clearfix"></div>
                         <p class="user-bio">${sessionUser.bio}</p>
@@ -56,7 +56,7 @@
         </div>
         <div class="col-md-6">
             <%--AJAX HERE--%>
-            <div id="posts"></div>
+            <div id="timeline"></div>
         </div>
         <div class="col-md-2">
             <%--<div class="panel">--%>
@@ -69,8 +69,7 @@
 <script src="<c:url value='/js/jquery-3.1.0.min.js'/>"></script>
 <script src="<c:url value='/js/bootstrap.min.js'/>"></script>
 <script src="<c:url value='/js/moment.min.js'/>"></script>
-<script src="<c:url value="/js/homescript.js"/>"></script>
+<script src="<c:url value="/js/script.js"/>"></script>
 
 </body>
 </html>
-

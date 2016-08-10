@@ -1,5 +1,6 @@
 $(function () {
 
+
     var requestUser = {
         id:       $("#requestUserUsername").data("user-id"),
         username: $("#requestUserUsername").text(),
@@ -9,19 +10,20 @@ $(function () {
     var sessionUser = {
         id: $("#sessionUserFirstName").data("user-id")
     };
-    
+
     function requestUserIsSessionUser(reqUser, sesUser) {
         return sessionUser.id === reqUser.id;
     }
 
     var postsContainer = document.getElementById("posts");
+    var timelineContainer = document.getElementById("timeline");
 
     var offsetPostId = 100000000;
 
     function toPlainText(string) {
         return string.replace(/</g, "&lt;").replace(/>/g, "&gt;");
     }
-    
+
     function displayDate(timestamp) {
         var now = new Date();
         var nowWrapper = moment(now);
@@ -104,10 +106,16 @@ $(function () {
         var postContent = document.createElement("div");
         postContent.className = "col-md-11";
 
-        postContent.innerHTML += '<h3>' + postView.fromFirstName + ' ' + postView.fromLastName + ' <span>@' + postView.fromUsername + '</span><span> &bull; </span><span>' + displayDate(postView.postPublishTime.epochSecond) + '</span></h3>';
+        var postUserInfo = document.createElement("h3");
+        var usernameAncor = document.createElement("a");
+        usernameAncor.href = "/user/" + postView.fromUsername;
+        usernameAncor.innerHTML = postView.fromFirstName + ' ' + postView.fromLastName;
+        postUserInfo.appendChild(usernameAncor);
+        postUserInfo.innerHTML += '<span> @' + postView.fromUsername + '</span>';
+        postUserInfo.innerHTML += '<span> &bull; </span><span>' + displayDate(postView.postPublishTime.epochSecond) + '</span>';
+
+        postContent.appendChild(postUserInfo);
         postContent.innerHTML += '<p>' + toPlainText(postView.postText) + '</p>';
-        postContent.innerHTML += '</div>';
-        postContent.innerHTML += '</div>';
 
         var postToolbar = document.createElement("div");
 
@@ -140,42 +148,6 @@ $(function () {
             });
 
             postToolbar.appendChild(editButtonsDiv);
-            // editButtonsDiv.on('click', '.post-edit', function () {
-                //     var p = $(this).parent('div').parent('div').parent('div').siblings('div').children('div').children('p');
-                //     var save = $(this).siblings('.post-edit-ok');
-                //     var edit = $(this);
-                //     var text = p.text().replace("\n", "").trim();
-                //
-                //     p.replaceWith("<textarea class='post-edit-text'>" + text + "</textarea>");
-                //
-                //     edit.addClass("hidden");
-                //     save.removeClass("hidden");
-                //
-                //     save.off('click').click(function () {
-                //         var postId = $(this).closest('.post').data("post-id");
-                //         var textArea = $(this).parent('div').parent('div').parent('div').siblings('div').children('div').children("textarea");
-                //         var updatedText = textArea.val();
-                //
-                //         $.ajax({
-                //             url: "/restapi/posts/secure",
-                //             type: "PUT",
-                //             method: "PUT",
-                //             headers: {'Content-Type': 'application/json'},
-                //             dataType: "json",
-                //             data: JSON.stringify({
-                //                 id: postId,
-                //                 fromId: requestUser.id,
-                //                 text: updatedText
-                //             }),
-                //             success: function () {
-                //                 textArea.replaceWith('<p>' + updatedText + '</p>');
-                //
-                //                 save.addClass("hidden");
-                //                 edit.removeClass("hidden");
-                //             }
-                //         });
-                //     });
-                // });
         }
 
         postContent.appendChild(postToolbar);
@@ -216,5 +188,44 @@ $(function () {
         });
     }
 
-    loadUserPosts(requestUser, offsetPostId);
+    function loadPersonalTimeline(offsetId) {
+        $.ajax({
+            url: "/restapi/posts/gettimeline",
+            data: {
+                offsetId: offsetId,
+                limit: 3
+            },
+            type: "GET",
+            dataType: "json",
+            success: function (postViews) {
+                postViews.forEach(function (postView) {
+                    timelineContainer.appendChild(addPostView(postView));
+                    offsetId = postView.postId;
+                    console.log("update offsetId=" + postView.postId);
+                });
+
+                console.log("remaining="+postViews.length);
+                // no more posts
+                if (postViews.length == 0) {
+                    $(window).off('scroll');
+                    console.log("scroll off");
+                } else {
+                    $(window).off('scroll').scroll(function () {
+                        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+                            console.log("scroll true offsetId="+offsetId);
+                            loadPersonalTimeline(offsetId);
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    if (postsContainer) {
+        loadUserPosts(requestUser, offsetPostId);
+    }
+
+    if (timelineContainer) {
+        loadPersonalTimeline(offsetPostId);
+    }
 });

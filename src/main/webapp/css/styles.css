@@ -58,6 +58,10 @@ a#logo:hover {
     margin: 0;
 }
 
+#user-info a:hover {
+    color: #14171A;
+}
+
 #user-info h4 {
     color: #AAB8C2;
     font-size: 14px;
@@ -105,7 +109,7 @@ div.col-md-1 {
     word-wrap: break-word;
 }
 
-.post h3 {
+.post h3, .post h3 a {
     font-size: 14px;
     color: #14171A;
     margin: 0;
