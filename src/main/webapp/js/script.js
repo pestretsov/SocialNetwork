@@ -202,7 +202,7 @@ $(function () {
                 });
 
                 // no more posts
-                if (posts.length == 0) {
+                if (postsViews.length == 0) {
                     $(window).off('scroll');
                 } else {
                     $(window).off('scroll').scroll(function () {

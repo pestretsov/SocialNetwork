@@ -44,7 +44,7 @@ public class H2CommentViewDAO extends H2DAO implements CommentViewDAO {
 
         String sql = "SELECT comment_id, post_id, comment_text, comment_publish_time, from_id, " +
                 "from_username, from_first_name, from_last_name FROM CommentView " +
-                "WHERE post_id=? AND comment_id>? ORDER BY comment_id ASC LIMIT ?";
+                "WHERE post_id=? AND comment_id<? ORDER BY comment_id DESC LIMIT ?";
 
         try (Connection connection = getConnectionPool().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {

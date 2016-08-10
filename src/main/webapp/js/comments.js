@@ -98,7 +98,7 @@ $(function () {
         prepareHtml += '</div>';
 
         postContainer.append(prepareHtml);
-        console.log(sessionUserId);
+        loadComments(postId, 1000000, 10);
 
         $("#addcomment").click(function (e) {
             e.preventDefault();
@@ -131,9 +131,37 @@ $(function () {
             },
             success: function (comments) {
                 comments.forEach(function (comment) {
-                    var text = '<p>' + comment.commentText + '</p>';
-                    commentsContainer.append(text);
+                    var prepareHtml = '<div class="row">';
+                    prepareHtml += '<div class="panel post">';
+                    prepareHtml += '<div class="col-md-2">';
+                    prepareHtml += '<img class="user-avatar" src="/images/artemy.jpg">';
+                    prepareHtml += '</div>';
+
+                    prepareHtml += '<div class="col-md-10">';
+
+                    prepareHtml += '<h3>' + comment.fromFirstName + ' ' + comment.fromLastName + ' <span>@' + comment.fromUsername + '</span><span> &bull; </span><span>' + displayDate(comment.commentPublishTime.epochSecond) + '</span></h3>';
+                    prepareHtml += '<p>' + toPlainText(comment.commentText) + '</p>';
+
+                    prepareHtml += '</div>';
+
+                    prepareHtml += '</div>';
+                    prepareHtml += '</div>';
+
+                    commentsContainer.append(prepareHtml);
+
+                    offsetId = comment.commentId;
                 });
+
+                if (comments.length == 0) {
+                    $(window).off('scroll');
+                } else {
+                    $(window).off('scroll').scroll(function () {
+                        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+                            console.log("getComments");
+                            loadComments(postId, offsetId, 10);
+                        }
+                    });
+                }
             }
         });
     }

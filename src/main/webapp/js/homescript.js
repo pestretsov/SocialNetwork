@@ -189,7 +189,7 @@ $(function () {
                 });
 
                 // no more posts
-                if (posts.length == 0) {
+                if (postViews.length == 0) {
                     $(window).off('scroll');
                 } else {
                     $(window).off('scroll').scroll(function () {
