@@ -33,7 +33,7 @@ $(function () {
                 likeCount.innerText = postView.likeCount;
             }
             likeButton.appendChild(likeCount);
-            if (sessionUser.id != null) {
+            if (sessionUserId != null) {
                 likeButton.addEventListener('click', function () {
                     function onSuccess() {
                         if (postView.likable) {

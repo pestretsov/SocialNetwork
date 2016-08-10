@@ -19,38 +19,52 @@
     <title>Discover</title>
 </head>
 <body>
-<c:forEach items="${discoverUsersList}" var="user">
-    <div class="col-md-4">
-        <div id="user-info" class="panel">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="pull-left">
-                        <img class="user-avatar" src="<c:url value='/images/artemy.jpg'/>">
-                    </div>
-                    <h3 id="requestUserFullName">${user.firstName} ${user.lastName}</h3>
-                    <h4 id="requestUserUsername" data-user-id="${user.id}">@${user.username}</h4>
-                    <div class="clearfix"></div>
-                    <p class="user-bio">${user.bio}</p>
-                </div>
+<header>
+    <nav id="header-nav" class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a id="logo" class="navbar-brand" href="#">SocNet</a>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                        <%--<c:choose>--%>
-                        <%--<c:when test="${requestScope.canFollow}">--%>
-                        <%--<form action="<c:url value='/secure/follow'/>" method="post">--%>
-                        <%--<button type="submit" class="btn btn-primary btn-sm follow-button" name="requestUserId" value="${requestUser.id}">Follow ${requestUser.firstName}</button>--%>
-                        <%--</form>--%>
-                        <%--</c:when>--%>
-                        <%--<c:when test="${(not requestScope.canFollow) && (not (empty sessionUser))}">--%>
-                        <%--<form action="<c:url value='/secure/unfollow'/>" method="post">--%>
-                        <%--<button type="submit" class="btn btn-default btn-sm follow-button" name="requestUserId" value="${requestUser.id}">Following ${requestUser.firstName}</button>--%>
-                        <%--</form>--%>
-                        <%--</c:when>--%>
-                        <%--</c:choose>--%>
-                </div>
+            <div id="navbar-collapse" class="collapse navbar-collapse">
+                <%--@elvariable id="sessionUser" type="model.User"--%>
+                <c:choose>
+                    <c:when test="${not (empty sessionUser)}">
+                        <jsp:include page="common/singnedin_navbar.jsp"/>
+                    </c:when>
+                    <c:otherwise>
+                        <jsp:include page="common/signedout_navbar.jsp"/>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
+    </nav>
+</header>
+<div class="container">
+    <h1>Discover interesting people:</h1>
+    <div class="row">
+        <c:forEach items="${discoverUsersList}" var="user">
+            <div class="col-md-4">
+                <div id="user-info" class="panel">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="pull-left">
+                                <img class="user-avatar" src="<c:url value='/images/artemy.jpg'/>">
+                            </div>
+                            <h3 id="requestUserFullName">${user.firstName} ${user.lastName}</h3>
+                            <h4 id="requestUserUsername" data-user-id="${user.id}">@${user.username}</h4>
+                            <div class="clearfix"></div>
+                            <p class="user-bio">${user.bio}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </c:forEach>
     </div>
-</c:forEach>
+</div>
+
+<script src="<c:url value='/js/jquery-3.1.0.min.js'/>"></script>
+<script src="<c:url value='/js/bootstrap.min.js'/>"></script>
+<script src="<c:url value='/js/moment.min.js'/>"></script>
+
 </body>
 </html>

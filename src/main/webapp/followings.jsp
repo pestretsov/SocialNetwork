@@ -19,37 +19,68 @@
     <title>Followers</title>
 </head>
 <body>
-<c:forEach items="${followingsList}" var="following">
-    <div class="col-md-4">
-        <div id="user-info" class="panel">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="pull-left">
-                        <img class="user-avatar" src="<c:url value='/images/artemy.jpg'/>">
-                    </div>
-                    <h3 id="requestUserFullName">${following.firstName} ${following.lastName}</h3>
-                    <h4 id="requestUserUsername" data-user-id="${following.id}">@${following.username}</h4>
-                    <div class="clearfix"></div>
-                </div>
+<header>
+    <nav id="header-nav" class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a id="logo" class="navbar-brand" href="#">SocNet</a>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                        <%--<c:choose>--%>
-                        <%--<c:when test="${requestScope.canFollow}">--%>
-                        <%--<form action="<c:url value='/secure/follow'/>" method="post">--%>
-                        <%--<button type="submit" class="btn btn-primary btn-sm follow-button" name="requestUserId" value="${requestUser.id}">Follow ${requestUser.firstName}</button>--%>
-                        <%--</form>--%>
-                        <%--</c:when>--%>
-                        <%--<c:when test="${(not requestScope.canFollow) && (not (empty sessionUser))}">--%>
-                        <%--<form action="<c:url value='/secure/unfollow'/>" method="post">--%>
-                        <%--<button type="submit" class="btn btn-default btn-sm follow-button" name="requestUserId" value="${requestUser.id}">Following ${requestUser.firstName}</button>--%>
-                        <%--</form>--%>
-                        <%--</c:when>--%>
-                        <%--</c:choose>--%>
-                </div>
+            <div id="navbar-collapse" class="collapse navbar-collapse">
+                <%--@elvariable id="sessionUser" type="model.User"--%>
+                <c:choose>
+                    <c:when test="${not (empty sessionUser)}">
+                        <jsp:include page="common/singnedin_navbar.jsp"/>
+                    </c:when>
+                    <c:otherwise>
+                        <jsp:include page="common/signedout_navbar.jsp"/>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
+    </nav>
+</header>
+<div class="container">
+    <c:if test="${(not (empty sessionUser)) && (sessionUser.id eq requestUser.id)}">
+        <h2>You follow:</h2>
+    </c:if>
+    <%--@elvariable id="requestUser" type="model.User"--%>
+    <c:if test="${(empty sessionUser) || not (sessionUser.id eq requestUser.id)}">
+        <h2>${requestUser.firstName} follows:</h2>
+    </c:if>
+    <div class="row">
+        <c:forEach items="${followingsList}" var="following">
+            <div class="col-md-4">
+                <div id="user-info" class="panel">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="pull-left">
+                                <img class="user-avatar" src="<c:url value='/images/artemy.jpg'/>">
+                            </div>
+                            <h3 id="requestUserFullName">${following.firstName} ${following.lastName}</h3>
+                            <h4 id="requestUserUsername" data-user-id="${following.id}">@${following.username}</h4>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <%--@elvariable id="sessionUser" type="model.User"--%>
+                            <%--@elvariable id="requestUser" type="model.User"--%>
+                            <c:if test="${(not (empty sessionUser)) && (sessionUser.id eq requestUser.id)}">
+                                <form action="<c:url value='/secure/unfollow'/>" method="post">
+                                    <button type="submit" class="btn btn-danger btn-sm follow-button" name="requestUserId" value="${following.id}">Unfollow ${following.firstName}</button>
+                                </form>
+                            </c:if>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </c:forEach>
     </div>
-</c:forEach>
+</div>
+
+<script src="<c:url value='/js/jquery-3.1.0.min.js'/>"></script>
+<script src="<c:url value='/js/bootstrap.min.js'/>"></script>
+<script src="<c:url value='/js/moment.min.js'/>"></script>
+
 </body>
 </html>
