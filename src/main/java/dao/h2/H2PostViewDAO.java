@@ -2,6 +2,7 @@ package dao.h2;
 
 import common.cp.ConnectionPool;
 import dao.interfaces.PostViewDAO;
+import model.Post;
 import model.PostType;
 import model.PostView;
 
@@ -11,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by artemypestretsov on 8/7/16.
@@ -21,7 +23,7 @@ public class H2PostViewDAO extends H2DAO implements PostViewDAO {
         super(connectionPool);
     }
 
-    private PostView parsePostView(ResultSet resultSet) throws SQLException {
+    private PostView parsePostView(ResultSet resultSet, boolean onlySchema) throws SQLException {
         PostView postView = new PostView();
 
         postView.setPostId(resultSet.getInt("post_id"));
@@ -34,11 +36,32 @@ public class H2PostViewDAO extends H2DAO implements PostViewDAO {
         postView.setFromFirstName(resultSet.getString("from_first_name"));
         postView.setFromLastName(resultSet.getString("from_last_name"));
 
-        postView.setLikable(resultSet.getInt("likable") == 0);
-        postView.setLikeCount(resultSet.getInt("like_count"));
-        postView.setEditable(resultSet.getInt("editable") > 0);
+        if (!onlySchema) {
+            postView.setLikable(resultSet.getInt("likable") == 0);
+            postView.setLikeCount(resultSet.getInt("like_count"));
+            postView.setEditable(resultSet.getInt("editable") > 0);
+        }
 
         return postView;
+    }
+
+    private Optional<PostView> parsePostViewOpt(ResultSet resultSet, boolean onlySchema) throws SQLException {
+        return resultSet.next() ? Optional.of(parsePostView(resultSet, onlySchema)) : Optional.empty();
+    }
+
+    public Optional<PostView> getPostViewById(int postId) {
+        String sql = "SELECT post_id, post_text, post_type, post_publish_time, from_id, " +
+                "from_username, from_first_name, from_last_name FROM PostView WHERE post_id=?";
+
+        try (Connection connection = getConnectionPool().getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, postId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                return parsePostViewOpt(resultSet, true);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -64,7 +87,7 @@ public class H2PostViewDAO extends H2DAO implements PostViewDAO {
             statement.setInt(5, limit);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    sublist.add(parsePostView(resultSet));
+                    sublist.add(parsePostView(resultSet, false));
                 }
             }
             return sublist;
@@ -96,7 +119,7 @@ public class H2PostViewDAO extends H2DAO implements PostViewDAO {
             statement.setInt(6, limit);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    timeline.add(parsePostView(resultSet));
+                    timeline.add(parsePostView(resultSet, false));
                 }
             }
             return timeline;

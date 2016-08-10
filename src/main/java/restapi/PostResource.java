@@ -99,6 +99,46 @@ public class PostResource {
     }
 
     @GET
+    @Path("/getfullpost/{id}")
+    @Produces(APPLICATION_JSON)
+    public Response getFullPostById(@PathParam("id") int id) {
+
+        log.info("trying to GET post with postId={}", id);
+
+        Optional<PostView> postViewOpt = postViewDAO.getPostViewById(id);
+
+        if (!postViewOpt.isPresent()) {
+            log.warn("no such post with postId={}", id);
+            return Response.noContent().build();
+        }
+
+        PostView postView = postViewOpt.get();
+
+        if (postView.getPostType() == PostType.PRIVATE) {
+            Optional<User> sessionUser = getSessionUserOpt(request.getSession());
+            if (!sessionUser.isPresent()) {
+                log.warn("No user session found. Cannot get private post");
+                return Response.status(Response.Status.FORBIDDEN)
+                        .entity("User is not signedup").build();
+            } else {
+                if (!followDAO.isFollowing(postView.getFromId(), sessionUser.get().getId())) {
+                    return Response.status(Response.Status.FORBIDDEN)
+                            .entity("Cannot see private posts").build();
+                }
+            }
+        }
+
+        try {
+            log.info("got post with postId={}", id);
+            String json = toJson(postView);
+            return Response.ok(json).build();
+        } catch (JsonProcessingException e) {
+            log.warn("JsonProcessingException thrown trying to get post with postId={}", id);
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GET
     @Path("/gettimeline")
     @Produces(APPLICATION_JSON)
     public Response getPersonalTimelineWithOffsetAndLimit(

@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import model.*;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.*;
@@ -16,7 +15,6 @@ import javax.ws.rs.core.Response;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static utils.RestUtils.toJson;

@@ -1,9 +1,6 @@
 package controllers;
 
-import dao.interfaces.FollowDAO;
-import dao.interfaces.LikeDAO;
-import dao.interfaces.PostDAO;
-import dao.interfaces.UserDAO;
+import dao.interfaces.*;
 import utils.SecurityUtils;
 
 import javax.servlet.ServletException;
@@ -16,6 +13,7 @@ public class BaseServlet extends HttpServlet {
 
     protected UserDAO userDAO;
     protected PostDAO postDAO;
+    protected PostViewDAO postViewDAO;
     protected FollowDAO followDAO;
     protected LikeDAO likeDAO;
     protected SecurityUtils securityUtils;
@@ -24,6 +22,7 @@ public class BaseServlet extends HttpServlet {
     public void init() throws ServletException {
         userDAO       = (UserDAO)       getServletContext().getAttribute("userDAO");
         postDAO       = (PostDAO)       getServletContext().getAttribute("postDAO");
+        postViewDAO   = (PostViewDAO)   getServletContext().getAttribute("postViewDAO");
         followDAO     = (FollowDAO)     getServletContext().getAttribute("followDAO");
         likeDAO       = (LikeDAO)       getServletContext().getAttribute("likeDAO");
         securityUtils = (SecurityUtils) getServletContext().getAttribute("securityUtils");
