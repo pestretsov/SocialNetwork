@@ -177,14 +177,14 @@ public class PostResource {
 
         List<PostView> posts = postViewDAO.getUserPostsSublist(userId, fromId, offsetId, limit);
 
-        // TODO: fix
-        if (!followDAO.isFollowing(userId, fromId) && userId != fromId) {
+        if (!followDAO.isFollowing(fromId, userId) && userId != fromId) {
+            log.debug("userId={}, fromId={}", userId, fromId);
             posts = posts.stream().filter(pv -> pv.getPostType() != PostType.PRIVATE).collect(Collectors.toList());
         }
 
         try {
             String json = toJson(posts);
-            log.debug("userId={} requested sublist of userId={}", userId, fromId);
+            log.debug("userId={} requested sublist of userId={}, sublist={}", userId, fromId, posts);
             return Response.ok(json).build();
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);

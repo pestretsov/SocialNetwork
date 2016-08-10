@@ -60,9 +60,9 @@ public class H2CommentViewDAOTest {
 
         commentDAO.addPostComment(comment3);
 
-        assertEquals(commentViewDAO.getPostCommentsSublist(post.getId(), 0, 3).size(), 3);
-        assertEquals(commentViewDAO.getPostCommentsSublist(post.getId(), 3, 3).size(), 0);
-        assertEquals(commentViewDAO.getPostCommentsSublist(post.getId(), 1, 3).size(), 2);
+        assertEquals(commentViewDAO.getPostCommentsSublist(post.getId(), 4, 3).size(), 3);
+        assertEquals(commentViewDAO.getPostCommentsSublist(post.getId(), 1, 3).size(), 0);
+        assertEquals(commentViewDAO.getPostCommentsSublist(post.getId(), 3, 3).size(), 2);
 
         for (CommentView commentView : commentViewDAO.getPostCommentsSublist(post.getId(), 0, 3)) {
             System.out.println(commentView.getFromUsername());
