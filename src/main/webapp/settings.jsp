@@ -39,7 +39,7 @@
                 </div>
                 <div class="form-group">
                     <label for="user-new-dob-input"><fmt:message key="settings.birthday"/></label>
-                    <input id="user-new-dob-input" class="form-control" type="date" name="birth_date" value="${sessionUser.birthDate.toString()}" required>
+                    <input id="user-new-dob-input" class="form-control" type="date" name="birth_date" value="${sessionUser.birthDate.toString()}" >
                 </div>
                 <div class="form-group">
                     <label for="user-new-bio-input"><fmt:message key="settings.bio"/></label>

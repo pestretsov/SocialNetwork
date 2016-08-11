@@ -46,8 +46,8 @@
     </nav>
 </header>
 <div class="container">
+    <%--@elvariable id="requestUser" type="model.User"--%>
     <h2>${requestUser.firstName} <fmt:message key="followings.title"/></h2>
-
     <div class="row">
         <c:forEach items="${followingsList}" var="following">
             <div class="col-md-4">
@@ -64,8 +64,6 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <%--@elvariable id="sessionUser" type="model.User"--%>
-                            <%--@elvariable id="requestUser" type="model.User"--%>
                             <c:if test="${(not (empty sessionUser)) && (sessionUser.id eq requestUser.id)}">
                                 <form action="<c:url value='/secure/unfollow'/>" method="post">
                                     <button type="submit" class="btn btn-danger btn-sm btn-block follow-button" name="requestUserId" value="${following.id}"><fmt:message key="body.unfollowButton"/> ${following.firstName}</button>

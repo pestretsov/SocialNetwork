@@ -37,7 +37,7 @@
                     <input id="user-lastname-input" class="form-control" type="text" name="last_name" required>
                 </div>
                 <div class="form-group row">
-                    <label for="user-dob-input"><fmt:message key="signup.lastName"/></label>
+                    <label for="user-dob-input"><fmt:message key="signup.birthday"/></label>
                     <input id="user-dob-input" class="form-control" type="date" name="birth_date">
                 </div>
                 <div class="form-group row">
