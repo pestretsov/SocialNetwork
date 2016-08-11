@@ -90,7 +90,7 @@ public class SignUpServlet extends BaseServlet {
             resp.sendRedirect(nextURL);
         } catch (RuntimeException e) {
             log.warn("error creating user");
-            resp.sendError(500, "Error creating user");
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error creating user");
             return;
         }
 

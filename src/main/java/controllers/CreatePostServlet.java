@@ -37,21 +37,24 @@ public class CreatePostServlet extends BaseServlet {
 
         String text = req.getParameter("postText");
 
-
         PostType postType = Optional.ofNullable(req.getParameter("postType")).map(PostType::valueOf).orElse(PostType.DEFAULT);
 
+        try {
+            Post post = new Post();
 
-        Post post = new Post();
+            post.setText(text);
+            post.setPostType(postType);
+            post.setFromId(user.getId());
+            post.setPublishTime(Instant.now());
 
-        post.setText(text);
-        post.setPostType(postType);
-        post.setFromId(user.getId());
-        post.setPublishTime(Instant.now());
+            post.setId(postDAO.create(post));
 
-        post.setId(postDAO.create(post));
+            log.info("postId={}, postType={}, fromId={}", post.getId(), postType,post.getFromId());
 
-        log.info("postId={}, postType={}, fromId={}", post.getId(), postType,post.getFromId());
-
-        resp.sendRedirect("/");
+            resp.sendRedirect("/");
+        } catch (RuntimeException e) {
+            log.warn("something went wrong with creating post");
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error trying to create post");
+        }
     }
 }

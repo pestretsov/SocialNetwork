@@ -64,9 +64,9 @@ public class H2CommentViewDAOTest {
         assertEquals(commentViewDAO.getPostCommentsSublist(post.getId(), 1, 3).size(), 0);
         assertEquals(commentViewDAO.getPostCommentsSublist(post.getId(), 3, 3).size(), 2);
 
-        for (CommentView commentView : commentViewDAO.getPostCommentsSublist(post.getId(), 0, 3)) {
-            System.out.println(commentView.getFromUsername());
-        }
+//        for (CommentView commentView : commentViewDAO.getPostCommentsSublist(post.getId(), 0, 3)) {
+//            System.out.println(commentView.getFromUsername());
+//        }
 
         postDAO.deleteById(post.getId());
     }

@@ -194,7 +194,7 @@ $(function () {
                 userId: sessionUser.id,
                 fromId: user.id,
                 offsetId: offsetId,
-                limit: 3
+                limit: 10
             },
             type: "GET",
             dataType: "json",
@@ -223,7 +223,7 @@ $(function () {
             url: "/restapi/posts/gettimeline",
             data: {
                 offsetId: offsetId,
-                limit: 3
+                limit: 10
             },
             type: "GET",
             dataType: "json",

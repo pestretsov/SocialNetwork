@@ -44,9 +44,10 @@ public class FollowUserServlet extends BaseServlet {
 
             followDAO.create(follow);
         } catch (RuntimeException e) {
-            resp.sendError(500, "Something went wrong");
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error trying to follow user");
             return;
         }
+        
         Follow createdFollow = followDAO.getByUserAndFollowerId(userToFollowId, sessionUser.getId());
         User user = userDAO.getById(createdFollow.getUserId()).get();
 

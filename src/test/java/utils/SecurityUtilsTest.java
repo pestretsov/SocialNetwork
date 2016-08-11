@@ -43,8 +43,6 @@ public class SecurityUtilsTest {
         String hash1 = securityUtils.encrypt(password);
         String hash2 = securityUtils.encrypt(password);
 
-        System.out.println(hash1);
-
         String salt1 = hash1.substring(0, 32);
         String salt2 = hash2.substring(0, 32);
 

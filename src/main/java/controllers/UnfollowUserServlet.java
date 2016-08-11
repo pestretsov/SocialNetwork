@@ -43,7 +43,7 @@ public class UnfollowUserServlet extends BaseServlet {
             }
         } catch (RuntimeException e) {
             log.warn("userId={} has failed to unfollow userId={} thrown exception={}", sessionUser.getId(), userToUnfollowId, e);
-            resp.sendError(500, "Something went wrong");
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error trying to delete user");
             return;
         }
 

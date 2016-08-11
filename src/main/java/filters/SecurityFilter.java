@@ -17,7 +17,7 @@ import java.util.Optional;
  */
 
 @Slf4j
-@WebFilter(urlPatterns = {"/secure/*"})
+@WebFilter(urlPatterns = {"/secure/*", "/home/*", "/admin/*"})
 public class SecurityFilter implements Filter {
     private UserDAO userDAO;
 
