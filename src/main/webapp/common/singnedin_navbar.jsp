@@ -8,7 +8,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setLocale value="ru" scope="application"/>
+<jsp:useBean id="locale" scope="session" class="java.lang.String"/>
+<fmt:setLocale value="${locale}" scope="application"/>
 <ul class="nav navbar-nav">
     <li><a href="<c:url value='/'/>"><span class="glyphicon glyphicon-home"></span> <fmt:message key="header.home"/></a></li>
     <li><a href="<c:url value="/discover"/>" ><span class="glyphicon glyphicon-move"></span> <fmt:message key="header.discover"/></a></li>

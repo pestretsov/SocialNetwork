@@ -8,7 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setLocale value="ru" scope="application"/>
+<jsp:useBean id="locale" scope="session" class="java.lang.String"/>
+<fmt:setLocale value="${locale}" scope="application"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,15 +28,35 @@
     <div class="container">
         <div class="main-center panel col-md-4 col-md-offset-4">
             <h1 class="card-title"><fmt:message key="signin.title"/></h1>
-            <form action="<c:url value='/login'/>" method="post">
-                <div class="form-group">
-                    <input class="form-control" type="text" name="j_username" value="" placeholder="<fmt:message key="signin.usernamePlaceholder"/>" required>
+            <div class="row">
+                <div class="col-md-12">
+                    <form action="<c:url value='/login'/>" method="post">
+                        <div class="form-group">
+                            <input class="form-control" type="text" name="j_username" value="" placeholder="<fmt:message key="signin.usernamePlaceholder"/>" required>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" type="password" name="j_password" value="" placeholder="<fmt:message key="signin.passwordPlaceholder"/>" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-sm btn-block login-button"><fmt:message key="signin.button"/></button>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <input class="form-control" type="password" name="j_password" value="" placeholder="<fmt:message key="signin.passwordPlaceholder"/>" required>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <form method="post" action="<c:url value="/changelocale"/>" class="navbar-form navbar-right">
+                        <div class="btn-group" role="group" aria-label="...">
+                            <c:if test="${locale eq 'ru'}">
+                                <button class="btn btn-primary" name="locale" value="ru">RU</button>
+                                <button class="btn btn-default" name="locale" value="en">EN</button>
+                            </c:if>
+                            <c:if test="${not(locale eq 'ru')}">
+                                <button class="btn btn-default" name="locale" value="ru">RU</button>
+                                <button class="btn btn-primary" name="locale" value="en">EN</button>
+                            </c:if>
+                        </div>
+                    </form>
                 </div>
-                <button type="submit" class="btn btn-primary btn-sm btn-block login-button"><fmt:message key="signin.button"/></button>
-            </form>
+            </div>
             <p class="sign-up"><fmt:message key="signin.signupText"/> <a href="<c:url value="/signup"/>"><fmt:message key="signin.signupHref"/> >></a></p>
         </div>
     </div>
