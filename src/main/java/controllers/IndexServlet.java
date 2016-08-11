@@ -37,10 +37,10 @@ public class IndexServlet extends BaseServlet {
             req.setAttribute("followersCount", followDAO.getAllFollowersByUser(userId));
             req.setAttribute("followingsCount", followDAO.getAllFollowingsByUser(userId));
             log.info("userId={} is present. Redirecting to {}", userId, "/home.jsp");
-            getServletContext().getRequestDispatcher("/home.jsp").forward(req, resp);
+            getServletContext().getRequestDispatcher("/WEB-INF/home.jsp").forward(req, resp);
         } else {
             log.info("no session. Redirecting to {}", "/login.jsp");
-            getServletContext().getRequestDispatcher("/login.jsp").forward(req, resp);
+            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(req, resp);
         }
     }
 }

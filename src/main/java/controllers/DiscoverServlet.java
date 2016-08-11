@@ -33,6 +33,6 @@ public class DiscoverServlet extends BaseServlet {
             req.setAttribute("discoverUsersList", userDAO.getAllUsers());
         }
 
-        getServletContext().getRequestDispatcher("/discover.jsp").forward(req, resp);
+        getServletContext().getRequestDispatcher("/WEB-INF/discover.jsp").forward(req, resp);
     }
 }

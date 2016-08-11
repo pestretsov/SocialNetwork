@@ -51,7 +51,7 @@ public class UserServlet extends BaseServlet {
             req.setAttribute("followersCount", followDAO.getAllFollowersByUser(userOpt.get().getId()));
             req.setAttribute("followingsCount", followDAO.getAllFollowingsByUser(userOpt.get().getId()));
 
-            getServletContext().getRequestDispatcher("/user.jsp").forward(req, resp);
+            getServletContext().getRequestDispatcher("/WEB-INF/user.jsp").forward(req, resp);
         } else {
             log.warn("no such user with username={}", path);
             resp.sendError(406, "No user with such username found!");

@@ -49,6 +49,6 @@ public class PostCommentsServlet extends BaseServlet {
         }
         req.setAttribute("postId", postOpt.get().getPostId());
 
-        getServletContext().getRequestDispatcher("/postcomments.jsp").forward(req, resp);
+        getServletContext().getRequestDispatcher("/WEB-INF/postcomments.jsp").forward(req, resp);
     }
 }

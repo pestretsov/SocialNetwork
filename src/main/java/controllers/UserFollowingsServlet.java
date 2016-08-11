@@ -38,6 +38,6 @@ public class UserFollowingsServlet extends BaseServlet {
 
         req.setAttribute("followingsList", userDAO.getUsersFollowedByUser(user.getId()));
         req.setAttribute("requestUser", user);
-        getServletContext().getRequestDispatcher("/followings.jsp").forward(req, resp);
+        getServletContext().getRequestDispatcher("/WEB-INF/followings.jsp").forward(req, resp);
     }
 }

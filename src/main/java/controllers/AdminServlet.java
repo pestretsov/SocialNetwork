@@ -19,6 +19,6 @@ public class AdminServlet extends BaseServlet {
 
         req.setAttribute("users", userDAO.getAllUsers());
 
-        req.getRequestDispatcher("/admin.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/admin.jsp").forward(req, resp);
     }
 }
