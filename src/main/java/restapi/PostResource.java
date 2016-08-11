@@ -121,7 +121,8 @@ public class PostResource {
                 return Response.status(Response.Status.FORBIDDEN)
                         .entity("User is not signedup").build();
             } else {
-                if (!followDAO.isFollowing(postView.getFromId(), sessionUser.get().getId())) {
+                if (!followDAO.isFollowing(postView.getFromId(), sessionUser.get().getId())
+                        && postView.getFromId() != sessionUser.get().getId()) {
                     return Response.status(Response.Status.FORBIDDEN)
                             .entity("Cannot see private posts").build();
                 }

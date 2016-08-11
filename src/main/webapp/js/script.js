@@ -15,6 +15,8 @@ $(function () {
         return sessionUser.id === reqUser.id;
     }
 
+    var postContainer = $("#post");//document.getElementById("post");
+    var commentsContainer = $("#comments");//document.getElementById("comments");
     var postsContainer = document.getElementById("posts");
     var timelineContainer = document.getElementById("timeline");
 
@@ -221,11 +223,169 @@ $(function () {
         });
     }
 
+    function loadComments(postId, offsetId, limit) {
+        $.ajax({
+            url: '/restapi/comments/getcomments',
+            method: 'GET',
+            data: {
+                postId: postId,
+                offsetId: offsetId,
+                limit: limit
+            },
+            success: function (comments) {
+                comments.forEach(function (comment) {
+                    var prepareHtml = '<div class="row">';
+                    prepareHtml += '<div class="panel post">';
+                    prepareHtml += '<div class="col-md-2">';
+                    prepareHtml += '<img class="user-avatar" src="/images/artemy.jpg">';
+                    prepareHtml += '</div>';
+
+                    prepareHtml += '<div class="col-md-10">';
+
+                    prepareHtml += '<h3>' + comment.fromFirstName + ' ' + comment.fromLastName + ' <span>@' + comment.fromUsername + '</span><span> &bull; </span><span>' + displayDate(comment.commentPublishTime.epochSecond) + '</span></h3>';
+                    prepareHtml += '<p>' + toPlainText(comment.commentText) + '</p>';
+
+                    prepareHtml += '</div>';
+
+                    prepareHtml += '</div>';
+                    prepareHtml += '</div>';
+
+                    commentsContainer.append(prepareHtml);
+
+                    offsetId = comment.commentId;
+                });
+
+                if (comments.length == 0) {
+                    $(window).off('scroll');
+                } else {
+                    $(window).off('scroll').scroll(function () {
+                        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+                            console.log("getComments");
+                            loadComments(postId, offsetId, 10);
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    var onPostLoad = function(postView) {
+        function addLikeButton() {
+            var likeButton = document.createElement("div");
+            likeButton.className = "post-like";
+            var likeGlyph = document.createElement("span");
+            likeGlyph.className = "glyphicon glyphicon-heart";
+
+            if (!postView.likable) {
+                likeGlyph.className += " post-like-engaged";
+            }
+
+            likeButton.appendChild(likeGlyph);
+            var likeCount = document.createElement("span");
+            if (postView.likeCount > 0) {
+                likeCount.innerText = postView.likeCount;
+            }
+            likeButton.appendChild(likeCount);
+            if (sessionUserId != null) {
+                likeButton.addEventListener('click', function () {
+                    function onSuccess() {
+                        if (postView.likable) {
+                            postView.likeCount++;
+                        } else {
+                            postView.likeCount--;
+                        }
+
+                        likeGlyph.className = "glyphicon glyphicon-heart";
+
+                        likeGlyph.className = "glyphicon glyphicon-heart";
+                        if (postView.likable) {
+                            likeGlyph.className += " post-like-engaged";
+                        }
+
+                        if (postView.likeCount != 0) {
+                            likeCount.innerText = postView.likeCount;
+                        } else {
+                            likeCount.innerText = "";
+                        }
+
+                        postView.likable = !postView.likable;
+                    }
+
+                    if (postView.likable) {
+                        $.ajax({
+                            url: '/restapi/likes/addlike',
+                            headers: {'Content-type': 'application/json'},
+                            method: 'POST',
+                            data: JSON.stringify({postId: postView.postId}),
+                            success: onSuccess()
+                        });
+                    } else {
+                        $.ajax({
+                            url: '/restapi/likes/removelike',
+                            headers: {'Content-type': 'application/json'},
+                            method: 'DELETE',
+                            data: JSON.stringify({postId: postView.postId}),
+                            success: onSuccess()
+                        });
+                    }
+                });
+            }
+
+            return likeButton;
+        }
+
+        var prepareHtml = '<div class="row">';
+        prepareHtml += '<div class="panel post">';
+        prepareHtml += '<div class="col-md-2">';
+        prepareHtml += '<img class="user-avatar" src="/images/artemy.jpg">';
+        prepareHtml += '</div>';
+
+        prepareHtml += '<div class="col-md-10">';
+
+        prepareHtml += '<h3>' + postView.fromFirstName + ' ' + postView.fromLastName + ' <span>@' + postView.fromUsername + '</span><span> &bull; </span><span>' + displayDate(postView.postPublishTime.epochSecond) + '</span></h3>';
+        prepareHtml += '<p>' + toPlainText(postView.postText) + '</p>';
+
+        prepareHtml += '</div>';
+
+        prepareHtml += '</div>';
+        prepareHtml += '</div>';
+
+        postContainer.append(prepareHtml);
+        loadComments(postId, 1000000, 10);
+
+        $("#addcomment").click(function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: "POST",
+                method: 'POST',
+                url: "/restapi/comments/addcomment",
+                headers: {'Content-type': 'application/json'},
+                data: JSON.stringify({
+                    postId: postId,
+                    fromId: sessionUserId,
+                    text: $("#commenttext").val()
+                }),
+                success: function () {
+                    window.location.reload();
+                }
+            })
+        });
+    };
+
     if (postsContainer) {
         loadUserPosts(requestUser, offsetPostId);
     }
 
     if (timelineContainer) {
         loadPersonalTimeline(offsetPostId);
+    }
+
+    if (postContainer && commentsContainer) {
+        $.ajax({
+            url: '/restapi/posts/getfullpost/' + postId,
+            method: 'GET',
+            success: onPostLoad
+        });
     }
 });

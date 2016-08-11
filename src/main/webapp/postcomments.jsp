@@ -63,7 +63,7 @@
 <script src="<c:url value='/js/jquery-3.1.0.min.js'/>"></script>
 <script src="<c:url value='/js/bootstrap.min.js'/>"></script>
 <script src="<c:url value='/js/moment.min.js'/>"></script>
-<script src="<c:url value="/js/comments.js"/>"></script>
+<script src="<c:url value="/js/script.js"/>"></script>
 
 </body>
 </html>
