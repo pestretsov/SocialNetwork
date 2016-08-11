@@ -14,20 +14,12 @@ import java.time.LocalDate;
 public class User {
     private int id; // id INT PRIMARY KEY AUTO_INCREMENT
 
-    @Size(max = 255)
-    @NotNull
     private String username; // username VARCHAR(255) NOT NULL UNIQUE
 
-    @Size(max = 255)
-    @NotNull
     private String password; // password VARCHAR(255) NOT NULL
 
-    @Size(max = 255)
-    @NotNull
     private String firstName; // first_name VARCHAR(255) NOT NULL
 
-    @Size(max = 255)
-    @NotNull
     private String lastName; // last_name VARCHAR(255) NOT NULL
 
     private UserRole role;
@@ -35,6 +27,5 @@ public class User {
     // Optional:
     private UserGender gender; // gender INT DEFAULT 0 (0– not specified; 1 – female; 2 – male)
     private LocalDate birthDate; // birth_date DATE
-    @Size(max = 255)
     private String bio; // bio TEXT
 }

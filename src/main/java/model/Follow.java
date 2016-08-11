@@ -11,9 +11,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class Follow {
     // followerId is following userId;
-    @NotNull
     private int followerId;
 
-    @NotNull
     private int userId;
 }

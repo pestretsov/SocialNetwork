@@ -69,8 +69,11 @@ public class H2FollowDAO extends H2DAO implements FollowDAO {
             statement.setInt(1, userId);
             statement.setInt(2, followerId);
             try (ResultSet resultSet = statement.executeQuery()) {
-                resultSet.next();
-                return parseFollow(resultSet);
+                if (resultSet.next()) {
+                    return parseFollow(resultSet);
+                } else {
+                    throw new SQLException("cannot find this relation");
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
