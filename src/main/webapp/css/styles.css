@@ -80,10 +80,6 @@ a#logo:hover {
     border-radius: 5%;
 }
 
-#user-info .user-bio {
-    margin-bottom: 10px;
-}
-
 #post-text {
     border: 0;
     padding: 10px;

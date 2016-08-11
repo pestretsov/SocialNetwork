@@ -30,9 +30,16 @@
             <div class="navbar-header">
                 <a id="logo" class="navbar-brand" href="#">SocNet</a>
             </div>
-            <div id="navbar-collapse" class="collapse navbar-collapse">
-                <jsp:include page="common/singnedin_navbar.jsp"/>
-            </div>
+            <c:choose>
+                <c:when test="${not (empty sessionUser) && sessionUser.role == 'ADMIN'}">
+                    <jsp:include page="common/admin_navbar.jsp"/>
+                </c:when>
+                <c:otherwise>
+                    <div id="navbar-collapse" class="collapse navbar-collapse">
+                        <jsp:include page="common/singnedin_navbar.jsp"/>
+                    </div>
+                </c:otherwise>
+            </c:choose>
         </div>
     </nav>
 </header>

@@ -30,14 +30,17 @@
             </div>
             <div id="navbar-collapse" class="collapse navbar-collapse">
                 <%--@elvariable id="sessionUser" type="model.User"--%>
-                <c:choose>
-                    <c:when test="${not (empty sessionUser)}">
-                        <jsp:include page="common/singnedin_navbar.jsp"/>
-                    </c:when>
-                    <c:otherwise>
-                        <jsp:include page="common/signedout_navbar.jsp"/>
-                    </c:otherwise>
-                </c:choose>
+                    <c:choose>
+                        <c:when test="${not (empty sessionUser) && sessionUser.role == 'ADMIN'}">
+                            <jsp:include page="common/admin_navbar.jsp"/>
+                        </c:when>
+                        <c:when test="${not (empty sessionUser)}">
+                            <jsp:include page="common/singnedin_navbar.jsp"/>
+                        </c:when>
+                        <c:otherwise>
+                            <jsp:include page="common/signedout_navbar.jsp"/>
+                        </c:otherwise>
+                    </c:choose>
             </div>
         </div>
     </nav>
@@ -65,7 +68,7 @@
                             <%--@elvariable id="requestUser" type="model.User"--%>
                             <c:if test="${(not (empty sessionUser)) && (sessionUser.id eq requestUser.id)}">
                                 <form action="<c:url value='/secure/unfollow'/>" method="post">
-                                    <button type="submit" class="btn btn-danger btn-sm follow-button" name="requestUserId" value="${following.id}">Unfollow ${following.firstName}</button>
+                                    <button type="submit" class="btn btn-danger btn-sm btn-block follow-button" name="requestUserId" value="${following.id}"><fmt:message key="body.unfollowButton"/> ${following.firstName}</button>
                                 </form>
                             </c:if>
                         </div>
