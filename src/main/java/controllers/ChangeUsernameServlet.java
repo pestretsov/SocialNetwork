@@ -25,7 +25,7 @@ public class ChangeUsernameServlet extends BaseServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
 
-        User sessionUser = (User)session.getAttribute("sessionUser");
+        User sessionUser = (User)session.getAttribute(SESSION_USER);
         log.info("user with userId={} is trying to change username", sessionUser.getId());
 
         String newUsername = req.getParameter("new_username");

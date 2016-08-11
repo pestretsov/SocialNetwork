@@ -1,6 +1,7 @@
 package controllers;
 
 import dao.interfaces.*;
+import listeners.ServicesInitializer;
 import utils.SecurityUtils;
 
 import javax.servlet.ServletException;
@@ -11,6 +12,8 @@ import javax.servlet.http.HttpServlet;
  */
 public class BaseServlet extends HttpServlet {
 
+    protected static final String SESSION_USER = "sessionUser";
+
     protected UserDAO userDAO;
     protected PostDAO postDAO;
     protected PostViewDAO postViewDAO;
@@ -20,11 +23,11 @@ public class BaseServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        userDAO       = (UserDAO)       getServletContext().getAttribute("userDAO");
-        postDAO       = (PostDAO)       getServletContext().getAttribute("postDAO");
-        postViewDAO   = (PostViewDAO)   getServletContext().getAttribute("postViewDAO");
-        followDAO     = (FollowDAO)     getServletContext().getAttribute("followDAO");
-        likeDAO       = (LikeDAO)       getServletContext().getAttribute("likeDAO");
-        securityUtils = (SecurityUtils) getServletContext().getAttribute("securityUtils");
+        userDAO       = (UserDAO)       getServletContext().getAttribute(ServicesInitializer.USER_DAO);
+        postDAO       = (PostDAO)       getServletContext().getAttribute(ServicesInitializer.POST_DAO);
+        postViewDAO   = (PostViewDAO)   getServletContext().getAttribute(ServicesInitializer.POST_VIEW_DAO);
+        followDAO     = (FollowDAO)     getServletContext().getAttribute(ServicesInitializer.FOLLOW_DAO);
+        likeDAO       = (LikeDAO)       getServletContext().getAttribute(ServicesInitializer.LIKE_DAO);
+        securityUtils = (SecurityUtils) getServletContext().getAttribute(ServicesInitializer.SECURITY_UTILS);
     }
 }

@@ -24,7 +24,7 @@ public class ChangePasswordServlet extends BaseServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
 
-        User sessionUser = (User)session.getAttribute("sessionUser");
+        User sessionUser = (User)session.getAttribute(SESSION_USER);
         log.info("user with userId={} is trying to change password", sessionUser.getUsername());
 
         String oldPassword = req.getParameter("old_password");

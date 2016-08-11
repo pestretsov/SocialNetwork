@@ -86,7 +86,7 @@ public class SignUpServlet extends BaseServlet {
             userDAO.create(user);
             user = userDAO.getByUsername(username).orElseThrow(RuntimeException::new);
 
-            session.setAttribute("sessionUser", user);
+            session.setAttribute(SESSION_USER, user);
             resp.sendRedirect(nextURL);
         } catch (RuntimeException e) {
             log.warn("error creating user");

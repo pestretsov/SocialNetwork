@@ -25,7 +25,7 @@ public class UnfollowUserServlet extends BaseServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
 
-        User sessionUser = (User) session.getAttribute("sessionUser");
+        User sessionUser = (User) session.getAttribute(SESSION_USER);
 
         int userToUnfollowId = Integer.parseInt(req.getParameter("requestUserId"));
 

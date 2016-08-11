@@ -3,8 +3,10 @@ package restapi;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import dao.interfaces.CommentDAO;
 import dao.interfaces.CommentViewDAO;
+import listeners.ServicesInitializer;
 import lombok.extern.slf4j.Slf4j;
 import model.*;
+import utils.SecurityUtils;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -31,11 +33,11 @@ public class CommentResource {
     @Context
     public void init(ServletContext servletContext) {
         if (commentDAO == null) {
-            commentDAO = (CommentDAO) servletContext.getAttribute("commentDAO");
+            commentDAO = (CommentDAO) servletContext.getAttribute(ServicesInitializer.COMMENT_DAO);
         }
 
         if (commentViewDAO == null) {
-            commentViewDAO = (CommentViewDAO) servletContext.getAttribute("commentViewDAO");
+            commentViewDAO = (CommentViewDAO) servletContext.getAttribute(ServicesInitializer.COMMENT_VIEW_DAO);
         }
     }
 
@@ -69,8 +71,7 @@ public class CommentResource {
 
         HttpSession session = request.getSession(false);
 
-        Optional<User> sessionUserOpt = Optional.ofNullable(session)
-                .map(s -> (User)s.getAttribute("sessionUser"));
+        Optional<User> sessionUserOpt = SecurityUtils.getSessionUserOpt(session);
 
         if (!sessionUserOpt.isPresent()) {
             log.warn("No user session found. Cannot add comment");

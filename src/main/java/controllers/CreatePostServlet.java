@@ -33,7 +33,7 @@ public class CreatePostServlet extends BaseServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
 
-        User user = (User) session.getAttribute("sessionUser");
+        User user = (User) session.getAttribute(SESSION_USER);
 
         String text = req.getParameter("postText");
 

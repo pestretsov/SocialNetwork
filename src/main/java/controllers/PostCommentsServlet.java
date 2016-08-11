@@ -5,6 +5,7 @@ import model.Post;
 import model.PostView;
 import model.User;
 import utils.GeneralUtils;
+import utils.SecurityUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,8 +35,7 @@ public class PostCommentsServlet extends BaseServlet {
 
         Optional<PostView> postOpt = Optional.ofNullable(path)
                 .map(Integer::parseInt).flatMap(postId -> postViewDAO.getPostViewById(postId));
-        Optional<User> sessionUserOpt = Optional.ofNullable(session)
-                .map(s -> (User)s.getAttribute("sessionUser"));
+        Optional<User> sessionUserOpt = SecurityUtils.getSessionUserOpt(session);
 
         if (!postOpt.isPresent()) {
             resp.sendError(500, "Post with this id doesnt exist");

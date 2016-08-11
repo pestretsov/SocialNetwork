@@ -28,7 +28,7 @@ public class IndexServlet extends BaseServlet {
         HttpSession session = req.getSession(true);
 
         Optional<User> userOpt =
-                Optional.ofNullable((User)session.getAttribute("sessionUser"))
+                Optional.ofNullable((User)session.getAttribute(SESSION_USER))
                         .map(user -> user.getId())
                         .flatMap(userId -> userDAO.getById(userId));
 

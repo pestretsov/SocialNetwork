@@ -21,6 +21,15 @@ public class ServicesInitializer implements ServletContextListener {
     private static final String DB_PROPERTIES = "db.properties";
     private static final String DB_INIT_SCRIPT_FILE_NAME = "schema_init.sql";
 
+    public static final String USER_DAO = "userDAO";
+    public static final String POST_DAO = "postDAO";
+    public static final String POST_VIEW_DAO = "postViewDAO";
+    public static final String FOLLOW_DAO = "followDAO";
+    public static final String LIKE_DAO = "likeDAO";
+    public static final String COMMENT_DAO = "commentDAO";
+    public static final String COMMENT_VIEW_DAO = "commentViewDAO";
+    public static final String SECURITY_UTILS = "securityUtils";
+
     private static ConnectionPool connectionPool;
 
     @Override
@@ -39,14 +48,14 @@ public class ServicesInitializer implements ServletContextListener {
         CommentViewDAO commentViewDAO = new H2CommentViewDAO(connectionPool);
         SecurityUtils securityUtils = new SecurityUtils();
 
-        sce.getServletContext().setAttribute("userDAO", userDAO);
-        sce.getServletContext().setAttribute("postDAO", postDAO);
-        sce.getServletContext().setAttribute("followDAO", followDAO);
-        sce.getServletContext().setAttribute("postViewDAO", postViewDAO);
-        sce.getServletContext().setAttribute("likeDAO", likeDAO);
-        sce.getServletContext().setAttribute("securityUtils", securityUtils);
-        sce.getServletContext().setAttribute("commentDAO", commentDAO);
-        sce.getServletContext().setAttribute("commentViewDAO", commentViewDAO);
+        sce.getServletContext().setAttribute(USER_DAO, userDAO);
+        sce.getServletContext().setAttribute(POST_DAO, postDAO);
+        sce.getServletContext().setAttribute(POST_VIEW_DAO, postViewDAO);
+        sce.getServletContext().setAttribute(FOLLOW_DAO, followDAO);
+        sce.getServletContext().setAttribute(LIKE_DAO, likeDAO);
+        sce.getServletContext().setAttribute(COMMENT_DAO, commentDAO);
+        sce.getServletContext().setAttribute(COMMENT_VIEW_DAO, commentViewDAO);
+        sce.getServletContext().setAttribute(SECURITY_UTILS, securityUtils);
 
         String scriptFilePath = servletContext.getRealPath(RESOURCES_FILE_PATH + DB_INIT_SCRIPT_FILE_NAME);
         connectionPool.executeScript(scriptFilePath);

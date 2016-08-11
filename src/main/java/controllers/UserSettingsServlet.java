@@ -32,7 +32,7 @@ public class UserSettingsServlet extends BaseServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(true);
 
-        User sessionUser = (User) session.getAttribute("sessionUser");
+        User sessionUser = (User) session.getAttribute(SESSION_USER);
 
         String firstName = req.getParameter("first_name");
         String lastName = req.getParameter("last_name");

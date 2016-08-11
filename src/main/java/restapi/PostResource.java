@@ -5,6 +5,7 @@ import dao.interfaces.FollowDAO;
 import dao.interfaces.PostDAO;
 import dao.interfaces.PostViewDAO;
 import dao.interfaces.UserDAO;
+import listeners.ServicesInitializer;
 import lombok.extern.slf4j.Slf4j;
 import model.Post;
 import model.PostType;
@@ -42,16 +43,16 @@ public class PostResource {
     @Context
     public void init(ServletContext servletContext) {
         if (postDAO == null) {
-            postDAO = (PostDAO) servletContext.getAttribute("postDAO");
+            postDAO = (PostDAO) servletContext.getAttribute(ServicesInitializer.POST_DAO);
         }
         if (userDAO == null) {
-            userDAO = (UserDAO) servletContext.getAttribute("userDAO");
+            userDAO = (UserDAO) servletContext.getAttribute(ServicesInitializer.USER_DAO);
         }
         if (postViewDAO == null) {
-            postViewDAO = (PostViewDAO) servletContext.getAttribute("postViewDAO");
+            postViewDAO = (PostViewDAO) servletContext.getAttribute(ServicesInitializer.POST_VIEW_DAO);
         }
         if (followDAO == null) {
-            followDAO = (FollowDAO) servletContext.getAttribute("followDAO");
+            followDAO = (FollowDAO) servletContext.getAttribute(ServicesInitializer.FOLLOW_DAO);
         }
     }
 

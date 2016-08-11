@@ -26,7 +26,7 @@ public class FollowUserServlet extends BaseServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
 
-        User sessionUser = (User)session.getAttribute("sessionUser");
+        User sessionUser = (User)session.getAttribute(SESSION_USER);
 
         int userToFollowId = Integer.parseInt(req.getParameter("requestUserId"));
 

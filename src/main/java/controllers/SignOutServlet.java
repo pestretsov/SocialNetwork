@@ -19,11 +19,12 @@ import java.io.IOException;
 @WebServlet(urlPatterns = "/logout")
 public class SignOutServlet extends BaseServlet {
 
+    // TODO: fix:
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
 
-        User sessionUser = (User) req.getSession().getAttribute("sessionUser");
+        User sessionUser = (User) req.getSession().getAttribute(SESSION_USER);
         if (sessionUser != null) {
             log.info("logout userId={}. Redirecting to {}", sessionUser.getId(), "/");
         } else {

@@ -5,9 +5,11 @@ import dao.interfaces.LikeDAO;
 import dao.interfaces.PostDAO;
 import dao.interfaces.PostViewDAO;
 import dao.interfaces.UserDAO;
+import listeners.ServicesInitializer;
 import lombok.extern.slf4j.Slf4j;
 import model.Like;
 import model.User;
+import utils.SecurityUtils;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
@@ -34,7 +36,7 @@ public class LikeResource {
     @Context
     public void init(ServletContext servletContext) {
         if (likeDAO == null) {
-            likeDAO = (LikeDAO) servletContext.getAttribute("likeDAO");
+            likeDAO = (LikeDAO) servletContext.getAttribute(ServicesInitializer.LIKE_DAO);
         }
     }
 
@@ -49,8 +51,7 @@ public class LikeResource {
 
         HttpSession session = request.getSession(false);
 
-        Optional<User> sessionUserOpt = Optional.ofNullable(session)
-                .map(s -> (User)s.getAttribute("sessionUser"));
+        Optional<User> sessionUserOpt = SecurityUtils.getSessionUserOpt(session);
 
         if (!sessionUserOpt.isPresent()) {
             log.warn("No user session found. Cannot add like");

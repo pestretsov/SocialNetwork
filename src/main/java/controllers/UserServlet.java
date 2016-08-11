@@ -6,6 +6,7 @@ import dao.interfaces.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.Follow;
 import model.User;
+import utils.SecurityUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,7 +32,7 @@ public class UserServlet extends BaseServlet {
         String path = req.getPathInfo().substring(1);
 
         Optional<User> userOpt = Optional.ofNullable(path).flatMap(username -> userDAO.getByUsername(username));
-        Optional<User> sessionUserOpt = Optional.ofNullable(session).map(s -> (User)s.getAttribute("sessionUser"));
+        Optional<User> sessionUserOpt = SecurityUtils.getSessionUserOpt(session);
 
         log.info("trying to get user with username={}", path);
 
