@@ -29,9 +29,9 @@ public class RemoveUserServlet extends BaseServlet {
             return;
         }
 
-        int userId = Optional.ofNullable(userIdString).map(Integer::parseInt).orElse(0);
+        int userId = Optional.ofNullable(userIdString).map(Integer::parseInt).orElse(-1);
 
-        if (userId == 0) {
+        if (userId == -1) {
             log.info("invalid user_id param. Redirecting to {}", "/admin/adminpage");
             resp.sendRedirect("/admin/adminpage");
             return;

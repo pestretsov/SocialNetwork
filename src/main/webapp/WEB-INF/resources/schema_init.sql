@@ -20,7 +20,7 @@ CREATE TABLE User (
 
 CREATE TABLE Post (
   id           INT PRIMARY KEY AUTO_INCREMENT,
-  from_id      INT NOT NULL REFERENCES User(id),
+  from_id      INT NOT NULL REFERENCES User(id) ON UPDATE CASCADE ON DELETE CASCADE,
   post_type    INT DEFAULT 0,
   text         VARCHAR(255),
   publish_time TIMESTAMP NOT NULL
@@ -76,7 +76,7 @@ AS SELECT Comment.id, Comment.post_id, Comment.text, Comment.publish_time, Comme
    FROM Comment JOIN User ON Comment.from_id=User.id;
 
 INSERT INTO USER (USERNAME, PASSWORD, FIRST_NAME, LAST_NAME, GENDER, BIRTH_DATE, BIO, role)
-VALUES ('ambush', '4297715b943c507b0bcefe8da5d5fed8165a4b8152e019e6e0af73e18e7ff8b891f9b7eb0432ed6cebbceac8a48f1c68', 'Artemy', 'Pestretsov', '1', '1995-11-02', 'nothing do here', 0);
+VALUES ('ambush', '4297715b943c507b0bcefe8da5d5fed8165a4b8152e019e6e0af73e18e7ff8b891f9b7eb0432ed6cebbceac8a48f1c68', 'Artemy', 'Pestretsov', '1', '1995-11-02', 'nothing do here', 1);
 
 INSERT INTO USER (USERNAME, PASSWORD, FIRST_NAME, LAST_NAME, GENDER, BIRTH_DATE, BIO, role)
 VALUES ('nusrat553', '4297715b943c507b0bcefe8da5d5fed8165a4b8152e019e6e0af73e18e7ff8b891f9b7eb0432ed6cebbceac8a48f1c68', 'Nusrat', 'Shakarov', '1', '1995-11-02', 'Nusrat', 0);
