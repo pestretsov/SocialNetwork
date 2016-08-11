@@ -107,6 +107,7 @@ div.col-md-1 {
     width: inherit;
     overflow: hidden;
     word-wrap: break-word;
+    min-height: 89px;
 }
 
 .post h3, .post h3 a {
@@ -141,7 +142,7 @@ div.col-md-1 {
     float: left;
 }
 
-.post-remove:hover, .post-edit:hover, .post-edit-ok:hover {
+.post-remove:hover, .post-edit:hover, .post-edit-ok:hover, .post-comment:hover span {
     color: #14171A;
 }
 

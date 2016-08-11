@@ -13,7 +13,10 @@
 <script>
     var postId = ${requestScope.postId};
     var sessionUser = {
-        userId: ${sessionScope.sessionUser.id}
+        <c:if test="${not (empty sessionScope.sessionUser)}">
+        userId: ${sessionScope.sessionUser.id},
+        </c:if>
+        canComment: ${requestScope.canComment}
     };
 </script>
 <html>
@@ -35,7 +38,15 @@
                 <a id="logo" class="navbar-brand" href="#">SocNet</a>
             </div>
             <div id="navbar-collapse" class="collapse navbar-collapse">
-                <jsp:include page="common/singnedin_navbar.jsp"/>
+                <%--@elvariable id="sessionUser" type="model.User"--%>
+                <c:choose>
+                    <c:when test="${not (empty sessionUser)}">
+                        <jsp:include page="common/singnedin_navbar.jsp"/>
+                    </c:when>
+                    <c:otherwise>
+                        <jsp:include page="common/signedout_navbar.jsp"/>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </nav>
@@ -44,17 +55,19 @@
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <div id="post"></div>
-            <div class="row">
-                <div class="panel">
-                    <div class="panel-body">
-                        <div class="form-group">
-                            <textarea id="commenttext" name="text" class="form-control" rows="2" placeholder="<fmt:message key="comments.placeholder"/>"
-                                      maxlength="255"></textarea>
+            <c:if test="${requestScope.canComment}">
+                <div class="row">
+                    <div class="panel">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <textarea id="commenttext" name="text" class="form-control" rows="2" placeholder="<fmt:message key="comments.placeholder"/>"
+                                          maxlength="255"></textarea>
+                            </div>
+                            <button id="addcomment" type="submit" class="btn btn-primary pull-right"><fmt:message key="comments.submit"/></button>
                         </div>
-                        <button id="addcomment" type="submit" class="btn btn-primary pull-right"><fmt:message key="comments.submit"/></button>
                     </div>
                 </div>
-            </div>
+            </c:if>
             <div id="comments"><h4><fmt:message key="comments.title"/></h4></div>
         </div>
     </div>
