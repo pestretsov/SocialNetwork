@@ -19,9 +19,9 @@
             <div class="form-group">
                 <input type="text" class="form-control" name="j_username"  placeholder="<fmt:message key="signin.usernamePlaceholder"/>" required>
                 <input type="password" class="form-control" name="j_password" placeholder="<fmt:message key="signin.passwordPlaceholder"/>" required>
-                <button type="submit" class="btn btn-primary"><fmt:message key="signin.button"/>"</button>
+                <button type="submit" class="btn btn-primary"><fmt:message key="signin.button"/></button>
             </div>
         </form>
     </li>
-    <li><a href="<c:url value="/signup"/>"> <fmt:message key="signup.button"/>"</a> </li>
+    <li><a href="<c:url value="/signup"/>"> <fmt:message key="signup.button"/></a> </li>
 </ul>

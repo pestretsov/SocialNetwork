@@ -99,6 +99,20 @@ $(function () {
             return likeButton;
         }
 
+        function addCommentsButton() {
+            var commentsButton = document.createElement("div");
+            commentsButton.className = "post-comment";
+            var commentsGlyph = document.createElement("span");
+            commentsGlyph.className = "glyphicon glyphicon-comment";
+            commentsButton.appendChild(commentsGlyph);
+
+            commentsButton.addEventListener('click', function () {
+                window.location.href = "/postcomments/" + postView.postId;
+            });
+
+            return commentsButton;
+        }
+
         var post = document.createElement("div");
         post.className = "post panel row";
 
@@ -121,7 +135,12 @@ $(function () {
 
         var postToolbar = document.createElement("div");
 
-        postToolbar.appendChild(addLikeButton());
+        var interactButtonsDiv = document.createElement("div");
+        interactButtonsDiv.className = "pull-left";
+        interactButtonsDiv.appendChild(addLikeButton());
+        interactButtonsDiv.appendChild(addCommentsButton());
+
+        postToolbar.appendChild(interactButtonsDiv);
 
         if (postView.editable) {
             var editButtonsDiv = document.createElement("div");
@@ -363,7 +382,7 @@ $(function () {
                 headers: {'Content-type': 'application/json'},
                 data: JSON.stringify({
                     postId: postId,
-                    fromId: sessionUserId,
+                    fromId: sessionUser.id,
                     text: $("#commenttext").val()
                 }),
                 success: function () {

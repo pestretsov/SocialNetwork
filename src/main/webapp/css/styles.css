@@ -131,14 +131,13 @@ div.col-md-1 {
     margin-bottom: 10px;
 }
 
-.post-remove, .post-edit, .post-edit-ok, .post-like {
+.post-remove, .post-edit, .post-edit-ok, .post-like, .post-comment {
     font-size: 14px;
     color: #AAB8C2;
     margin-right: 15px;
-    clear: both;
 }
 
-.post-like {
+.post-like, .post-comment {
     float: left;
 }
 
@@ -146,7 +145,7 @@ div.col-md-1 {
     color: #14171A;
 }
 
-.post-like span {
+.post-like span, .post-comment span {
     margin-right: 15px;
 }
 

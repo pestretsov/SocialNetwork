@@ -12,7 +12,9 @@
 <fmt:setLocale value="${locale}" scope="application"/>
 <script>
     var postId = ${requestScope.postId};
-    var sessionUserId = ${sessionScope.sessionUser.id};
+    var sessionUser = {
+        userId: ${sessionScope.sessionUser.id}
+    };
 </script>
 <html>
 <head>
