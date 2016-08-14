@@ -1,5 +1,6 @@
-package controllers;
+package controllers.auth;
 
+import controllers.BaseServlet;
 import dao.interfaces.UserDAO;
 import model.User;
 import utils.SecurityUtils;

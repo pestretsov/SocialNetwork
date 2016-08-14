@@ -1,5 +1,6 @@
-package controllers;
+package controllers.user;
 
+import controllers.BaseServlet;
 import dao.interfaces.PostDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.Post;

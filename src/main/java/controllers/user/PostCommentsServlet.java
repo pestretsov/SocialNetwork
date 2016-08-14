@@ -1,5 +1,6 @@
-package controllers;
+package controllers.user;
 
+import controllers.BaseServlet;
 import lombok.extern.slf4j.Slf4j;
 import model.Post;
 import model.PostView;

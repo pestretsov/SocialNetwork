@@ -1,9 +1,9 @@
-package controllers;
+package controllers.admin;
 
+import controllers.BaseServlet;
 import lombok.extern.slf4j.Slf4j;
-import model.User;
-import model.UserRole;
 import utils.GeneralUtils;
+import utils.SecurityUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,8 +17,8 @@ import java.util.Optional;
  */
 
 @Slf4j
-@WebServlet(urlPatterns = "/admin/changerole")
-public class ChangeUserRoleServlet extends BaseServlet {
+@WebServlet(urlPatterns = "/admin/removeuser")
+public class RemoveUserServlet extends BaseServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -38,32 +38,28 @@ public class ChangeUserRoleServlet extends BaseServlet {
             return;
         }
 
-        Optional<User> userOpt = userDAO.getById(userId);
+        boolean isSameUser = SecurityUtils.getSessionUserOpt(req.getSession()).get().getId()==userId;
 
-        if (!userOpt.isPresent()) {
-            log.warn("no such user");
-            resp.sendError(404, "no such user");
+        if (isSameUser) {
+            log.warn("trying to delete yourself. Redirecting to error page");
+            resp.sendError(406, "You can't delete yourself");
             return;
         }
 
-        User user = userOpt.get();
 
-        if (user.getRole() == UserRole.USER) {
-            user.setRole(UserRole.ADMIN);
-        } else {
-            user.setRole(UserRole.USER);
-        }
-
+        log.info("trying to delete user with userId={}", userId);
         try {
-            if (userDAO.update(user)){
-                log.info("updated userId={} role={}", user.getId(), user.getRole());
-                resp.sendRedirect("/admin/adminpage");
+            if (userDAO.deleteById(userId)){
+                log.info("user with userId={} was deleted", userId);
             } else {
-                log.warn("update has failed. No such user found. Redirecting to error page");
-                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Update has failed");
+                log.warn("user with userId={} was not deleted", userId);
             }
+
+            log.info("redirecting to /admin/adminpage");
+            resp.sendRedirect("/admin/adminpage");
+
         } catch (RuntimeException e) {
-            log.warn("Error trying to update user. Redirect to error page error={}", e);
+            log.warn("error trying to delete user. Redirect to error page. Error={}",e);
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error trying to delete user");
         }
     }

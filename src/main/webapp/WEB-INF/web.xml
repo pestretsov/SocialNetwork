@@ -28,4 +28,14 @@
         <url-pattern>/restapi/*</url-pattern>
     </servlet-mapping>
 
+    <!--<error-page>-->
+        <!--<location>createpost.jsp</location>-->
+        <!--<error-code>500</error-code>-->
+    <!--</error-page>-->
+
+    <!--<error-page>-->
+        <!--<location>admin.jsp</location>-->
+        <!--<error-code>404</error-code>-->
+    <!--</error-page>-->
+
 </web-app>

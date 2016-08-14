@@ -1,5 +1,6 @@
-package controllers;
+package controllers.user;
 
+import controllers.BaseServlet;
 import dao.interfaces.FollowDAO;
 import dao.interfaces.PostDAO;
 import dao.interfaces.UserDAO;

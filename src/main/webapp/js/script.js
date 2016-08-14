@@ -155,16 +155,16 @@ $(function () {
                 editButtonsDiv.className = "pull-right";
 
                 var removeButton = document.createElement("span");
-                var editButton = document.createElement("span");
-                var editOkButton = document.createElement("span");
+                // var editButton = document.createElement("span");
+                // var editOkButton = document.createElement("span");
 
                 removeButton.className = "post-remove glyphicon glyphicon-remove-circle";
-                editButton.className = "post-edit glyphicon glyphicon-edit";
-                editOkButton.className = "hidden post-edit-ok glyphicon glyphicon-ok";
+                // editButton.className = "post-edit glyphicon glyphicon-edit";
+                // editOkButton.className = "hidden post-edit-ok glyphicon glyphicon-ok";
 
                 editButtonsDiv.appendChild(removeButton);
-                editButtonsDiv.appendChild(editButton);
-                editButtonsDiv.appendChild(editOkButton);
+                // editButtonsDiv.appendChild(editButton);
+                // editButtonsDiv.appendChild(editOkButton);
 
                 removeButton.addEventListener('click', function () {
                     var postId = $(this).closest('.post').data("post-id");

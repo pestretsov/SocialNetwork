@@ -1,5 +1,6 @@
-package controllers;
+package controllers.user;
 
+import controllers.BaseServlet;
 import dao.interfaces.FollowDAO;
 import dao.interfaces.UserDAO;
 import lombok.extern.slf4j.Slf4j;

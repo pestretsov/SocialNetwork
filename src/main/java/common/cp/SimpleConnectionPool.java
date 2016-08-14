@@ -107,7 +107,6 @@ public class SimpleConnectionPool implements ConnectionPool {
         };
     }
 
-    // TODO: check polymorphism
     @Override
     public Connection getConnection() {
         if (isClosing) {

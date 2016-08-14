@@ -1,5 +1,6 @@
-package controllers;
+package controllers.user;
 
+import controllers.BaseServlet;
 import dao.interfaces.FollowDAO;
 import dao.interfaces.UserDAO;
 import lombok.extern.slf4j.Slf4j;
@@ -17,10 +18,9 @@ import java.util.Optional;
 /**
  * Created by artemypestretsov on 8/9/16.
  */
-
 @Slf4j
-@WebServlet(urlPatterns = "/followers/*")
-public class UserFollowersServlet extends BaseServlet {
+@WebServlet(urlPatterns = "/followings/*")
+public class UserFollowingsServlet extends BaseServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -37,8 +37,8 @@ public class UserFollowersServlet extends BaseServlet {
 
         User user = userOpt.get();
 
-        req.setAttribute("followersList", userDAO.getUsersFollowingUser(user.getId()));
+        req.setAttribute("followingsList", userDAO.getUsersFollowedByUser(user.getId()));
         req.setAttribute("requestUser", user);
-        getServletContext().getRequestDispatcher("/WEB-INF/followers.jsp").forward(req, resp);
+        getServletContext().getRequestDispatcher("/WEB-INF/followings.jsp").forward(req, resp);
     }
 }

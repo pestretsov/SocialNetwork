@@ -1,5 +1,6 @@
-package controllers;
+package controllers.admin;
 
+import controllers.BaseServlet;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletException;
