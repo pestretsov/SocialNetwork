@@ -1,15 +1,18 @@
 package listeners;
 
+import com.mongodb.MongoClient;
 import common.cp.ConnectionPool;
 import common.cp.SimpleConnectionPool;
 import dao.h2.*;
 import dao.interfaces.*;
+import utils.MongoUtils;
 import utils.SecurityUtils;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
+import java.util.Properties;
 
 /**
  * Created by artemypestretsov on 7/18/16.
@@ -31,13 +34,20 @@ public class ServicesInitializer implements ServletContextListener {
     public static final String SECURITY_UTILS = "securityUtils";
 
     private static ConnectionPool connectionPool;
+    private static MongoClient mongoClient;
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext servletContext = sce.getServletContext();
 
         String propertiesFilePath = servletContext.getRealPath(RESOURCES_FILE_PATH + DB_PROPERTIES);
-        connectionPool = SimpleConnectionPool.create(propertiesFilePath);
+
+        Properties properties = MongoUtils.getPropertiesFromFile(propertiesFilePath);
+
+        connectionPool = SimpleConnectionPool.create(properties);
+
+        mongoClient = new MongoClient(properties.getProperty("mongo_host"),
+                Integer.parseInt(properties.getProperty("mongo_port")));
 
         UserDAO userDAO = new H2UserDAO(connectionPool);
         PostDAO postDAO = new H2PostDAO(connectionPool);

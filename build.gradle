@@ -36,4 +36,7 @@ dependencies {
 
     // Jackson
     compile 'com.fasterxml.jackson.core:jackson-databind:+'
+
+    // MongoDB
+    compile 'org.mongodb:mongodb-driver:3.3.0'
 }
