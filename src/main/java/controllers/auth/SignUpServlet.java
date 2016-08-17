@@ -11,12 +11,10 @@ import utils.SecurityUtils;
 import utils.Validator;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
+import javax.servlet.http.*;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Optional;
@@ -27,6 +25,7 @@ import java.util.Optional;
 
 @Slf4j
 @WebServlet(urlPatterns = "/signup")
+@MultipartConfig
 public class SignUpServlet extends BaseServlet {
 
     @Override

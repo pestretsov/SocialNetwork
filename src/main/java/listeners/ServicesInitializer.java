@@ -30,6 +30,7 @@ public class ServicesInitializer implements ServletContextListener {
     public static final String FOLLOW_DAO = "followDAO";
     public static final String LIKE_DAO = "likeDAO";
     public static final String COMMENT_DAO = "commentDAO";
+    public static final String IMAGE_DAO = "imageDAO";
     public static final String COMMENT_VIEW_DAO = "commentViewDAO";
     public static final String SECURITY_UTILS = "securityUtils";
 
@@ -46,8 +47,8 @@ public class ServicesInitializer implements ServletContextListener {
 
         connectionPool = SimpleConnectionPool.create(properties);
 
-        mongoClient = new MongoClient(properties.getProperty("mongo_host"),
-                Integer.parseInt(properties.getProperty("mongo_port")));
+//        mongoClient = new MongoClient(properties.getProperty("mongo_host"),
+//                Integer.parseInt(properties.getProperty("mongo_port")));
 
         UserDAO userDAO = new H2UserDAO(connectionPool);
         PostDAO postDAO = new H2PostDAO(connectionPool);
@@ -56,6 +57,7 @@ public class ServicesInitializer implements ServletContextListener {
         LikeDAO likeDAO = new H2LikeDAO(connectionPool);
         CommentDAO commentDAO = new H2CommentDAO(connectionPool);
         CommentViewDAO commentViewDAO = new H2CommentViewDAO(connectionPool);
+//        MongoDBImageDAO mongoDBImageDAO = new MongoDBImageDAO(mongoClient);
         SecurityUtils securityUtils = new SecurityUtils();
 
         sce.getServletContext().setAttribute(USER_DAO, userDAO);
@@ -65,6 +67,7 @@ public class ServicesInitializer implements ServletContextListener {
         sce.getServletContext().setAttribute(LIKE_DAO, likeDAO);
         sce.getServletContext().setAttribute(COMMENT_DAO, commentDAO);
         sce.getServletContext().setAttribute(COMMENT_VIEW_DAO, commentViewDAO);
+//        sce.getServletContext().setAttribute(IMAGE_DAO, mongoDBImageDAO);
         sce.getServletContext().setAttribute(SECURITY_UTILS, securityUtils);
 
         String scriptFilePath = servletContext.getRealPath(RESOURCES_FILE_PATH + DB_INIT_SCRIPT_FILE_NAME);

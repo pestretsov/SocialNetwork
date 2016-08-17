@@ -1,5 +1,8 @@
 package dao.h2;
 
+import com.mongodb.DBCollection;
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
 import common.cp.ConnectionPool;
 import dao.interfaces.UserDAO;
 import model.User;
